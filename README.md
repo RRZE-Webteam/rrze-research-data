@@ -18,8 +18,7 @@ Die folgende Schritt‑für‑Schritt‑Anleitung beschreibt das Vorgehen zur En
 
 ## 2. Plugin‑Grundgerüst erstellen
 
-- WordPress‑konforme Ordnerstruktur anlegen, etwa `wp-content/plugins/wp-research-data/`.
-- Hauptdatei mit Plugin‑Header und Sicherheitsabfrage (`if (!defined('ABSPATH')) exit;`) erstellen.
+- WordPress‑konforme Ordnerstruktur anlegen, etwa `wp-content/plugins/rrze-research-data/`.
 - Autoloader oder `includes/`‑Verzeichnis für Klassen vorbereiten.
 - `templates/`‑Ordner für die Ausgabe der Daten anlegen.
 - Aktivierungs‑/Deaktivierungshooks registrieren, um bei der Installation Standardoptionen zu setzen.
@@ -36,12 +35,10 @@ Die folgende Schritt‑für‑Schritt‑Anleitung beschreibt das Vorgehen zur En
 - Der Transient‑Key sollte aus Portalname, Personen‑ID und Datentyp zusammengesetzt sein.
 - Beim Aufruf eines Shortcodes wird zunächst geprüft, ob ein Cache‑Eintrag vorhanden ist; andernfalls erfolgt die API‑Abfrage.
 
-## 5. Shortcodes implementieren
+## 5. Blöcke implementieren
 
-- Shortcodes wie `[research_data]` registrieren; Attribute sind `source`, `id`, `type` und optional `max`.
-- Über das Attribut `source` kann der Nutzer angeben, aus welchem Portal Daten abgerufen werden sollen (z. B. `arxiv` oder `publons`). Wird dieser Parameter weggelassen, durchsucht der Shortcode alle aktivierten Portale.
-- Der `id`‑Parameter enthält die portal­spezifische ID der Person (beispielsweise aus der FAUdir‑Schnittstelle). `type` bestimmt die Datenart (Publikationen, Projekte, Reviews oder Auszeichnungen).
-- Die Shortcode‑Callback‑Funktion ruft die entsprechenden API‑Clients auf, nutzt den Cache und rendert das passende Template.
+- Ausgabe und EInbindung soll über Blöcke erfolgen.
+- Shortcodes sind nur anzubieten, wenn hierdurch auf technischer Mehrwert entsteht.
 
 ## 6. Templates für die Ausgabe
 
@@ -53,18 +50,5 @@ Die folgende Schritt‑für‑Schritt‑Anleitung beschreibt das Vorgehen zur En
 - Unter `Einstellungen → Research Data` eine Seite hinzufügen, auf der API‑Schlüssel/Tokens für jedes angebundene Portal hinterlegt werden können.
 - Optionen zum Aktivieren/Deaktivieren einzelner Portale sowie zur Festlegung der Cache‑Dauer bereitstellen.
 
-## 8. Internationalisierung und Dokumentation
 
-- Textausgaben mit den WordPress‑Funktionen `__()` und `_e()` übersetzbar machen und eine Sprachdatei anlegen.
-- Eine ausführliche `README.md` erstellen, die Zweck, Installation und Nutzung des Plugins erklärt und auf Besonderheiten der einzelnen APIs hinweist.
 
-## 9. Tests und Qualitätssicherung
-
-- Unit‑Tests für die API‑Klassen mit PHPUnit oder WP_Mock schreiben.
-- Integrationstests für Shortcodes und Blocks durchführen; API‑Aufrufe lassen sich mit Mock‑Objekten simulieren.
-- Fehler bei fehlenden API‑Schlüsseln, überschrittenen Rate‑Limits oder ungültigen Parametern abfangen und verständliche Meldungen ausgeben.
-
-## 10. Veröffentlichung
-
-- Nach Abschluss der Entwicklung die Version im Plugin‑Header erhöhen, einen Changelog anlegen und einen Release‑Tag setzen.
-- Das Plugin ins WordPress.org‑Verzeichnis oder öffentlich auf GitHub hochladen.
