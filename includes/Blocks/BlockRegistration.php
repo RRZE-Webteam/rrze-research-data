@@ -1,0 +1,67 @@
+<?php
+
+namespace RRZE\ResearchData\Blocks;
+
+
+defined('ABSPATH') || exit;
+
+/**
+ * Registers the Block
+ */
+class BlockRegistration
+{
+    /**
+     * Register hooks for block registration and category.
+     */
+    public function __construct()
+    {
+        add_filter('block_categories_all', [$this, 'addRrzeCategory'], 10, 2);
+        add_action('init', [$this, 'registerBlock']);
+    }
+
+
+    /**
+     * Register the block.
+     *
+     * @void
+     */
+    public function registerBlock(): void
+    {
+
+        $block = register_block_type(
+            dirname(__DIR__, 2) . '/build/block',
+            [
+                //'render_callback' => [BlockRender::class, 'output'],
+            ]
+        );
+
+
+        if ($block && !empty($block->editor_script)) {
+            wp_set_script_translations(
+                $block->editor_script,
+                'rrze-research-data',
+                dirname(__DIR__, 2) .  '/languages'
+            );
+        }
+    }
+
+
+    /**
+     * Adds the RRZE block category (if not present).
+     */
+    public function addRrzeCategory(array $categories, $post): array
+    {
+        foreach ($categories as $category) {
+            if ($category['slug'] === 'rrze') {
+                return $categories;
+            }
+        }
+
+        $categories[] = [
+            'slug' => 'rrze',
+            'title' => __('RRZE', 'rrze-research-data'),
+        ];
+
+        return $categories;
+    }
+}

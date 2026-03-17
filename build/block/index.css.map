@@ -1,0 +1,1 @@
+{"version":3,"file":"block/index.css","mappings":";;;AAAA;EACE;EACA;EACA;EACA;AACF,C","sources":["webpack://rrze-research-data/./src/block/editor.scss"],"sourcesContent":[".rrze-research-data-form {\n  display: grid;\n  grid-template-columns: 160px 1fr;\n  gap: 12px 16px;\n  align-items: center;\n}"],"names":[],"sourceRoot":""}
