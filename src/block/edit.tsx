@@ -10,11 +10,11 @@ import {
     __experimentalHeading as Heading,
     __experimentalSpacer as Spacer,
     __experimentalDivider as Divider,
-    CheckboxControl,
     Button,
     TextControl,
     PanelBody,
     SelectControl,
+    __experimentalNumberControl as NumberControl
 } from "@wordpress/components";
 
 import {pages} from "@wordpress/icons";
@@ -30,7 +30,6 @@ interface EditProps {
         limit: number;
         sort: 'asc' | 'desc';
         isInitialSetup: boolean;
-        order: string;
     }
     setAttributes: (attributes: Partial<EditProps["attributes"]>) => void;
 }
@@ -45,7 +44,6 @@ export default function Edit({attributes, setAttributes}: EditProps) {
         limit,
         sort,
         isInitialSetup,
-        order,
 
     } = attributes;
 
@@ -55,7 +53,6 @@ export default function Edit({attributes, setAttributes}: EditProps) {
         <div {...blockProps}>
 
             {isInitialSetup ? (
-
                 <Placeholder
                     label={__('Research Data', 'rrze-research-data')}
                     instructions={__('Display research publications from external sources.', 'rrze-research-data')}
@@ -67,43 +64,44 @@ export default function Edit({attributes, setAttributes}: EditProps) {
                         <hr/>
                         <Spacer paddingBottom={"1rem"}/>
                         <div className="rrze-research-data-form">
-                            <label>Data Source</label>
+                            <label>{__('Publication Source', 'rrze-research-data')}</label>
                             <SelectControl
                                 value={source}
                                 options={[
-                                    {label: 'arXiv', value: 'arxiv'},
-                                    {label: 'Web of Science', value: 'wos'},
-                                    {label: 'ORCID', value: 'orcid'}
+                                    {label: __('ORCID', 'rrze-research-data'), value: 'orcid'},
+                                    {label: __('arXiv', 'rrze-research-data'), value: 'arxiv'},
+                                    {label: __('Web of Science', 'rrze-research-data'), value: 'wos'},
                                 ]}
                                 onChange={(value) => setAttributes({source: value})}
                             />
 
-                            <label>Author ID</label>
+                            <label>{__('Author ID', 'rrze-research-data')}</label>
                             <TextControl
                                 value={authorId}
-                                placeholder="Enter ORCID / Researcher ID"
+                                placeholder={__('Enter ORCID / Researcher ID', 'rrze-research-data')}
                                 onChange={(value) => setAttributes({authorId: value})}
                             />
 
-                            <label>Data Type</label>
+                            <label>{__('Data Type', 'rrze-research-data')}</label>
                             <SelectControl
                                 value={type}
                                 options={[
-                                    {label: 'Publications', value: 'publications'},
-                                    {label: 'Reviews', value: 'reviews'}
+                                    {label: __('Publications', 'rrze-research-data'), value: 'publications'},
+                                    {label: __('Reviews', 'rrze-research-data'), value: 'reviews'},
                                 ]}
                                 onChange={(value) => setAttributes({type: value})}
                             />
                             <Spacer paddingTop=".5rem"/>
 
-
                             <Spacer paddingBottom={"0.5rem"}/>
+                            <div>
                             <Button
                                 variant="primary"
                                 onClick={() => setAttributes({isInitialSetup: false})}
                             >
                                 {__('Save', 'rrze-research-data')}
                             </Button>
+                            </div>
                             <Spacer paddingBottom={"0.5rem"}/>
                         </div>
 
@@ -112,17 +110,35 @@ export default function Edit({attributes, setAttributes}: EditProps) {
             ) : (
                 <>
                     <InspectorControls>
-                        <PanelBody title={__('Data Choice', 'rrze-research-data')} initialOpen={false}>
-                            <Spacer paddingTop={"0.5rem"}/>
-
-
-                            <Spacer paddingTop={"0.5rem"}/>
-                            <Heading color="#03316a">{__('Select Folders', 'rrze-research-data')}</Heading>
-
+                        <PanelBody title={__('Research Data', 'rrze-research-data')} initialOpen={true}>
+                            <SelectControl
+                                label={__('Publication Source', 'rrze-research-data')}
+                                value={source}
+                                options={[
+                                    {label: __('ORCID', 'rrze-research-data'), value: 'orcid'},
+                                    {label: __('arXiv', 'rrze-research-data'), value: 'arxiv'},
+                                    {label: __('Web of Science', 'rrze-research-data'), value: 'wos'},
+                                ]}
+                                onChange={(value) => setAttributes({source: value})}
+                            />
+                            <TextControl
+                                label={__('Author ID', 'rrze-research-data')}
+                                value={authorId}
+                                placeholder={__('Enter ORCID / Researcher ID', 'rrze-research-data')}
+                                onChange={(value) => setAttributes({authorId: value})}
+                            />
+                            <SelectControl
+                                label={__('Data Type', 'rrze-research-data')}
+                                value={type}
+                                options={[
+                                    {label: __('Publications', 'rrze-research-data'), value: 'publications'},
+                                    {label: __('Reviews', 'rrze-research-data'), value: 'reviews'},
+                                ]}
+                                onChange={(value) => setAttributes({type: value})}
+                            />
                         </PanelBody>
 
                         <PanelBody title={__('Display Options', 'rrze-research-data')} initialOpen={false}>
-                            <Spacer paddingTop={"0.5rem"}/>
                             <SelectControl
                                 label={__('View', 'rrze-research-data')}
                                 value={view}
@@ -135,43 +151,32 @@ export default function Edit({attributes, setAttributes}: EditProps) {
                                     setAttributes({view: val as 'list' | 'table'})
                                 }
                             />
-
-                            <Divider margin="3"/>
-                            <Heading color="#03316a">{__('Displayed file information', 'rrze-research-data')}</Heading>
-                            {/*<CheckboxControl
-                                label={__('File Type', 'rrze-research-data')}
-                                checked={show.includes('type')}
-                                onChange={() => toggleShow('type')}
-                            />*/}
-
-                            <Divider margin="2"/>
-
-
-                            <Divider margin="2"/>
                             <SelectControl
                                 label={__('Sorting', 'rrze-research-data')}
                                 value={sort}
                                 options={[
-                                    {label: __('Ascending', 'rrze-research-data'), value: 'asc'},
-                                    {label: __('Descending', 'rrze-research-data'), value: 'desc'},
+                                    {label: __('Newest first', 'rrze-research-data'), value: 'desc'},
+                                    {label: __('Oldest first', 'rrze-research-data'), value: 'asc'},
                                 ]}
                                 onChange={(val: 'asc' | 'desc') =>
                                     setAttributes({sort: val as 'asc' | 'desc'})
                                 }
                             />
+                            <NumberControl
+                                __next40pxDefaultSize
+                                label={__('Limit', 'rrze-research-data')}
+                                value={limit}
+                                onChange={() => {}}
+                            />
                         </PanelBody>
-
                     </InspectorControls>
-                    /* Ausgabe nach Setup *!/
-
+                    {/* Serverseitige Ausgabe der Publikationen */}
                     <ServerSideRender
                         block="rrze/research-data"
                         attributes={attributes}
                     />
-
                 </>
             )}
         </div>
-    )
-        ;
+    );
 }

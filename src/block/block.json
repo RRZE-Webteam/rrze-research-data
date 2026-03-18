@@ -21,7 +21,7 @@
     },
     "source": {
       "type": "string",
-      "default": "arxiv"
+      "default": "orcid"
     },
     "type": {
       "type": "string",
@@ -36,8 +36,9 @@
       "type": "number",
       "default": 5
     },
-    "order": {
+    "sort": {
       "type": "string",
+      "enum": ["asc", "desc"],
       "default": "desc"
     }
   },
