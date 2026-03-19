@@ -23,26 +23,23 @@ class BlockRegistration
     /**
      * Register the block.
      *
-     * @void
+     * @return void
      */
     public function registerBlock(): void
     {
 
-        $block = register_block_type(
+        register_block_type(
             dirname(__DIR__, 2) . '/build/block',
             [
-                //'render_callback' => [BlockRender::class, 'output'],
+                'render_callback' => [BlockRender::class, 'output'],
             ]
         );
 
-
-        if ($block && !empty($block->editor_script)) {
-            wp_set_script_translations(
-                $block->editor_script,
-                'rrze-research-data',
-                dirname(__DIR__, 2) .  '/languages'
-            );
-        }
+        wp_set_script_translations(
+            'rrze-research-data-editor-script',
+            'rrze-research-data',
+            dirname(__DIR__, 2) . '/languages'
+        );
     }
 
 

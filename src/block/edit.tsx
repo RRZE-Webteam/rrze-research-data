@@ -72,7 +72,7 @@ export default function Edit({attributes, setAttributes}: EditProps) {
                                     {label: __('arXiv', 'rrze-research-data'), value: 'arxiv'},
                                     {label: __('Web of Science', 'rrze-research-data'), value: 'wos'},
                                 ]}
-                                onChange={(value) => setAttributes({source: value})}
+                                onChange={(value: string) => setAttributes({source: value})}
                             />
 
                             <label>{__('Author ID', 'rrze-research-data')}</label>
@@ -89,7 +89,7 @@ export default function Edit({attributes, setAttributes}: EditProps) {
                                     {label: __('Publications', 'rrze-research-data'), value: 'publications'},
                                     {label: __('Reviews', 'rrze-research-data'), value: 'reviews'},
                                 ]}
-                                onChange={(value) => setAttributes({type: value})}
+                                onChange={(value: string) => setAttributes({type: value})}
                             />
                             <Spacer paddingTop=".5rem"/>
 
@@ -119,7 +119,7 @@ export default function Edit({attributes, setAttributes}: EditProps) {
                                     {label: __('arXiv', 'rrze-research-data'), value: 'arxiv'},
                                     {label: __('Web of Science', 'rrze-research-data'), value: 'wos'},
                                 ]}
-                                onChange={(value) => setAttributes({source: value})}
+                                onChange={(value: string) => setAttributes({source: value})}
                             />
                             <TextControl
                                 label={__('Author ID', 'rrze-research-data')}
@@ -134,7 +134,7 @@ export default function Edit({attributes, setAttributes}: EditProps) {
                                     {label: __('Publications', 'rrze-research-data'), value: 'publications'},
                                     {label: __('Reviews', 'rrze-research-data'), value: 'reviews'},
                                 ]}
-                                onChange={(value) => setAttributes({type: value})}
+                                onChange={(value: string) => setAttributes({type: value})}
                             />
                         </PanelBody>
 

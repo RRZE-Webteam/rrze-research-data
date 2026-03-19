@@ -20,8 +20,6 @@ class BlockRender
      */
     public static function output(array $attributes = []): string
     {
-
-
         return PublicationRenderer::render($attributes);
     }
 }
