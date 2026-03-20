@@ -5,3 +5,16 @@
   align-items: center;
 }
 
+.wp-block-research-table {
+  width: 100%;
+
+  td:first-child,
+  th:first-child {
+    width: 100%;
+  }
+
+  td:last-child,
+  th:last-child {
+    white-space: nowrap;
+  }
+}

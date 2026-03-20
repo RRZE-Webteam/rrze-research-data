@@ -7,3 +7,17 @@
   gap: 12px 16px;
   align-items: center;
 }
+
+.wp-block-research-table {
+  width: 100%;
+}
+
+.wp-block-research-table td:first-child,
+.wp-block-research-table th:first-child {
+  width: 100%;
+}
+
+.wp-block-research-table td:last-child,
+.wp-block-research-table th:last-child {
+  white-space: nowrap;
+}

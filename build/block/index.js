@@ -229,7 +229,9 @@ function Edit({
             __next40pxDefaultSize: true,
             label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)('Limit', 'rrze-research-data'),
             value: limit,
-            onChange: () => {}
+            onChange: value => setAttributes({
+              limit: Number(value)
+            })
           })]
         })]
       }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)((_wordpress_server_side_render__WEBPACK_IMPORTED_MODULE_4___default()), {

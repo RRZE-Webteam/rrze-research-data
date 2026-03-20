@@ -15,10 +15,10 @@ class OrcidAPI
     const BASE_URL = 'https://pub.orcid.org/v3.0';
 
 
-    public function getAllWorks(string $orcid): array|\WP_Error
+    public function getAllWorks(string $authorId): array|\WP_Error
     {
         // Step 1: Build the request URL
-        $url = self::BASE_URL . '/' . $orcid . '/works';
+        $url = self::BASE_URL . '/' . $authorId . '/works';
 
         // Step 2: Send HTTP request
         $data = $this->request($url);

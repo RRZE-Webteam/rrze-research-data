@@ -166,7 +166,7 @@ export default function Edit({attributes, setAttributes}: EditProps) {
                                 __next40pxDefaultSize
                                 label={__('Limit', 'rrze-research-data')}
                                 value={limit}
-                                onChange={() => {}}
+                                onChange={(value) => setAttributes({limit: Number(value)})}
                             />
                         </PanelBody>
                     </InspectorControls>
