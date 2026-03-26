@@ -8,17 +8,22 @@ use RRZE\ResearchData\Services\ResearchService;
 defined('ABSPATH') || exit;
 
 /**
- * Renders the Block
+ * Renders publication data as HTML for the Research Data block.
+ *
+ * Receives a prepared list of Publication objects from ResearchService
+ * and outputs them as a list or table depending on the block settings.
  */
+
 class PublicationRenderer
 {
 
 
     /**
-     * Render file list as HTML output based on view type.
+     * Main render callback – extracts block attributes and delegates to the correct
+    view.
      *
-     * @param array $attributes
-     * @return string
+     * @param array $attributes  Block attributes from the editor
+     * @return string            Rendered HTML output
      */
     public static function render(array $attributes = []): string
     {
@@ -49,11 +54,10 @@ class PublicationRenderer
 
 
     /**
-     * Renders a simple list.
+     * Renders publications as an unordered list.
      *
-     * @param array $data
-     * @param array $atts
-     * @return string
+     * @param array $publications  Array of Publication objects
+     * @return string              Rendered HTML
      */
     private static function renderList(array $publications): string
     {
@@ -64,7 +68,12 @@ class PublicationRenderer
         $html = '<ul class="wp-block-list wp-block-research-list">';
 
         foreach ($publications as $publication) {
-            $title = esc_html($publication->title ?? '');
+            $title = wp_kses($publication->title ?? '', [
+                'sub' => [],
+                'sup' => [],
+                'i'   => [],
+                'b'   => [],
+            ]);
             $year = esc_html($publication->year ?? '');
             $journal = esc_html($publication->journal ?? '');
 
@@ -95,11 +104,10 @@ class PublicationRenderer
     }
 
     /**
-     * Renders HTML table.
+     * Renders publications as an HTML table with title and year columns.
      *
-     * @param array $data
-     * @param array $atts
-     * @return string
+     * @param array $publications  Array of Publication objects
+     * @return string              Rendered HTML
      */
     private static function renderTable(array $publications): string
     {
@@ -115,7 +123,12 @@ class PublicationRenderer
         $html .= '<tbody>';
 
         foreach ($publications as $publication) {
-            $title = esc_html($publication->title ?? '');
+            $title = wp_kses($publication->title ?? '', [
+                'sub' => [],
+                'sup' => [],
+                'i'   => [],
+                'b'   => [],
+            ]);
             $year = esc_html($publication->year ?? '');
             $link = !empty($publication->doi)
                 ? 'https://doi.org/' . $publication->doi

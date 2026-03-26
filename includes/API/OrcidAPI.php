@@ -8,13 +8,22 @@ defined('ABSPATH') || exit;
 use RRZE\ResearchData\Models\Publication;
 
 /**
+ * Fetches publication data from the ORCID Public API.
  *
+ * Uses the public endpoint (pub.orcid.org) which requires no authentication.
+ * @see https://pub.orcid.org/v3.0
  */
+
 class OrcidAPI
 {
     const BASE_URL = 'https://pub.orcid.org/v3.0';
 
-
+    /**
+     * Fetches all publications for a given ORCID author ID.
+     *
+     * @param string $authorId  ORCID identifier, e.g. "0000-0003-4713-5941"
+     * @return array|\WP_Error  Array of Publication objects, or WP_Error on failure
+     */
     public function getAllWorks(string $authorId): array|\WP_Error
     {
         // Step 1: Build the request URL
@@ -47,8 +56,12 @@ class OrcidAPI
         return $publications;
     }
 
-
-    // Interne Hilfsmethode für HTTP-Requests
+    /**
+     * Sends an HTTP GET request and returns the decoded JSON response.
+     *
+     * @param string $url  Full request URL
+     * @return array|\WP_Error  Decoded PHP array, or WP_Error on failure
+     */
     private function request(string $url): array|\WP_Error
     {
         $response = wp_remote_get($url, [
@@ -85,7 +98,12 @@ class OrcidAPI
 
     }
 
-    // Wandelt eine ORCID-Work-Summary in unser Publication-Model um
+    /**
+     * Maps a single ORCID work summary to a Publication model.
+     *
+     * @param array $summary  A single work-summary from the ORCID API response
+     * @return Publication
+     */
     public function mapToPublication(array $summary): Publication
     {
         // Title – deeply nested in the ORCID structure

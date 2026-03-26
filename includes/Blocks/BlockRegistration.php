@@ -6,8 +6,12 @@ namespace RRZE\ResearchData\Blocks;
 defined('ABSPATH') || exit;
 
 /**
- * Registers the Block
+ * Registers the Research Data block and the RRZE block category.
+ *
+ * Hooks into WordPress 'init' to register the block with its server-side
+ * render callback, and into 'block_categories_all' to add the RRZE category.
  */
+
 class BlockRegistration
 {
     /**
