@@ -27,6 +27,15 @@ class PublicationService
      */
     public function getPublications(string $authorId): array|\WP_Error
     {
+        if (empty($authorId)) {
+            return new \WP_Error('invalid_argument', __('No author ID provided.',
+                'rrze-research-data'));
+        }
+
+        if (!preg_match('/^\d{4}-\d{4}-\d{4}-\d{4}$/', $authorId)) {
+            return new \WP_Error('invalid_argument', __('Invalid ORCID format. Expected: 0000-0000-0000-0000', 'rrze-research-data'));
+        }
+
         $cache = new CacheService();
         $key = $cache->buildKey('orcid', $authorId, 'publications');
         $cachedData = $cache->get($key);
