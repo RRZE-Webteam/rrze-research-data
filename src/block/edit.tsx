@@ -76,6 +76,7 @@ export default function Edit({attributes, setAttributes}: EditProps) {
                                 options={[
                                     {label: __('ORCID', 'rrze-research-data'), value: 'orcid'},
                                     {label: __('PubMed', 'rrze-research-data'), value: 'pubmed'},
+                                    {label: __('OpenAlex', 'rrze-research-data'), value: 'openAlex'}
                                 ]}
                                 onChange={(value: string) => setAttributes({source: value})}
                             />
@@ -121,7 +122,8 @@ export default function Edit({attributes, setAttributes}: EditProps) {
                                 value={source}
                                 options={[
                                     {label: __('ORCID', 'rrze-research-data'), value: 'orcid'},
-                                    {label: __('PubMed', 'rrze-research-data'), value: 'pubmed'}
+                                    {label: __('PubMed', 'rrze-research-data'), value: 'pubmed'},
+                                    {label: __('OpenAlex', 'rrze-research-data'), value: 'openAlex'}
                                 ]}
                                 onChange={(value: string) => setAttributes({source: value})}
                             />

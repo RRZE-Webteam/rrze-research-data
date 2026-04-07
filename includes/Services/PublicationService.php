@@ -5,6 +5,7 @@ namespace RRZE\ResearchData\Services;
 
 defined('ABSPATH') || exit;
 
+use RRZE\ResearchData\API\OpenAlexApi;
 use RRZE\ResearchData\API\OrcidApi;
 use RRZE\ResearchData\Services\CacheService;
 use RRZE\ResearchData\API\PubMedAPI;
@@ -23,7 +24,7 @@ class PublicationService
      * Currently delegates to OrcidAPI. Additional sources can be added here later.
      *
      * @param string $authorId The author identifier, e.g. an ORCID "0000-0003-4713-5941"
-     * @param string $source The publication sourc, eg. PubMed
+     * @param string $source The publication source, eg. PubMed
      * @return array|\WP_Error  Array of Publication objects, or WP_Error on failure
      */
     public function getPublications(string $authorId, string $source): array|\WP_Error
@@ -38,7 +39,6 @@ class PublicationService
         }
 
 
-
         $cache = new CacheService();
         $key = $cache->buildKey($source, $authorId, 'publications');
         $cachedData = $cache->get($key);
@@ -51,7 +51,10 @@ class PublicationService
                 $api = new OrcidApi();
                 break;
             case 'pubmed':
-                $api = new PubMedAPI();
+                $api = new PubMedApi();
+                break;
+            case 'openalex':
+                $api = new OpenalexApi();
                 break;
             default:
                 $api = new OrcidApi(); // Fallback
