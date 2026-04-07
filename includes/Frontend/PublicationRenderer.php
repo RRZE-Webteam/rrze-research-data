@@ -31,9 +31,10 @@ class PublicationRenderer
         $limit = $attributes['limit'] ?? 10;
         $sort = $attributes['sort'] ?? 'desc';
         $view = $attributes['view'] ?? 'list';
+        $source = $attributes['source'] ?? '';
 
         $service = new ResearchService();
-        $publications = $service->preparePublications($authorId, $limit, $sort);
+        $publications = $service->preparePublications($authorId, $limit, $sort, $source);
 
         if (is_wp_error($publications)) {
             return '<p>' . esc_html($publications->get_error_message()) . '</p>';
@@ -86,7 +87,7 @@ class PublicationRenderer
             if ($year) $meta[] = $year;
             if ($journal) $meta[] = $journal;
 
-            $metaHtml = !empty($meta) ? ' <span class="publication-meta">' . implode(' – ',
+            $metaHtml = !empty($meta) ? ' | <span class="publication-meta">' . implode(' | ',
                     $meta) . '</span>' : '';
 
 
@@ -119,6 +120,7 @@ class PublicationRenderer
         $html .= '<thead><tr>';
         $html .= '<th>Title</th>';
         $html .= '<th>Year</th>';
+        $html .= '<th>Journal</th>';
         $html .= '</tr></thead>';
         $html .= '<tbody>';
 
@@ -133,6 +135,7 @@ class PublicationRenderer
             $link = !empty($publication->doi)
                 ? 'https://doi.org/' . $publication->doi
                 : esc_url($publication->url ?? '');
+            $journal = esc_html($publication->journal ?? '');
 
 
             $html .= '<tr>';
@@ -140,6 +143,7 @@ class PublicationRenderer
                 $link,
                 $title);
             $html .= '<td>' . $year . '</td>';
+            $html .= '<td>' . $journal . '</td>';
             $html .= '</tr>';
         }
 

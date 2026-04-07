@@ -64,23 +64,22 @@ export default function Edit({attributes, setAttributes}: EditProps) {
                         <hr/>
                         <Spacer paddingBottom={"1rem"}/>
                         <div className="rrze-research-data-form">
-                            <label>{__('Publication Source', 'rrze-research-data')}</label>
-                            <SelectControl
-                                value={source}
-                                options={[
-                                    {label: __('ORCID', 'rrze-research-data'), value: 'orcid'},
-                                    {label: __('arXiv', 'rrze-research-data'), value: 'arxiv'},
-                                    {label: __('Web of Science', 'rrze-research-data'), value: 'wos'},
-                                ]}
-                                onChange={(value: string) => setAttributes({source: value})}
-                            />
-
                             <label>{__('Author ID', 'rrze-research-data')}</label>
                             <TextControl
                                 value={authorId}
                                 placeholder={__('Enter ORCID / Researcher ID', 'rrze-research-data')}
                                 onChange={(value) => setAttributes({authorId: value})}
                             />
+                            <label>{__('Publication Source', 'rrze-research-data')}</label>
+                            <SelectControl
+                                value={source}
+                                options={[
+                                    {label: __('ORCID', 'rrze-research-data'), value: 'orcid'},
+                                    {label: __('PubMed', 'rrze-research-data'), value: 'pubmed'},
+                                ]}
+                                onChange={(value: string) => setAttributes({source: value})}
+                            />
+
 
                             <label>{__('Data Type', 'rrze-research-data')}</label>
                             <SelectControl
@@ -95,12 +94,12 @@ export default function Edit({attributes, setAttributes}: EditProps) {
 
                             <Spacer paddingBottom={"0.5rem"}/>
                             <div>
-                            <Button
-                                variant="primary"
-                                onClick={() => setAttributes({isInitialSetup: false})}
-                            >
-                                {__('Save', 'rrze-research-data')}
-                            </Button>
+                                <Button
+                                    variant="primary"
+                                    onClick={() => setAttributes({isInitialSetup: false})}
+                                >
+                                    {__('Save', 'rrze-research-data')}
+                                </Button>
                             </div>
                             <Spacer paddingBottom={"0.5rem"}/>
                         </div>
@@ -111,21 +110,20 @@ export default function Edit({attributes, setAttributes}: EditProps) {
                 <>
                     <InspectorControls>
                         <PanelBody title={__('Research Data', 'rrze-research-data')} initialOpen={true}>
-                            <SelectControl
-                                label={__('Publication Source', 'rrze-research-data')}
-                                value={source}
-                                options={[
-                                    {label: __('ORCID', 'rrze-research-data'), value: 'orcid'},
-                                    {label: __('arXiv', 'rrze-research-data'), value: 'arxiv'},
-                                    {label: __('Web of Science', 'rrze-research-data'), value: 'wos'},
-                                ]}
-                                onChange={(value: string) => setAttributes({source: value})}
-                            />
                             <TextControl
                                 label={__('Author ID', 'rrze-research-data')}
                                 value={authorId}
                                 placeholder={__('Enter ORCID / Researcher ID', 'rrze-research-data')}
                                 onChange={(value) => setAttributes({authorId: value})}
+                            />
+                            <SelectControl
+                                label={__('Publication Source', 'rrze-research-data')}
+                                value={source}
+                                options={[
+                                    {label: __('ORCID', 'rrze-research-data'), value: 'orcid'},
+                                    {label: __('PubMed', 'rrze-research-data'), value: 'pubmed'}
+                                ]}
+                                onChange={(value: string) => setAttributes({source: value})}
                             />
                             <SelectControl
                                 label={__('Data Type', 'rrze-research-data')}

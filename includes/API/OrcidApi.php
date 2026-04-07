@@ -14,7 +14,7 @@ use RRZE\ResearchData\Models\Publication;
  * @see https://pub.orcid.org/v3.0
  */
 
-class OrcidAPI
+class OrcidApi
 {
     const BASE_URL = 'https://pub.orcid.org/v3.0';
 

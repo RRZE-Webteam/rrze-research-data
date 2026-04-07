@@ -52,7 +52,6 @@ class PubMedAPI
         $publications = [];
 
         foreach ($items as $item) {
-            // The "uids" key is metadata, not a publication → skip it
             if (!is_array($item)) {
                 continue;
             }
@@ -107,7 +106,8 @@ class PubMedAPI
         $url = self::BASE_URL . '/esummary.fcgi'
             . '?db=pubmed'
             . '&id=' . $idList
-            . '&retmode=json';
+            . '&retmode=json'
+            . '&version=2.0';
 
         $data = $this->request($url);
 
@@ -144,7 +144,7 @@ class PubMedAPI
         $pubdate = $item['pubdate'] ?? '';
         $year    = !empty($pubdate) ? (int) substr($pubdate, 0, 4) : null;
 
-        // Search the articleids array for the DOI
+        // Search the article ids array for the DOI
         $doi = '';
         foreach ($item['articleids'] ?? [] as $id) {
             if (($id['idtype'] ?? '') === 'doi') {

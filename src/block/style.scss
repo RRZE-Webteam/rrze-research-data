@@ -1,13 +1,21 @@
 .wp-block-research-table {
   width: 100%;
+  table-layout: fixed;
 
   td:first-child,
   th:first-child {
-    width: 100%;
+    width: 60%;
   }
+
+  td:nth-child(2),
+  th:nth-child(2) {
+    width: 7%;
+    white-space: nowrap;
+  }
+
 
   td:last-child,
   th:last-child {
-    white-space: nowrap;
+    width: 33%;
   }
 }

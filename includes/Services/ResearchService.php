@@ -29,11 +29,11 @@ class ResearchService
      * @return array|\WP_Error  Sorted and limited list of Publication objects, or an
      * error
      */
-    public function preparePublications(string $authorId, int $limit, string $sort): array|\WP_Error
+    public function preparePublications(string $authorId, int $limit, string $sort, string $source): array|\WP_Error
     {
         $publicationService = new PublicationService();
 
-        $preparedPublications = $publicationService->getPublications($authorId);
+        $preparedPublications = $publicationService->getPublications($authorId, $source);
 
         if (is_wp_error($preparedPublications)) {
             return $preparedPublications;
