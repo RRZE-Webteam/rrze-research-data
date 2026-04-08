@@ -29,7 +29,7 @@ class ResearchService
      * @return array|\WP_Error  Sorted and limited list of Publication objects, or an
      * error
      */
-    public function preparePublications(string $authorId, int $limit, string $sort, string $source): array|\WP_Error
+    public function preparePublications(string $authorId, int $limit, string $sort, string $source, int $year): array|\WP_Error
     {
         $publicationService = new PublicationService();
 
@@ -46,6 +46,10 @@ class ResearchService
             return $b->year - $a->year;
 
         });
+
+        if($year >0) {
+            $preparedPublications = array_filter($preparedPublications, fn($p) => $p->year === $year);
+        }
 
         $preparedPublications = array_slice($preparedPublications, 0, $limit);
 

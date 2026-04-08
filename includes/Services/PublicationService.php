@@ -8,7 +8,7 @@ defined('ABSPATH') || exit;
 use RRZE\ResearchData\API\OpenAlexApi;
 use RRZE\ResearchData\API\OrcidApi;
 use RRZE\ResearchData\Services\CacheService;
-use RRZE\ResearchData\API\PubMedAPI;
+use RRZE\ResearchData\API\PubMedApi;
 
 /**
  * Handles publication retrieval by delegating to the appropriate API class.
@@ -53,8 +53,8 @@ class PublicationService
             case 'pubmed':
                 $api = new PubMedApi();
                 break;
-            case 'openalex':
-                $api = new OpenalexApi();
+            case 'openAlex':
+                $api = new OpenAlexApi();
                 break;
             default:
                 $api = new OrcidApi(); // Fallback

@@ -30,6 +30,7 @@ interface EditProps {
         limit: number;
         sort: 'asc' | 'desc';
         isInitialSetup: boolean;
+        year: number;
     }
     setAttributes: (attributes: Partial<EditProps["attributes"]>) => void;
 }
@@ -44,7 +45,7 @@ export default function Edit({attributes, setAttributes}: EditProps) {
         limit,
         sort,
         isInitialSetup,
-
+        year
     } = attributes;
 
     const blockProps = useBlockProps();
@@ -79,17 +80,6 @@ export default function Edit({attributes, setAttributes}: EditProps) {
                                     {label: __('OpenAlex', 'rrze-research-data'), value: 'openAlex'}
                                 ]}
                                 onChange={(value: string) => setAttributes({source: value})}
-                            />
-
-
-                            <label>{__('Data Type', 'rrze-research-data')}</label>
-                            <SelectControl
-                                value={type}
-                                options={[
-                                    {label: __('Publications', 'rrze-research-data'), value: 'publications'},
-                                    {label: __('Reviews', 'rrze-research-data'), value: 'reviews'},
-                                ]}
-                                onChange={(value: string) => setAttributes({type: value})}
                             />
                             <Spacer paddingTop=".5rem"/>
 
@@ -127,15 +117,6 @@ export default function Edit({attributes, setAttributes}: EditProps) {
                                 ]}
                                 onChange={(value: string) => setAttributes({source: value})}
                             />
-                            <SelectControl
-                                label={__('Data Type', 'rrze-research-data')}
-                                value={type}
-                                options={[
-                                    {label: __('Publications', 'rrze-research-data'), value: 'publications'},
-                                    {label: __('Reviews', 'rrze-research-data'), value: 'reviews'},
-                                ]}
-                                onChange={(value: string) => setAttributes({type: value})}
-                            />
                         </PanelBody>
 
                         <PanelBody title={__('Display Options', 'rrze-research-data')} initialOpen={false}>
@@ -161,6 +142,14 @@ export default function Edit({attributes, setAttributes}: EditProps) {
                                 onChange={(val: 'asc' | 'desc') =>
                                     setAttributes({sort: val as 'asc' | 'desc'})
                                 }
+                            />
+                            <NumberControl
+                                label={__('Publications from year', 'rrze-research-data')}
+                                value={year === 0 ? '' : year}
+                                min={1900}
+                                max={2100}
+                                onChange={(value) => setAttributes({ year: parseInt(value as
+                                        string) || 0 })}
                             />
                             <NumberControl
                                 __next40pxDefaultSize

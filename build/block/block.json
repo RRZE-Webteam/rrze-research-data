@@ -23,10 +23,6 @@
       "type": "string",
       "default": "orcid"
     },
-    "type": {
-      "type": "string",
-      "default": "publications"
-    },
     "view": {
       "type": "string",
       "enum": [
@@ -46,6 +42,10 @@
         "desc"
       ],
       "default": "desc"
+    },
+    "year": {
+      "type": "number",
+      "default": 0
     }
   },
   "textdomain": "rrze-research-data",

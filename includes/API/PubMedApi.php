@@ -13,7 +13,7 @@ use RRZE\ResearchData\Models\Publication;
  * No API key required for basic use (max. 3 requests/second).
  * @see https://www.ncbi.nlm.nih.gov/books/NBK25499/
  */
-class PubMedAPI
+class PubMedApi
 {
     const BASE_URL = 'https://eutils.ncbi.nlm.nih.gov/entrez/eutils';
 
@@ -140,6 +140,14 @@ class PubMedAPI
         $journal = $item['fulljournalname'] ?? '';
         $pmid    = $item['uid'] ?? '';
 
+        $authors = [];
+        foreach ($item['authors'] ?? [] as $author) {
+            $name = $author['name'] ?? '';
+            if ($name) {
+                $authors[] = $name;
+            }
+        }
+
         // pubdate is e.g. "2023 Mar" or "2023" — we only want the 4-digit year
         $pubdate = $item['pubdate'] ?? '';
         $year    = !empty($pubdate) ? (int) substr($pubdate, 0, 4) : null;
@@ -166,6 +174,7 @@ class PubMedAPI
             doi:     $doi,
             source:  'pubmed',
             journal: $journal,
+            authors: $authors,
         );
     }
 

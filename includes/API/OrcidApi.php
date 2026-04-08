@@ -118,6 +118,8 @@ class OrcidApi
         // Journal name (or book title)
         $journal = $summary['journal-title']['value'] ?? '';
 
+        $authors = [];
+
         // URL to the publication (if provided)
         $url = $summary['url']['value'] ?? '';
 
@@ -142,6 +144,7 @@ class OrcidApi
             doi: $doi,
             source: 'orcid',
             journal: $journal,
+            authors: $authors,
         );
     }
 

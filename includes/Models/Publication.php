@@ -22,6 +22,8 @@ class Publication
     public string $doi;
     public string $source;
     public ?string $journal;
+    public array $authors = [];
+
 
 
     /**
@@ -34,9 +36,10 @@ class Publication
      * @param string $doi The DOI identifier.
      * @param string $source The source platform.
      * @param ?string $journal Book title
+     * @param array $authors The authors
      *
      */
-    public function __construct(string $title, string $type,?int $year, string $url, string $doi, string $source, ?string $journal = null)
+    public function __construct(string $title, string $type,?int $year, string $url, string $doi, string $source, ?string $journal = null, array $authors=[])
     {
         $this->title = $title;
         $this->type = $type;
@@ -45,6 +48,7 @@ class Publication
         $this->doi = $doi;
         $this->source = $source;
         $this->journal = $journal;
+        $this->authors = $authors;
 
     }
 }

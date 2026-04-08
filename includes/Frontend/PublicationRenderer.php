@@ -32,9 +32,11 @@ class PublicationRenderer
         $sort = $attributes['sort'] ?? 'desc';
         $view = $attributes['view'] ?? 'list';
         $source = $attributes['source'] ?? '';
+        $year = (int)($attributes['year'] ?? 0);
+        $authors = $attributes['authors'] ?? '';
 
         $service = new ResearchService();
-        $publications = $service->preparePublications($authorId, $limit, $sort, $source);
+        $publications = $service->preparePublications($authorId, $limit, $sort, $source, $year, $authors);
 
         if (is_wp_error($publications)) {
             return '<p>' . esc_html($publications->get_error_message()) . '</p>';

@@ -110,6 +110,14 @@ class OpenAlexApi
         // Journal name – nested under primary_location → source
         $journal = $item['primary_location']['source']['display_name'] ?? '';
 
+        $authors = [];
+        foreach ($item['authorships'] ?? [] as $authorship) {
+            $name = $authorship['author']['display_name'] ?? '';
+            if ($name) {
+                $authors[] = $name;
+            }
+        }
+
         // DOI – already a full URL like "https://doi.org/10.1038/..."
         // We store it as-is and use it as the link URL
         $doi = $item['doi'] ?? '';
@@ -126,6 +134,7 @@ class OpenAlexApi
             doi: $doi,
             source: 'openAlex',
             journal: $journal,
+            authors: $authors,
         );
     }
 
