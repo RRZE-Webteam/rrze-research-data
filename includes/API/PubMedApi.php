@@ -52,7 +52,7 @@ class PubMedApi
         $publications = [];
 
         foreach ($items as $item) {
-            if (!is_array($item)) {
+            if (!is_array($item) || !isset($item['uid'])) {
                 continue;
             }
             $publications[] = $this->mapToPublication($item);
@@ -129,6 +129,8 @@ class PubMedApi
      * - item["pubtype"][0]         → publication type, e.g. "Journal Article"
      * - item["articleids"]         → array of IDs, we search for type "doi"
      * - item["uid"]                → the PMID, used to build the PubMed URL
+     * - item["volume"]             → source
+     * - item["pages"]               → pages
      *
      * @param array $item A single item from the esummary result
      * @return Publication
@@ -151,6 +153,11 @@ class PubMedApi
         // pubdate is e.g. "2023 Mar" or "2023" — we only want the 4-digit year
         $pubdate = $item['pubdate'] ?? '';
         $year    = !empty($pubdate) ? (int) substr($pubdate, 0, 4) : null;
+
+
+        $volume = $item['volume'] ?? '';
+        $pages  = $item['pages'] ?? '';
+
 
         // Search the article ids array for the DOI
         $doi = '';
@@ -175,6 +182,8 @@ class PubMedApi
             source:  'pubmed',
             journal: $journal,
             authors: $authors,
+            volume: $volume,
+            pages: $pages,
         );
     }
 

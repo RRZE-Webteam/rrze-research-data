@@ -13,16 +13,15 @@ defined('ABSPATH') || exit;
  * Receives a prepared list of Publication objects from ResearchService
  * and outputs them as a list or table depending on the block settings.
  */
-
 class PublicationRenderer
 {
 
 
     /**
      * Main render callback – extracts block attributes and delegates to the correct
-    view.
+     * view.
      *
-     * @param array $attributes  Block attributes from the editor
+     * @param array $attributes Block attributes from the editor
      * @return string            Rendered HTML output
      */
     public static function render(array $attributes = []): string
@@ -33,10 +32,10 @@ class PublicationRenderer
         $view = $attributes['view'] ?? 'list';
         $source = $attributes['source'] ?? '';
         $year = (int)($attributes['year'] ?? 0);
-        $authors = $attributes['authors'] ?? '';
+
 
         $service = new ResearchService();
-        $publications = $service->preparePublications($authorId, $limit, $sort, $source, $year, $authors);
+        $publications = $service->preparePublications($authorId, $limit, $sort, $source, $year);
 
         if (is_wp_error($publications)) {
             return '<p>' . esc_html($publications->get_error_message()) . '</p>';
@@ -59,7 +58,7 @@ class PublicationRenderer
     /**
      * Renders publications as an unordered list.
      *
-     * @param array $publications  Array of Publication objects
+     * @param array $publications Array of Publication objects
      * @return string              Rendered HTML
      */
     private static function renderList(array $publications): string
@@ -74,30 +73,34 @@ class PublicationRenderer
             $title = wp_kses($publication->title ?? '', [
                 'sub' => [],
                 'sup' => [],
-                'i'   => [],
-                'b'   => [],
+                'i' => [],
+                'b' => [],
             ]);
             $year = esc_html($publication->year ?? '');
             $journal = esc_html($publication->journal ?? '');
-
-
             $link = !empty($publication->doi)
                 ? 'https://doi.org/' . $publication->doi
                 : esc_url($publication->url ?? '');
+            $volume = esc_html($publication->volume ?? '');
+            $pages = esc_html($publication->pages ?? '');
 
-            $meta = [];
-            if ($year) $meta[] = $year;
-            if ($journal) $meta[] = $journal;
+            $volumeHtml = $volume ? ' | ' . $volume : '';
+            $pagesHtml = $pages ? ', ' . $pages : '';
+            $yearHtml = $year ? $year . ' | ' : '';
+            $journalHtml = $journal ? ' | <span class="publication-journal">' .
+                $journal . '</span>' : '';
 
-            $metaHtml = !empty($meta) ? ' | <span class="publication-meta">' . implode(' | ',
-                    $meta) . '</span>' : '';
-
+            $authorsHtml = !empty($publication->authors) ? esc_html(implode(', ', $publication->authors)) . ' | ' : '';
 
             $html .= sprintf(
-                '<li><a href="%s" target="_blank" rel="noopener">%s</a>%s</li>',
+                '<li>%s%s<a href="%s" target="_blank" rel="noopener">%s</a>%s%s%s</li>',
+                $authorsHtml,
+                $yearHtml,
                 $link,
                 $title,
-                $metaHtml
+                $journalHtml,
+                $volumeHtml,
+                $pagesHtml
             );
         }
 
@@ -109,7 +112,7 @@ class PublicationRenderer
     /**
      * Renders publications as an HTML table with title and year columns.
      *
-     * @param array $publications  Array of Publication objects
+     * @param array $publications Array of Publication objects
      * @return string              Rendered HTML
      */
     private static function renderTable(array $publications): string
@@ -120,9 +123,10 @@ class PublicationRenderer
 
         $html = '<figure class="wp-block-table"><table class="wp-block-research-table">';
         $html .= '<thead><tr>';
-        $html .= '<th>Title</th>';
+        $html .= '<th>Authors</th>';
         $html .= '<th>Year</th>';
-        $html .= '<th>Journal</th>';
+        $html .= '<th>Title</th>';
+        $html .= '<th>Venue</th>';
         $html .= '</tr></thead>';
         $html .= '<tbody>';
 
@@ -130,22 +134,30 @@ class PublicationRenderer
             $title = wp_kses($publication->title ?? '', [
                 'sub' => [],
                 'sup' => [],
-                'i'   => [],
-                'b'   => [],
+                'i' => [],
+                'b' => [],
             ]);
             $year = esc_html($publication->year ?? '');
             $link = !empty($publication->doi)
                 ? 'https://doi.org/' . $publication->doi
                 : esc_url($publication->url ?? '');
             $journal = esc_html($publication->journal ?? '');
+            $volume = esc_html($publication->volume ?? '');
+            $pages = esc_html($publication->pages ?? '');
+
+            $volumeHtml = $volume ? ' , ' . $volume : '';
+            $pagesHtml = $pages ? ', ' . $pages : '';
+
+            $authorsHtml = !empty($publication->authors) ? esc_html(implode(', ', $publication->authors)) : '';
 
 
             $html .= '<tr>';
+            $html .= '<td>' . $authorsHtml . '</td>';
+            $html .= '<td>' . $year . '</td>';
             $html .= sprintf('<td><a href="%s" target="_blank" rel="noopener">%s</a></td>',
                 $link,
                 $title);
-            $html .= '<td>' . $year . '</td>';
-            $html .= '<td>' . $journal . '</td>';
+            $html .= '<td class="publication-journal">' . $journal . $volumeHtml . $pagesHtml . '</td>';
             $html .= '</tr>';
         }
 

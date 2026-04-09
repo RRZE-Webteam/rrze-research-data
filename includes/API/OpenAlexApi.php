@@ -118,9 +118,23 @@ class OpenAlexApi
             }
         }
 
+        $volume = $item['biblio']['volume'] ?? '';
+        $pages  = $item['biblio']['first_page'] ?? '';
+
+        // Seitenangabe zusammenbauen falls beide vorhanden:
+        $lastPage = $item['biblio']['last_page'] ?? '';
+        if ($pages && $lastPage) {
+            $pages = $pages . '-' . $lastPage;
+        }
+
         // DOI – already a full URL like "https://doi.org/10.1038/..."
         // We store it as-is and use it as the link URL
         $doi = $item['doi'] ?? '';
+
+        // Sicherheitscheck: Falls kein "https://" vorne → Prefix ergänzen
+        if (!empty($doi) && !str_starts_with($doi, 'https://')) {
+            $doi = 'https://doi.org/' . $doi;
+        }
 
         // Fallback URL: the OpenAlex page for this work
         $url = $item['id'] ?? '';
@@ -135,6 +149,8 @@ class OpenAlexApi
             source: 'openAlex',
             journal: $journal,
             authors: $authors,
+            volume: $volume,
+            pages: $pages,
         );
     }
 

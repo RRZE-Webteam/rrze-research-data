@@ -41,6 +41,7 @@ class PublicationService
 
         $cache = new CacheService();
         $key = $cache->buildKey($source, $authorId, 'publications');
+        $cache->delete($key);
         $cachedData = $cache->get($key);
         if ($cachedData !== false) {
             return $cachedData;

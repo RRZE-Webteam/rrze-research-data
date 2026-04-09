@@ -28,7 +28,6 @@ interface EditProps {
         type: string;
         source: string;
         limit: number;
-        sort: 'asc' | 'desc';
         isInitialSetup: boolean;
         year: number;
     }
@@ -43,7 +42,6 @@ export default function Edit({attributes, setAttributes}: EditProps) {
         type,
         source,
         limit,
-        sort,
         isInitialSetup,
         year
     } = attributes;
@@ -130,17 +128,6 @@ export default function Edit({attributes, setAttributes}: EditProps) {
                                 ]}
                                 onChange={(val: 'list' | 'table') =>
                                     setAttributes({view: val as 'list' | 'table'})
-                                }
-                            />
-                            <SelectControl
-                                label={__('Sorting', 'rrze-research-data')}
-                                value={sort}
-                                options={[
-                                    {label: __('Newest first', 'rrze-research-data'), value: 'desc'},
-                                    {label: __('Oldest first', 'rrze-research-data'), value: 'asc'},
-                                ]}
-                                onChange={(val: 'asc' | 'desc') =>
-                                    setAttributes({sort: val as 'asc' | 'desc'})
                                 }
                             />
                             <NumberControl
