@@ -17,6 +17,9 @@ import {
     __experimentalNumberControl as NumberControl
 } from "@wordpress/components";
 
+import {useState, useEffect} from "@wordpress/element";
+import apiFetch from '@wordpress/api-fetch';
+
 import {pages} from "@wordpress/icons";
 import ServerSideRender from '@wordpress/server-side-render';
 import "./editor.scss";
@@ -46,6 +49,22 @@ export default function Edit({attributes, setAttributes}: EditProps) {
         year
     } = attributes;
 
+    const [personList, setPersonList] = useState([]);
+    const [isLoadingPersons, setIsLoadingPersons] = useState(true);
+    const [selectedPersonId, setSelectedPersonId] = useState('');
+
+    useEffect(() => {
+        apiFetch({path: '/rrze-research-data/v1/faudir/persons'})
+            .then((persons: any) => {
+                setPersonList(persons);
+                setIsLoadingPersons(false);
+            })
+            .catch(() => {
+                setIsLoadingPersons(false);
+            });
+    }, []);
+
+
     const blockProps = useBlockProps();
 
     return (
@@ -63,12 +82,6 @@ export default function Edit({attributes, setAttributes}: EditProps) {
                         <hr/>
                         <Spacer paddingBottom={"1rem"}/>
                         <div className="rrze-research-data-form">
-                            <label>{__('Author ID', 'rrze-research-data')}</label>
-                            <TextControl
-                                value={authorId}
-                                placeholder={__('Enter ORCID / Researcher ID', 'rrze-research-data')}
-                                onChange={(value) => setAttributes({authorId: value})}
-                            />
                             <label>{__('Publication Source', 'rrze-research-data')}</label>
                             <SelectControl
                                 value={source}
@@ -79,6 +92,61 @@ export default function Edit({attributes, setAttributes}: EditProps) {
                                 ]}
                                 onChange={(value: string) => setAttributes({source: value})}
                             />
+                            {isLoadingPersons ? (
+                                <p>{__('Loading…', 'rrze-research-data')}</p>
+                            ) : personList.length > 0 ? (
+                                <>
+                                    <label>{__('Person (FAUdir)', 'rrze-research-data')}</label>
+                                    <SelectControl
+                                        value={selectedPersonId}
+                                        options={[
+                                            {
+                                                label: __('— Please select —',
+                                                    'rrze-research-data'), value: ''
+                                            },
+                                            ...personList.map((person: any) => ({
+                                                label: person.name,
+                                                value: person.id
+                                            }))
+                                        ]}
+                                        onChange={(personId: string) => {
+                                            setSelectedPersonId(personId);
+                                            if (!personId) return;
+                                            apiFetch({ path:
+                                                    `/rrze-research-data/v1/faudir/person/${personId}` })
+                                                .then((platformIds: any) => {
+                                                    const orcid = platformIds?.orcid ?? '';
+                                                    setAttributes({ authorId: orcid });
+                                                });
+                                        }}
+                                    />
+                                    {selectedPersonId && !authorId && (
+                                        <>
+                                            <p style={{color: '#cc0000'}}>
+                                                {__('No ORCID found. Please enter manually.',
+                                                    'rrze-research-data')}
+                                            </p>
+                                            <TextControl
+                                                label={__('ORCID', 'rrze-research-data')}
+                                                value={authorId}
+                                                placeholder="0000-0000-0000-0000"
+                                                onChange={(value) => setAttributes({authorId:
+                                                    value})}
+                                            />
+                                        </>
+                                    )}
+
+                                </>
+                            ) : (
+                                <>
+                                    <label>{__('Author ID', 'rrze-research-data')}</label>
+                                    <TextControl
+                                        value={authorId}
+                                        placeholder={__('Enter ORCID / Researcher ID', 'rrze-research-data')}
+                                        onChange={(value) => setAttributes({authorId: value})}
+                                    />
+                                </>
+                            )}
                             <Spacer paddingTop=".5rem"/>
 
                             <Spacer paddingBottom={"0.5rem"}/>
@@ -135,8 +203,10 @@ export default function Edit({attributes, setAttributes}: EditProps) {
                                 value={year === 0 ? '' : year}
                                 min={1900}
                                 max={2100}
-                                onChange={(value) => setAttributes({ year: parseInt(value as
-                                        string) || 0 })}
+                                onChange={(value) => setAttributes({
+                                    year: parseInt(value as
+                                        string) || 0
+                                })}
                             />
                             <NumberControl
                                 __next40pxDefaultSize
