@@ -91,24 +91,41 @@ class FAUdirService
         $config = new \RRZE\FAUdir\Config();
         $api    = new \RRZE\FAUdir\API($config);
         $person = $api->getPerson($personId);
-        if (empty($person)) {
+        if (empty($person) || empty($person['contacts'])) {
             return [];
         }
 
-        error_log('FAUdirService::getPlatformIds: ' . print_r($person,
-                true));
+        $result = [];
 
-        $orcid = $person['orcid'] ?? '';
+        foreach ($person['contacts'] as $contact) {
+            $contactId = $contact['identifier'] ?? null;
+            error_log('FAUdirService contact: ' .
+                print_r($contact, true));
+            error_log('FAUdirService contactId: ' .
+                var_export($contactId, true));
 
-        if (empty($orcid)) {
-            error_log('FAUdirService: Keine ORCID für Person.
-  Verfügbare Felder: ' . implode(', ', array_keys($person)));
+            if (!$contactId) {
+                continue;
+            }
+
+            $contactData = $api->getContact($contactId);
+
+            $socials = $contactData['socials'] ?? [];
+
+            foreach ($socials as $social) {
+                $platform = $social['platform'] ?? '';
+                $url      = $social['url'] ?? '';
+
+                if (!empty($platform) && !empty($url)) {
+                    // ID aus URL extrahieren: letztes Segment nach "/"
+                  $id = basename($url);
+                  $result[$platform] = $id;
+              }
+            }
         }
 
-
-
-        return ['orcid' => $orcid];
-
+        return $result;
     }
+
 
 }
