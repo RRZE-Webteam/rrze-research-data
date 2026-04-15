@@ -179,7 +179,7 @@ function Edit({
                   style: {
                     color: '#cc0000'
                   },
-                  children: source === 'arxiv' ? (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)('No arXiv ID found. Please enter manually.', 'rrze-research-data') : (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)('No ORCID found. Please enter manually.', 'rrze-research-data')
+                  children: source === 'arxiv' ? (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)('No arXiv ID in FAUdir found. Please enter manually.', 'rrze-research-data') : (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)('No ORCID in FAUdir found. Please enter manually.', 'rrze-research-data')
                 }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsx)("label", {
                   children: source === 'arxiv' ? (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)('arXiv Author-ID', 'rrze-research-data') : (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)('ORCID', 'rrze-research-data')
                 }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsx)(_wordpress_components__WEBPACK_IMPORTED_MODULE_2__.TextControl, {
@@ -192,7 +192,7 @@ function Edit({
               })]
             }) :
             /*#__PURE__*/
-            // FAUdir nicht aktiv → direkt TextControl
+            // if FAUdir ist not active → TextControl
             (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsxs)(react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.Fragment, {
               children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsx)("label", {
                 children: source === 'arxiv' ? (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)('arXiv Author-ID', 'rrze-research-data') : (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)('ORCID', 'rrze-research-data')

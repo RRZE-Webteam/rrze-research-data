@@ -7,9 +7,7 @@ import {
 
 import {
     Placeholder,
-    __experimentalHeading as Heading,
     __experimentalSpacer as Spacer,
-    __experimentalDivider as Divider,
     Button,
     TextControl,
     PanelBody,
@@ -79,29 +77,21 @@ export default function Edit({attributes, setAttributes}: EditProps) {
                     icon={pages}
                     isColumnLayout={true}
                 >
-
                     <div>
                         <hr/>
                         <Spacer paddingBottom={"1rem"}/>
                         <div className="rrze-research-data-form">
-                            {/* Schritt 1: Plattform wählen */}
-                            <label>{__('Publication Source',
-                                'rrze-research-data')}</label>
+                            {/* step 1: Choose platform */}
+                            <label>{__('Publication Source', 'rrze-research-data')}</label>
                             <SelectControl
                                 value={source}
                                 options={[
-                                    {label: __('ORCID', 'rrze-research-data'),
-                                        value: 'orcid'},
-                                    {label: __('PubMed', 'rrze-research-data'),
-                                        value: 'pubmed'},
-                                    {label: __('OpenAlex', 'rrze-research-data'),
-                                        value: 'openAlex'},
-                                    {label: __('arXiv', 'rrze-research-data'),
-                                        value: 'arxiv'},
-                                    {label: __('DBLP', 'rrze-research-data'), value:
-                                            'dblp'},
-                                    {label: __('Crossref', 'rrze-research-data'),
-                                        value: 'crossref'},
+                                    {label: __('ORCID', 'rrze-research-data'), value: 'orcid'},
+                                    {label: __('PubMed', 'rrze-research-data'), value: 'pubmed'},
+                                    {label: __('OpenAlex', 'rrze-research-data'), value: 'openAlex'},
+                                    {label: __('arXiv', 'rrze-research-data'), value: 'arxiv'},
+                                    {label: __('DBLP', 'rrze-research-data'), value: 'dblp'},
+                                    {label: __('Crossref', 'rrze-research-data'), value: 'crossref'},
                                 ]}
                                 onChange={(value: string) => {
                                     setAttributes({source: value, authorId: ''});
@@ -110,9 +100,8 @@ export default function Edit({attributes, setAttributes}: EditProps) {
                                 }}
                             />
 
-                            {/* Schritt 2: ID-Eingabe je nach Plattform */}
-
-                            {/* ORCID-Plattformen + arXiv: FAUdir wenn verfügbar */}
+                            {/* step2: ID for platform */}
+                            {/* ORCID platforms + arXiv: if FAUdir available */}
                             {['orcid', 'pubmed', 'openAlex', 'arxiv'].includes(source) && (
                                 <>
                                     {isLoadingPersons ? (
@@ -135,9 +124,7 @@ export default function Edit({attributes, setAttributes}: EditProps) {
                                                     apiFetch({path: `/rrze-research-data/v1/faudir/person/${personId}`})
                                                         .then((platformIds: any) =>
                                                         {
-                                                            const id = source === 'arxiv'
-                                                                ? platformIds?.arxiv ?? ''
-                                                                : platformIds?.orcid ?? '';
+                                                            const id = source === 'arxiv' ? platformIds?.arxiv ?? '' : platformIds?.orcid ?? '';
                                                             setAttributes({authorId: id});
                                                             if (!id) setShowManualInput(true);
                                                         });
@@ -147,60 +134,45 @@ export default function Edit({attributes, setAttributes}: EditProps) {
                                                 <>
                                                     <p style={{color: '#cc0000'}}>
                                                         {source === 'arxiv'
-                                                            ? __('No arXiv ID found. Please enter manually.', 'rrze-research-data')
-                                                            : __('No ORCID found. Please enter manually.', 'rrze-research-data')
+                                                            ? __('No arXiv ID in FAUdir found. Please enter manually.', 'rrze-research-data')
+                                                            : __('No ORCID in FAUdir found. Please enter manually.', 'rrze-research-data')
                                                         }
                                                     </p>
-                                                    <label>{source === 'arxiv' ? __('arXiv Author-ID',
-                                                        'rrze-research-data') : __('ORCID',
-                                                        'rrze-research-data')}</label>
+                                                    <label>{source === 'arxiv' ? __('arXiv Author-ID', 'rrze-research-data') : __('ORCID', 'rrze-research-data')}</label>
                                                     <TextControl
                                                         value={authorId}
-                                                        placeholder={source === 'arxiv' ? 'lastname_x_x' :
-                                                            '0000-0000-0000-0000'}
-                                                        onChange={(value) => setAttributes({authorId:
-                                                            value})}
+                                                        placeholder={source === 'arxiv' ? 'lastname_x_x' : '0000-0000-0000-0000'}
+                                                        onChange={(value) => setAttributes({authorId: value})}
                                                     />
-
                                                 </>
                                             )}
                                         </>
                                     ) : (
-                                        // FAUdir nicht aktiv → direkt TextControl
+                                        // if FAUdir ist not active → TextControl
                                         <>
                                             <label>{source === 'arxiv' ? __('arXiv Author-ID', 'rrze-research-data') : __('ORCID', 'rrze-research-data')}</label>
                                             <TextControl
                                                 value={authorId}
-                                                placeholder={source === 'arxiv' ?
-                                                    'hep-th/...' : '0000-0000-0000-0000'}
-                                                onChange={(value) =>
-                                                    setAttributes({authorId: value})}
+                                                placeholder={source === 'arxiv' ? 'hep-th/...' : '0000-0000-0000-0000'}
+                                                onChange={(value) => setAttributes({authorId: value})}
                                             />
                                         </>
                                     )}
                                 </>
                             )}
 
-                            {/* DBLP + Crossref: direkt TextControl, kein FAUdir */}
+                            {/* DBLP + Crossref: directly in TextControl, no FAUdir */}
                             {['dblp', 'crossref'].includes(source) && (
                                 <>
-                                    <label>{source === 'dblp' ? __('DBLP PID',
-                                        'rrze-research-data') : __('Crossref Author-ID',
-                                        'rrze-research-data')}</label>
+                                    <label>{source === 'dblp' ? __('DBLP PID', 'rrze-research-data') : __('Crossref Author-ID', 'rrze-research-data')}</label>
                                     <TextControl
                                         value={authorId}
-                                        placeholder={source === 'dblp' ?
-                                            'pid/l/LastnameF' : ''}
-                                        onChange={(value) =>
-                                            setAttributes({authorId: value})}
+                                        placeholder={source === 'dblp' ? 'pid/l/LastnameF' : ''}
+                                        onChange={(value) => setAttributes({authorId: value})}
                                     />
                                 </>
                             )}
-
-
-
                             <Spacer paddingTop=".5rem"/>
-
                             <Spacer paddingBottom={"0.5rem"}/>
                             <div>
                                 <Button
@@ -221,8 +193,7 @@ export default function Edit({attributes, setAttributes}: EditProps) {
                         <PanelBody title={__('Research Data',
                             'rrze-research-data')} initialOpen={true}>
                             <SelectControl
-                                label={__('Publication Source',
-                                    'rrze-research-data')}
+                                label={__('Publication Source', 'rrze-research-data')}
                                 value={source}
                                 options={[
                                     {label: __('ORCID', 'rrze-research-data'), value: 'orcid'},
@@ -242,19 +213,10 @@ export default function Edit({attributes, setAttributes}: EditProps) {
                                             : __('ORCID', 'rrze-research-data')
                                 }
                                 value={authorId}
-                                placeholder={source === 'arxiv'
-                                    ? 'lastname_x_x'
-                                    : source === 'dblp'
-                                        ? 'pid/l/LastnameF'
-                                        : source === 'crossref'
-                                            ? ''
-                                            : '0000-0000-0000-0000'
-                                }
-                                onChange={(value) =>
-                                    setAttributes({authorId: value})}
+                                placeholder={source === 'arxiv' ? 'lastname_x_x' : source === 'dblp' ? 'pid/l/LastnameF' : source === 'crossref' ? '' : '0000-0000-0000-0000'}
+                                onChange={(value) => setAttributes({authorId: value})}
                             />
                         </PanelBody>
-
                         <PanelBody title={__('Display Options', 'rrze-research-data')} initialOpen={false}>
                             <SelectControl
                                 label={__('View', 'rrze-research-data')}
@@ -263,8 +225,7 @@ export default function Edit({attributes, setAttributes}: EditProps) {
                                     {label: __('List', 'rrze-research-data'), value: 'list'},
                                     {label: __('Table', 'rrze-research-data'), value: 'table'},
                                 ]}
-                                onChange={(val: 'list' | 'table') =>
-                                    setAttributes({view: val as 'list' | 'table'})
+                                onChange={(val: 'list' | 'table') => setAttributes({view: val as 'list' | 'table'})
                                 }
                             />
                             <NumberControl
@@ -272,10 +233,7 @@ export default function Edit({attributes, setAttributes}: EditProps) {
                                 value={year === 0 ? '' : year}
                                 min={1900}
                                 max={2100}
-                                onChange={(value) => setAttributes({
-                                    year: parseInt(value as
-                                        string) || 0
-                                })}
+                                onChange={(value) => setAttributes({year: parseInt(value as string) || 0})}
                             />
                             <NumberControl
                                 __next40pxDefaultSize
@@ -285,7 +243,7 @@ export default function Edit({attributes, setAttributes}: EditProps) {
                             />
                         </PanelBody>
                     </InspectorControls>
-                    {/* Serverseitige Ausgabe der Publikationen */}
+                    {/* Serverside output publications */}
                     <ServerSideRender
                         block="rrze/research-data"
                         attributes={attributes}

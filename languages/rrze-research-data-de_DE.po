@@ -1,0 +1,199 @@
+# Copyright (C) 2026 RRZE Webteam
+# This file is distributed under the GNU General Public License Version 3.
+msgid ""
+msgstr ""
+"Project-Id-Version: RRZE Research Data 0.0.1\n"
+"Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/rrze-research-"
+"data\n"
+"POT-Creation-Date: 2026-04-15T13:35:26+00:00\n"
+"PO-Revision-Date: 2026-04-15 15:46+0200\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"Language: de_DE\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 3.9\n"
+"X-Domain: rrze-research-data\n"
+
+#. Plugin Name of the plugin
+#: rrze-research-data.php
+msgid "RRZE Research Data"
+msgstr ""
+
+#. Plugin URI of the plugin
+#: rrze-research-data.php
+msgid "https://github.com/RRZE-Webteam/rrze-research-data"
+msgstr ""
+
+#. Description of the plugin
+#: rrze-research-data.php
+msgid "A Plugin for research data integration"
+msgstr "Ein Plugin zur Darstellung von Publikationen"
+
+#. Author of the plugin
+#: rrze-research-data.php
+msgid "RRZE Webteam"
+msgstr ""
+
+#. Author URI of the plugin
+#: rrze-research-data.php
+msgid "https://www.wp.rrze.fau.de/"
+msgstr ""
+
+#: includes/Blocks/BlockRegistration.php:63
+msgid "RRZE"
+msgstr ""
+
+#: includes/Frontend/PublicationRenderer.php:125
+msgid "Authors"
+msgstr "Autoren"
+
+#: includes/Frontend/PublicationRenderer.php:126
+msgid "Year"
+msgstr "Jahr"
+
+#: includes/Frontend/PublicationRenderer.php:127
+msgid "Title"
+msgstr "Titel"
+
+#: includes/Frontend/PublicationRenderer.php:128
+msgid "Source"
+msgstr "Quelle"
+
+#: includes/Services/PublicationService.php:34
+msgid "No author ID provided."
+msgstr "Keine Autoren ID vorhanden."
+
+#: includes/Services/PublicationService.php:39
+msgid "Invalid author ID format."
+msgstr "Ungültige Autoren ID."
+
+#. translators: 1: Server PHP version number, 2: Required PHP version number.
+#: rrze-research-data.php:56
+#, php-format
+msgid ""
+"The server is running PHP version %1$s. The Plugin requires at least PHP "
+"version %2$s."
+msgstr ""
+"Auf dem Server läuft PHP-Version %1$s. Das Plugin erfordert mindestens PHP-"
+"Version %2$s."
+
+#. translators: 1: Server WordPress version number, 2: Required WordPress version number.
+#: rrze-research-data.php:63
+#, php-format
+msgid ""
+"The server is running WordPress version %1$s. The Plugin requires at least "
+"WordPress version %2$s."
+msgstr ""
+"Auf dem Server läuft WordPress Version %1$s. Das Plugin erfordert mindestens "
+"WordPress Version %2$s."
+
+#: build/block/index.js:108 build/block/index.js:237
+msgid "Research Data"
+msgstr "Publikationsdaten"
+
+#: build/block/index.js:109
+msgid "Display research publications from external sources."
+msgstr "Forschungspublikationen aus externen Quellen anzeigen."
+
+#: build/block/index.js:118 build/block/index.js:240
+msgid "Publication Source"
+msgstr "Quelle der Publikation"
+
+#: build/block/index.js:122 build/block/index.js:184 build/block/index.js:198
+#: build/block/index.js:243 build/block/index.js:265
+msgid "ORCID"
+msgstr ""
+
+#: build/block/index.js:125 build/block/index.js:246
+msgid "PubMed"
+msgstr ""
+
+#: build/block/index.js:128 build/block/index.js:249
+msgid "OpenAlex"
+msgstr ""
+
+#: build/block/index.js:131 build/block/index.js:252
+msgid "arXiv"
+msgstr ""
+
+#: build/block/index.js:134 build/block/index.js:255
+msgid "DBLP"
+msgstr ""
+
+#: build/block/index.js:137 build/block/index.js:258
+msgid "Crossref"
+msgstr ""
+
+#: build/block/index.js:150
+msgid "Loading…"
+msgstr "Wird geladen…"
+
+#: build/block/index.js:153
+msgid "Person (FAUdir)"
+msgstr ""
+
+#: build/block/index.js:157
+msgid "— Please select —"
+msgstr "— Bitte auswählen —"
+
+#: build/block/index.js:182
+msgid "No arXiv ID in FAUdir found. Please enter manually."
+msgstr ""
+"In FAUdir wurde keine arXiv-ID gefunden. Bitte geben Sie diese manuell ein."
+
+#: build/block/index.js:182
+msgid "No ORCID in FAUdir found. Please enter manually."
+msgstr ""
+"In FAUdir wurde kein ORCID gefunden. Bitte geben Sie diese manuell ein."
+
+#: build/block/index.js:184 build/block/index.js:198 build/block/index.js:265
+msgid "arXiv Author-ID"
+msgstr "arXiv Autor-ID"
+
+#: build/block/index.js:209 build/block/index.js:265
+msgid "DBLP PID"
+msgstr ""
+
+#: build/block/index.js:209 build/block/index.js:265
+msgid "Crossref Author-ID"
+msgstr "Crossref Autor-ID"
+
+#: build/block/index.js:227
+msgid "Save"
+msgstr "Speichern"
+
+#: build/block/index.js:273
+msgid "Display Options"
+msgstr "Anzeigeoptionen"
+
+#: build/block/index.js:276
+msgid "View"
+msgstr "Ansicht"
+
+#: build/block/index.js:279
+msgid "List"
+msgstr "Liste"
+
+#: build/block/index.js:282
+msgid "Table"
+msgstr "Tabelle"
+
+#: build/block/index.js:289
+msgid "Publications from year"
+msgstr "Publikationsjahr"
+
+#: build/block/index.js:298
+msgid "Limit"
+msgstr "maximale Anzahl"
+
+#: build/block/block.json
+msgctxt "block title"
+msgid "Research Data"
+msgstr ""
+
+#: build/block/block.json
+msgctxt "block description"
+msgid "Displays publications from research platforms."
+msgstr "Zeigt Publikationen von Forschungsplattformen an."

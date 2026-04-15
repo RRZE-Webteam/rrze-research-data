@@ -15,8 +15,6 @@ defined('ABSPATH') || exit;
  */
 class PublicationRenderer
 {
-
-
     /**
      * Main render callback – extracts block attributes and delegates to the correct
      * view.
@@ -47,10 +45,11 @@ class PublicationRenderer
 
         switch ($view) {
             case 'table':
-                return self::renderTable($publications);
+                return self::renderJsonLd($publications) . self::renderTable($publications);
             case 'list':
             default:
-                return self::renderList($publications);
+                return self::renderJsonLd($publications) . self::renderList($publications);
+
         }
     }
 
@@ -123,10 +122,10 @@ class PublicationRenderer
 
         $html = '<figure class="wp-block-table"><table class="wp-block-research-table">';
         $html .= '<thead><tr>';
-        $html .= '<th>Authors</th>';
-        $html .= '<th>Year</th>';
-        $html .= '<th>Title</th>';
-        $html .= '<th>Venue</th>';
+        $html .= '<th>' . esc_html__('Authors', 'rrze-research-data') . '</th>';
+        $html .= '<th>' . esc_html__('Year', 'rrze-research-data') . '</th>';
+        $html .= '<th>' . esc_html__('Title', 'rrze-research-data') . '</th>';
+        $html .= '<th>' . esc_html__('Source', 'rrze-research-data') . '</th>';
         $html .= '</tr></thead>';
         $html .= '<tbody>';
 
@@ -165,5 +164,44 @@ class PublicationRenderer
 
 
         return $html;
+    }
+
+    private static function renderJsonLd(array $publications): string
+    {
+        $items = [];
+
+        foreach ($publications as $pub) {
+            $item = [
+                '@type'         => 'ScholarlyArticle',
+                'name'          => $pub->title ?? '',
+                'datePublished' => (string) ($pub->year ?? ''),
+                'url'           => !empty($pub->doi) ? 'https://doi.org/' . $pub->doi : ($pub->url ?? ''),
+            ];
+
+            if (!empty($pub->authors)) {
+                $item['author'] = array_map(fn($name) => [
+                    '@type' => 'Person',
+                    'name'  => $name,
+                ], $pub->authors);
+            }
+
+            if (!empty($pub->journal)) {
+                $item['isPartOf'] = [
+                    '@type' => 'Periodical',
+                    'name'  => $pub->journal,
+                ];
+            }
+
+            $items[] = $item;
+        }
+
+        $schema = [
+            '@context' => 'https://schema.org',
+            '@graph'   => $items,
+        ];
+
+        return '<script type="application/ld+json">'
+            . wp_json_encode($schema, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES)
+            . '</script>';
     }
 }
