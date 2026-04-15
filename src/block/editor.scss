@@ -3,5 +3,9 @@
   grid-template-columns: 120px 300px;
   gap: 12px 16px;
   align-items: center;
+
+  p {
+    grid-column: 1 / -1;
+  }
 }
 

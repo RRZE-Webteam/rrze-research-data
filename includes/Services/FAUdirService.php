@@ -11,7 +11,6 @@ defined('ABSPATH') || exit;
  *
  * Only active when the rrze-faudir plugin is installed and enabled.
  */
-
 class FAUdirService
 {
     /**
@@ -67,7 +66,7 @@ class FAUdirService
 
     /**
      * Fetches platform IDs (e.g. ORCID) for a given FAUdir person
-    identifier.
+     * identifier.
      *
      * Uses the rrze-faudir API to retrieve the full person data and
      * extracts research platform identifiers. These are used to query
@@ -75,11 +74,11 @@ class FAUdirService
      *
      * Note: The exact field names in the FAUdir API response must be
      * verified via error_log before relying on this method in
-    production.
+     * production.
      *
      * @param string $personId FAUdir person identifier, e.g. "abc123"
      * @return array Platform IDs, e.g. ['orcid' =>
-    '0000-0003-4713-5941']
+     * '0000-0003-4713-5941']
      */
 
     public function getPlatformIds(string $personId): array
@@ -89,7 +88,7 @@ class FAUdirService
         }
 
         $config = new \RRZE\FAUdir\Config();
-        $api    = new \RRZE\FAUdir\API($config);
+        $api = new \RRZE\FAUdir\API($config);
         $person = $api->getPerson($personId);
         if (empty($person) || empty($person['contacts'])) {
             return [];
@@ -114,13 +113,16 @@ class FAUdirService
 
             foreach ($socials as $social) {
                 $platform = $social['platform'] ?? '';
-                $url      = $social['url'] ?? '';
+                $url = $social['url'] ?? '';
 
                 if (!empty($platform) && !empty($url)) {
-                    // ID aus URL extrahieren: letztes Segment nach "/"
-                  $id = basename($url);
-                  $result[$platform] = $id;
-              }
+                    // ID aus URL extrahieren
+                    $id = basename($url);
+                    // .html-Endung entfernen (z.B. bei arXiv - Profil - URLs)
+                    $id = preg_replace('/\.html$/', '', $id);
+
+                    $result[$platform] = $id;
+                }
             }
         }
 

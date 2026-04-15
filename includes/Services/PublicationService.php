@@ -9,6 +9,7 @@ use RRZE\ResearchData\API\OpenAlexApi;
 use RRZE\ResearchData\API\OrcidApi;
 use RRZE\ResearchData\Services\CacheService;
 use RRZE\ResearchData\API\PubMedApi;
+use RRZE\ResearchData\API\ArXivApi;
 
 /**
  * Handles publication retrieval by delegating to the appropriate API class.
@@ -34,8 +35,8 @@ class PublicationService
                 'rrze-research-data'));
         }
 
-        if (!preg_match('/^\d{4}-\d{4}-\d{4}-\d{4}$/', $authorId)) {
-            return new \WP_Error('invalid_argument', __('Invalid ORCID format. Expected: 0000-0000-0000-0000', 'rrze-research-data'));
+        if (!$this->isValidAuthorId($authorId, $source)) {
+            return new \WP_Error('invalid_argument', __('Invalid author ID format.', 'rrze-research-data'));
         }
 
 
@@ -57,6 +58,9 @@ class PublicationService
             case 'openAlex':
                 $api = new OpenAlexApi();
                 break;
+            case 'arxiv':
+                $api = new ArXivApi();
+                break;
             default:
                 $api = new OrcidApi(); // Fallback
         }
@@ -70,6 +74,38 @@ class PublicationService
         $cache->set($key, $publications);
         return $publications;
 
+    }
+
+    /**
+     * Validates the author ID format depending on the chosen source.
+     *
+     * @param string $authorId The ID entered by the editor
+     * @param string $source The chosen platform (orcid, arxiv, dblp, ...)
+     * @return bool             true = valid, false = invalid
+     */
+    private function isValidAuthorId(string $authorId, string $source): bool
+    {
+        return match ($source) {
+
+            // ORCID-Format: 4 Blöcke à 4 Ziffern, letztes Zeichen darf X sein
+            // Beispiel: 0000-0003-4713-5941
+            'orcid', 'pubmed', 'openAlex' => (bool)preg_match(
+                '/^\d{4}-\d{4}-\d{4}-[\dX]$/',
+                $authorId
+            ),
+
+            // arXiv: Kleinbuchstaben, Unterstriche, Zahl am Ende Beispiel: thiemann_t_1
+            // ODER eine ORCID (wenn der Autor diese in arXiv verknüpft hat)
+            'arxiv' => (bool)preg_match('/^[a-z]+_[a-z]_\d+$/', $authorId)
+                || (bool)preg_match('/^\d{4}-\d{4}-\d{4}-[\dX]$/', $authorId),
+
+            // DBLP: Pfad-Format wie pid/l/LieblerA
+            // Beispiel: pid/l/LastnameF
+            'dblp' => (bool)preg_match('/^pid\/[a-z]\/\w+$/', $authorId),
+
+            // Unbekannte Quelle → ablehnen
+            default => false,
+        };
     }
 
 

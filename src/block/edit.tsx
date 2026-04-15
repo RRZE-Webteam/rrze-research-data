@@ -52,6 +52,8 @@ export default function Edit({attributes, setAttributes}: EditProps) {
     const [personList, setPersonList] = useState([]);
     const [isLoadingPersons, setIsLoadingPersons] = useState(true);
     const [selectedPersonId, setSelectedPersonId] = useState('');
+    const [showManualInput, setShowManualInput] = useState(false);
+
 
     useEffect(() => {
         apiFetch({path: '/rrze-research-data/v1/faudir/persons'})
@@ -104,6 +106,7 @@ export default function Edit({attributes, setAttributes}: EditProps) {
                                 onChange={(value: string) => {
                                     setAttributes({source: value, authorId: ''});
                                     setSelectedPersonId('');
+                                    setShowManualInput(false);
                                 }}
                             />
 
@@ -129,22 +132,18 @@ export default function Edit({attributes, setAttributes}: EditProps) {
                                                 onChange={(personId: string) => {
                                                     setSelectedPersonId(personId);
                                                     if (!personId) return;
-                                                    apiFetch({path:
-                                                            `/rrze-research-data/v1/faudir/person/${personId}`})
+                                                    apiFetch({path: `/rrze-research-data/v1/faudir/person/${personId}`})
                                                         .then((platformIds: any) =>
                                                         {
-                                                            const id = source ===
-                                                            'arxiv'
-                                                                ? platformIds?.arxiv
-                                                                ?? ''
-                                                                : platformIds?.orcid
-                                                                ?? '';
-                                                            setAttributes({authorId:
-                                                                id});
+                                                            const id = source === 'arxiv'
+                                                                ? platformIds?.arxiv ?? ''
+                                                                : platformIds?.orcid ?? '';
+                                                            setAttributes({authorId: id});
+                                                            if (!id) setShowManualInput(true);
                                                         });
                                                 }}
                                             />
-                                            {selectedPersonId && !authorId && (
+                                            {showManualInput && (
                                                 <>
                                                     <p style={{color: '#cc0000'}}>
                                                         {source === 'arxiv'
@@ -152,28 +151,32 @@ export default function Edit({attributes, setAttributes}: EditProps) {
                                                             : __('No ORCID found. Please enter manually.', 'rrze-research-data')
                                                         }
                                                     </p>
+                                                    <label>{source === 'arxiv' ? __('arXiv Author-ID',
+                                                        'rrze-research-data') : __('ORCID',
+                                                        'rrze-research-data')}</label>
                                                     <TextControl
-                                                        label={source === 'arxiv' ? __('arXiv Author-ID', 'rrze-research-data') : __('ORCID', 'rrze-research-data')}
                                                         value={authorId}
-                                                        placeholder={source ===
-                                                        'arxiv' ? 'hep-th/...' : '0000-0000-0000-0000'}
-                                                        onChange={(value) =>
-                                                            setAttributes({authorId: value})}
+                                                        placeholder={source === 'arxiv' ? 'lastname_x_x' :
+                                                            '0000-0000-0000-0000'}
+                                                        onChange={(value) => setAttributes({authorId:
+                                                            value})}
                                                     />
+
                                                 </>
                                             )}
                                         </>
                                     ) : (
                                         // FAUdir nicht aktiv → direkt TextControl
-                                        <TextControl
-                                            label={source === 'arxiv' ? __('arXiv Author-ID', 'rrze-research-data') : __('ORCID',
-                                                'rrze-research-data')}
-                                            value={authorId}
-                                            placeholder={source === 'arxiv' ?
-                                                'hep-th/...' : '0000-0000-0000-0000'}
-                                            onChange={(value) =>
-                                                setAttributes({authorId: value})}
-                                        />
+                                        <>
+                                            <label>{source === 'arxiv' ? __('arXiv Author-ID', 'rrze-research-data') : __('ORCID', 'rrze-research-data')}</label>
+                                            <TextControl
+                                                value={authorId}
+                                                placeholder={source === 'arxiv' ?
+                                                    'hep-th/...' : '0000-0000-0000-0000'}
+                                                onChange={(value) =>
+                                                    setAttributes({authorId: value})}
+                                            />
+                                        </>
                                     )}
                                 </>
                             )}
@@ -222,36 +225,25 @@ export default function Edit({attributes, setAttributes}: EditProps) {
                                     'rrze-research-data')}
                                 value={source}
                                 options={[
-                                    {label: __('ORCID',
-                                            'rrze-research-data'), value: 'orcid'},
-                                    {label: __('PubMed',
-                                            'rrze-research-data'), value: 'pubmed'},
-                                    {label: __('OpenAlex',
-                                            'rrze-research-data'), value: 'openAlex'},
-                                    {label: __('arXiv',
-                                            'rrze-research-data'), value: 'arxiv'},
-                                    {label: __('DBLP',
-                                            'rrze-research-data'), value: 'dblp'},
-                                    {label: __('Crossref',
-                                            'rrze-research-data'), value: 'crossref'},
+                                    {label: __('ORCID', 'rrze-research-data'), value: 'orcid'},
+                                    {label: __('PubMed', 'rrze-research-data'), value: 'pubmed'},
+                                    {label: __('OpenAlex', 'rrze-research-data'), value: 'openAlex'},
+                                    {label: __('arXiv', 'rrze-research-data'), value: 'arxiv'},
+                                    {label: __('DBLP', 'rrze-research-data'), value: 'dblp'},
+                                    {label: __('Crossref', 'rrze-research-data'), value: 'crossref'},
                                 ]}
                                 onChange={(value: string) =>
                                     setAttributes({source: value})}
                             />
                             <TextControl
-                                label={source === 'arxiv'
-                                    ? __('arXiv Author-ID',
-                                        'rrze-research-data')
-                                    : source === 'dblp'
-                                        ? __('DBLP PID', 'rrze-research-data')
-                                        : source === 'crossref'
-                                            ? __('Crossref Author-ID',
-                                                'rrze-research-data')
+                                label={source === 'arxiv' ? __('arXiv Author-ID', 'rrze-research-data')
+                                    : source === 'dblp' ? __('DBLP PID', 'rrze-research-data')
+                                        : source === 'crossref' ? __('Crossref Author-ID', 'rrze-research-data')
                                             : __('ORCID', 'rrze-research-data')
                                 }
                                 value={authorId}
                                 placeholder={source === 'arxiv'
-                                    ? 'hep-th/...'
+                                    ? 'lastname_x_x'
                                     : source === 'dblp'
                                         ? 'pid/l/LastnameF'
                                         : source === 'crossref'
@@ -262,13 +254,12 @@ export default function Edit({attributes, setAttributes}: EditProps) {
                                     setAttributes({authorId: value})}
                             />
                         </PanelBody>
-                        
+
                         <PanelBody title={__('Display Options', 'rrze-research-data')} initialOpen={false}>
                             <SelectControl
                                 label={__('View', 'rrze-research-data')}
                                 value={view}
                                 options={[
-                                    {disabled: true, label: __('Select an Option', 'rrze-research-data'), value: ''},
                                     {label: __('List', 'rrze-research-data'), value: 'list'},
                                     {label: __('Table', 'rrze-research-data'), value: 'table'},
                                 ]}

@@ -90,6 +90,7 @@ function Edit({
   const [personList, setPersonList] = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_3__.useState)([]);
   const [isLoadingPersons, setIsLoadingPersons] = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_3__.useState)(true);
   const [selectedPersonId, setSelectedPersonId] = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_3__.useState)('');
+  const [showManualInput, setShowManualInput] = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_3__.useState)(false);
   (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_3__.useEffect)(() => {
     _wordpress_api_fetch__WEBPACK_IMPORTED_MODULE_4___default()({
       path: '/rrze-research-data/v1/faudir/persons'
@@ -142,6 +143,7 @@ function Edit({
                 authorId: ''
               });
               setSelectedPersonId('');
+              setShowManualInput(false);
             }
           }), ['orcid', 'pubmed', 'openAlex', 'arxiv'].includes(source) && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsx)(react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.Fragment, {
             children: isLoadingPersons ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsx)("p", {
@@ -169,18 +171,20 @@ function Edit({
                     setAttributes({
                       authorId: id
                     });
+                    if (!id) setShowManualInput(true);
                   });
                 }
-              }), selectedPersonId && !authorId && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsxs)(react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.Fragment, {
+              }), showManualInput && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsxs)(react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.Fragment, {
                 children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsx)("p", {
                   style: {
                     color: '#cc0000'
                   },
                   children: source === 'arxiv' ? (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)('No arXiv ID found. Please enter manually.', 'rrze-research-data') : (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)('No ORCID found. Please enter manually.', 'rrze-research-data')
+                }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsx)("label", {
+                  children: source === 'arxiv' ? (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)('arXiv Author-ID', 'rrze-research-data') : (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)('ORCID', 'rrze-research-data')
                 }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsx)(_wordpress_components__WEBPACK_IMPORTED_MODULE_2__.TextControl, {
-                  label: source === 'arxiv' ? (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)('arXiv Author-ID', 'rrze-research-data') : (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)('ORCID', 'rrze-research-data'),
                   value: authorId,
-                  placeholder: source === 'arxiv' ? 'hep-th/...' : '0000-0000-0000-0000',
+                  placeholder: source === 'arxiv' ? 'lastname_x_x' : '0000-0000-0000-0000',
                   onChange: value => setAttributes({
                     authorId: value
                   })
@@ -189,13 +193,16 @@ function Edit({
             }) :
             /*#__PURE__*/
             // FAUdir nicht aktiv → direkt TextControl
-            (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsx)(_wordpress_components__WEBPACK_IMPORTED_MODULE_2__.TextControl, {
-              label: source === 'arxiv' ? (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)('arXiv Author-ID', 'rrze-research-data') : (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)('ORCID', 'rrze-research-data'),
-              value: authorId,
-              placeholder: source === 'arxiv' ? 'hep-th/...' : '0000-0000-0000-0000',
-              onChange: value => setAttributes({
-                authorId: value
-              })
+            (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsxs)(react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.Fragment, {
+              children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsx)("label", {
+                children: source === 'arxiv' ? (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)('arXiv Author-ID', 'rrze-research-data') : (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)('ORCID', 'rrze-research-data')
+              }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsx)(_wordpress_components__WEBPACK_IMPORTED_MODULE_2__.TextControl, {
+                value: authorId,
+                placeholder: source === 'arxiv' ? 'hep-th/...' : '0000-0000-0000-0000',
+                onChange: value => setAttributes({
+                  authorId: value
+                })
+              })]
             })
           }), ['dblp', 'crossref'].includes(source) && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsxs)(react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.Fragment, {
             children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsx)("label", {
@@ -257,7 +264,7 @@ function Edit({
           }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsx)(_wordpress_components__WEBPACK_IMPORTED_MODULE_2__.TextControl, {
             label: source === 'arxiv' ? (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)('arXiv Author-ID', 'rrze-research-data') : source === 'dblp' ? (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)('DBLP PID', 'rrze-research-data') : source === 'crossref' ? (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)('Crossref Author-ID', 'rrze-research-data') : (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)('ORCID', 'rrze-research-data'),
             value: authorId,
-            placeholder: source === 'arxiv' ? 'hep-th/...' : source === 'dblp' ? 'pid/l/LastnameF' : source === 'crossref' ? '' : '0000-0000-0000-0000',
+            placeholder: source === 'arxiv' ? 'lastname_x_x' : source === 'dblp' ? 'pid/l/LastnameF' : source === 'crossref' ? '' : '0000-0000-0000-0000',
             onChange: value => setAttributes({
               authorId: value
             })
@@ -269,10 +276,6 @@ function Edit({
             label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)('View', 'rrze-research-data'),
             value: view,
             options: [{
-              disabled: true,
-              label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)('Select an Option', 'rrze-research-data'),
-              value: ''
-            }, {
               label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)('List', 'rrze-research-data'),
               value: 'list'
             }, {

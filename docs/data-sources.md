@@ -14,13 +14,13 @@
 |---|---|---|
 | **Crossref** | Nein | DOI-Metadaten als Ergänzung |
 | **Semantic Scholar** | Nein | Zitationsdaten, MINT-Fokus |
-
+ **arXiv** | zwar starke Überschneidung mit OpenAlex und oft keine ID vorhanden, wenn nicht aktiv angelegt,
+aber es gibt eine extra Option in FAUdir zum Anlegen des Links. Daher mit aufgenommen.
+| **DBLP** | Nur Informatik |
 ## Ausgeschlossene Quellen
 
 | Quelle | Grund |
 |---|---|
-| **DBLP** | Nur Informatik, zu fachspezifisch |
-| **arXiv** | Nur Preprints, starke Überschneidung mit OpenAlex |
 | **Web of Science** | Kostenpflichtig |
 | **Scopus** | Lizenzpflichtig, darf laut Lizenzbestimmungen nicht auf Websites dargestellt werden |
 | **ResearchGate** | Keine API |
