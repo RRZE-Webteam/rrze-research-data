@@ -10,6 +10,9 @@ use RRZE\ResearchData\API\OrcidApi;
 use RRZE\ResearchData\Services\CacheService;
 use RRZE\ResearchData\API\PubMedApi;
 use RRZE\ResearchData\API\ArXivApi;
+use RRZE\ResearchData\API\DblpApi;
+use RRZE\ResearchData\API\CrossrefApi;
+use RRZE\ResearchData\API\SemanticScholarApi;
 
 /**
  * Handles publication retrieval by delegating to the appropriate API class.
@@ -61,6 +64,15 @@ class PublicationService
             case 'arxiv':
                 $api = new ArXivApi();
                 break;
+            case 'dblp':
+                $api = new DblpApi();
+                break;
+            case 'crossref':
+                $api = new CrossrefApi();
+                break;
+            case 'semanticscholar':
+                $api = new SemanticScholarApi();
+                break;
             default:
                 $api = new OrcidApi(); // Fallback
         }
@@ -89,19 +101,23 @@ class PublicationService
 
             // ORCID-Format: 4 Blöcke à 4 Ziffern, letztes Zeichen darf X sein
             // Beispiel: 0000-0003-4713-5941
-            'orcid', 'pubmed', 'openAlex' => (bool)preg_match(
-                '/^\d{4}-\d{4}-\d{4}-[\dX]$/',
+            'orcid', 'pubmed', 'openAlex', 'crossref' => (bool)preg_match(
+                '/^\d{4}-\d{4}-\d{4}-[\dX]{4}$/',
                 $authorId
             ),
 
             // arXiv: Kleinbuchstaben, Unterstriche, Zahl am Ende Beispiel: thiemann_t_1
             // ODER eine ORCID (wenn der Autor diese in arXiv verknüpft hat)
             'arxiv' => (bool)preg_match('/^[a-z]+_[a-z]_\d+$/', $authorId)
-                || (bool)preg_match('/^\d{4}-\d{4}-\d{4}-[\dX]$/', $authorId),
+                || (bool)preg_match('/^\d{4}-\d{4}-\d{4}-[\dX]{4}$/', $authorId),
+
 
             // DBLP: Pfad-Format wie pid/l/LieblerA
             // Beispiel: pid/l/LastnameF
-            'dblp' => (bool)preg_match('/^pid\/[a-z]\/\w+$/', $authorId),
+            'dblp' => (bool)preg_match('/^\d+\/\d+$/', $authorId)
+                || (bool)preg_match('/^[a-z]\/\w+$/', $authorId),
+
+            'semanticscholar' => (bool)preg_match('/^\d+$/', $authorId),
 
             // Unbekannte Quelle → ablehnen
             default => false,

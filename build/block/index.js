@@ -136,6 +136,9 @@ function Edit({
             }, {
               label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)('Crossref', 'rrze-research-data'),
               value: 'crossref'
+            }, {
+              label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)('Semantic Scholar', 'rrze-research-data'),
+              value: 'semanticscholar'
             }],
             onChange: value => {
               setAttributes({
@@ -145,7 +148,7 @@ function Edit({
               setSelectedPersonId('');
               setShowManualInput(false);
             }
-          }), ['orcid', 'pubmed', 'openAlex', 'arxiv'].includes(source) && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsx)(react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.Fragment, {
+          }), ['orcid', 'pubmed', 'openAlex', 'arxiv', 'crossref'].includes(source) && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsx)(react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.Fragment, {
             children: isLoadingPersons ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsx)("p", {
               children: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)('Loading…', 'rrze-research-data')
             }) : personList.length > 0 ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsxs)(react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.Fragment, {
@@ -184,7 +187,7 @@ function Edit({
                   children: source === 'arxiv' ? (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)('arXiv Author-ID', 'rrze-research-data') : (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)('ORCID', 'rrze-research-data')
                 }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsx)(_wordpress_components__WEBPACK_IMPORTED_MODULE_2__.TextControl, {
                   value: authorId,
-                  placeholder: source === 'arxiv' ? 'lastname_x_x' : '0000-0000-0000-0000',
+                  placeholder: source === 'arxiv' ? 'lastname_f_1' : '0000-0000-0000-0000',
                   onChange: value => setAttributes({
                     authorId: value
                   })
@@ -198,18 +201,18 @@ function Edit({
                 children: source === 'arxiv' ? (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)('arXiv Author-ID', 'rrze-research-data') : (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)('ORCID', 'rrze-research-data')
               }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsx)(_wordpress_components__WEBPACK_IMPORTED_MODULE_2__.TextControl, {
                 value: authorId,
-                placeholder: source === 'arxiv' ? 'hep-th/...' : '0000-0000-0000-0000',
+                placeholder: source === 'arxiv' ? 'lastname_f_1' : '0000-0000-0000-0000',
                 onChange: value => setAttributes({
                   authorId: value
                 })
               })]
             })
-          }), ['dblp', 'crossref'].includes(source) && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsxs)(react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.Fragment, {
+          }), ['dblp', 'semanticscholar'].includes(source) && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsxs)(react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.Fragment, {
             children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsx)("label", {
-              children: source === 'dblp' ? (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)('DBLP PID', 'rrze-research-data') : (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)('Crossref Author-ID', 'rrze-research-data')
+              children: source === 'dblp' ? (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)('DBLP PID', 'rrze-research-data') : (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)('SemanticScholar Author-ID', 'rrze-research-data')
             }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsx)(_wordpress_components__WEBPACK_IMPORTED_MODULE_2__.TextControl, {
               value: authorId,
-              placeholder: source === 'dblp' ? 'pid/l/LastnameF' : '',
+              placeholder: source === 'dblp' ? 'xx/0000' : '0000000000',
               onChange: value => setAttributes({
                 authorId: value
               })
@@ -262,9 +265,9 @@ function Edit({
               source: value
             })
           }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsx)(_wordpress_components__WEBPACK_IMPORTED_MODULE_2__.TextControl, {
-            label: source === 'arxiv' ? (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)('arXiv Author-ID', 'rrze-research-data') : source === 'dblp' ? (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)('DBLP PID', 'rrze-research-data') : source === 'crossref' ? (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)('Crossref Author-ID', 'rrze-research-data') : (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)('ORCID', 'rrze-research-data'),
+            label: source === 'arxiv' ? (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)('arXiv Author-ID', 'rrze-research-data') : source === 'dblp' ? (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)('DBLP PID', 'rrze-research-data') : source === 'semanticscholar' ? (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)('Semantic Scholar Author-ID', 'rrze-research-data') : (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)('ORCID', 'rrze-research-data'),
             value: authorId,
-            placeholder: source === 'arxiv' ? 'lastname_x_x' : source === 'dblp' ? 'pid/l/LastnameF' : source === 'crossref' ? '' : '0000-0000-0000-0000',
+            placeholder: source === 'arxiv' ? 'lastname_x_x' : source === 'dblp' ? 'xx/0000' : source === 'semanticscholar' ? '0000000000' : '0000-0000-0000-0000',
             onChange: value => setAttributes({
               authorId: value
             })

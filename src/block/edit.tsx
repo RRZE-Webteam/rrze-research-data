@@ -92,6 +92,7 @@ export default function Edit({attributes, setAttributes}: EditProps) {
                                     {label: __('arXiv', 'rrze-research-data'), value: 'arxiv'},
                                     {label: __('DBLP', 'rrze-research-data'), value: 'dblp'},
                                     {label: __('Crossref', 'rrze-research-data'), value: 'crossref'},
+                                    {label: __('Semantic Scholar', 'rrze-research-data'), value: 'semanticscholar'},
                                 ]}
                                 onChange={(value: string) => {
                                     setAttributes({source: value, authorId: ''});
@@ -102,7 +103,7 @@ export default function Edit({attributes, setAttributes}: EditProps) {
 
                             {/* step2: ID for platform */}
                             {/* ORCID platforms + arXiv: if FAUdir available */}
-                            {['orcid', 'pubmed', 'openAlex', 'arxiv'].includes(source) && (
+                            {['orcid', 'pubmed', 'openAlex', 'arxiv', 'crossref'].includes(source) && (
                                 <>
                                     {isLoadingPersons ? (
                                         <p>{__('Loading…', 'rrze-research-data')}</p>
@@ -141,7 +142,7 @@ export default function Edit({attributes, setAttributes}: EditProps) {
                                                     <label>{source === 'arxiv' ? __('arXiv Author-ID', 'rrze-research-data') : __('ORCID', 'rrze-research-data')}</label>
                                                     <TextControl
                                                         value={authorId}
-                                                        placeholder={source === 'arxiv' ? 'lastname_x_x' : '0000-0000-0000-0000'}
+                                                        placeholder={source === 'arxiv' ? 'lastname_f_1' : '0000-0000-0000-0000'}
                                                         onChange={(value) => setAttributes({authorId: value})}
                                                     />
                                                 </>
@@ -153,7 +154,7 @@ export default function Edit({attributes, setAttributes}: EditProps) {
                                             <label>{source === 'arxiv' ? __('arXiv Author-ID', 'rrze-research-data') : __('ORCID', 'rrze-research-data')}</label>
                                             <TextControl
                                                 value={authorId}
-                                                placeholder={source === 'arxiv' ? 'hep-th/...' : '0000-0000-0000-0000'}
+                                                placeholder={source === 'arxiv' ? 'lastname_f_1': '0000-0000-0000-0000'}
                                                 onChange={(value) => setAttributes({authorId: value})}
                                             />
                                         </>
@@ -162,12 +163,12 @@ export default function Edit({attributes, setAttributes}: EditProps) {
                             )}
 
                             {/* DBLP + Crossref: directly in TextControl, no FAUdir */}
-                            {['dblp', 'crossref'].includes(source) && (
+                            {['dblp', 'semanticscholar'].includes(source) && (
                                 <>
-                                    <label>{source === 'dblp' ? __('DBLP PID', 'rrze-research-data') : __('Crossref Author-ID', 'rrze-research-data')}</label>
+                                    <label>{source === 'dblp' ? __('DBLP PID', 'rrze-research-data') : __('SemanticScholar Author-ID', 'rrze-research-data')}</label>
                                     <TextControl
                                         value={authorId}
-                                        placeholder={source === 'dblp' ? 'pid/l/LastnameF' : ''}
+                                        placeholder={source === 'dblp' ? 'xx/0000' : '0000000000'}
                                         onChange={(value) => setAttributes({authorId: value})}
                                     />
                                 </>
@@ -209,11 +210,15 @@ export default function Edit({attributes, setAttributes}: EditProps) {
                             <TextControl
                                 label={source === 'arxiv' ? __('arXiv Author-ID', 'rrze-research-data')
                                     : source === 'dblp' ? __('DBLP PID', 'rrze-research-data')
-                                        : source === 'crossref' ? __('Crossref Author-ID', 'rrze-research-data')
+                                        : source === 'semanticscholar' ? __('Semantic Scholar Author-ID', 'rrze-research-data')
                                             : __('ORCID', 'rrze-research-data')
                                 }
                                 value={authorId}
-                                placeholder={source === 'arxiv' ? 'lastname_x_x' : source === 'dblp' ? 'pid/l/LastnameF' : source === 'crossref' ? '' : '0000-0000-0000-0000'}
+                                placeholder={source === 'arxiv' ? 'lastname_x_x'
+                                    : source === 'dblp' ? 'xx/0000'
+                                        : source === 'semanticscholar' ? '0000000000'
+                                            : '0000-0000-0000-0000'
+                                }
                                 onChange={(value) => setAttributes({authorId: value})}
                             />
                         </PanelBody>

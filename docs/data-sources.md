@@ -1,22 +1,18 @@
 # Datenquellen – Entscheidungsdokument
 
-## Verwendete Quellen (Version 1)
+## Verwendete Quellen 
 
-| Quelle | API-Key | Daten |
-|---|---|---|
-| **ORCID** | Nein | Autorprofil, Publikationsliste |
-| **OpenAlex** | Nein | Publikationen, alle Fächer |
-| **PubMed** | Nein (optional) | Medizin / Biowissenschaften |
+| Quelle | API-Key notwendig?     | Daten |
+|---|------------------------|---|
+| **ORCID** | Nein                   | Autorprofil, Publikationsliste |
+| **OpenAlex** | Nein                   | Publikationen, alle Fächer |
+| **PubMed** | Nein (optional)        | Medizin / Biowissenschaften |
+| **Crossref** | Nein                   | DOI-Metadaten als Ergänzung |
+| **Semantic Scholar** | Nein                   | Zitationsdaten, MINT-Fokus |
+ **arXiv** | Nein                   |zwar starke Überschneidung mit OpenAlex und oft keine ID vorhanden, wenn nicht aktiv angelegt. Es gibt eine extra Option in FAUdir zum Anlegen des Links. Daher wird es mit aufgenommen.
+| **DBLP** | Nein - offene REST-API | Nur Informatik |
 
-## Geplante Quellen (Version 2)
 
-| Quelle | API-Key | Daten |
-|---|---|---|
-| **Crossref** | Nein | DOI-Metadaten als Ergänzung |
-| **Semantic Scholar** | Nein | Zitationsdaten, MINT-Fokus |
- **arXiv** | zwar starke Überschneidung mit OpenAlex und oft keine ID vorhanden, wenn nicht aktiv angelegt,
-aber es gibt eine extra Option in FAUdir zum Anlegen des Links. Daher mit aufgenommen.
-| **DBLP** | Nur Informatik |
 ## Ausgeschlossene Quellen
 
 | Quelle | Grund |
@@ -26,7 +22,7 @@ aber es gibt eine extra Option in FAUdir zum Anlegen des Links. Daher mit aufgen
 | **ResearchGate** | Keine API |
 | **Google Scholar** | Keine offizielle API |
 
-## Abgerufene Daten (Version 1)
+## Abgerufene Daten
 
 Nur **Publikationen** mit folgenden Feldern:
 
@@ -37,11 +33,11 @@ Nur **Publikationen** mit folgenden Feldern:
 - Band, Seiten
 - DOI / URL zum Volltext
 
-Weitere Datentypen (Projekte, Peer Reviews, Auszeichnungen) sind für spätere Versionen vorgesehen.
+Weitere Datentypen (Projekte, Peer Reviews, Auszeichnungen) sind evtl. für spätere Versionen vorgesehen.
 
 ## Ausgabe
 
-Ausschließlich über **Gutenberg-Blöcke** (keine Shortcodes).
+Ausschließlich über **Gutenberg-Block** (kein Shortcode).
 Server-Side Rendering via `BlockRender` → `PublicationRenderer`.
 Zwei Ansichten: Liste und Tabelle.
 
@@ -52,5 +48,5 @@ API-Antworten werden über WordPress Transients zwischengespeichert (Standard: 1
 ## Integration FAUdir
 
 Wenn das `rrze-faudir` Plugin aktiv ist, können Personen aus einem
-Dropdown ausgewählt werden. Die zugehörigen Plattform-IDs (ORCID etc.)
+Dropdown ausgewählt werden. Die zugehörigen Plattform-IDs (ORCID & arXiv.)
 werden automatisch über die FAUdir-Schnittstelle bezogen.
