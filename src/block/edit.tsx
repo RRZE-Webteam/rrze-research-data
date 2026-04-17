@@ -168,9 +168,15 @@ export default function Edit({attributes, setAttributes}: EditProps) {
                                     <label>{source === 'dblp' ? __('DBLP PID', 'rrze-research-data') : __('SemanticScholar Author-ID', 'rrze-research-data')}</label>
                                     <TextControl
                                         value={authorId}
-                                        placeholder={source === 'dblp' ? 'xx/0000' : '0000000000'}
+                                        placeholder={source === 'dblp' ? 'xx/0000' : '0000000'}
+                                        help={source === 'semanticscholar' ? __('Your ID can be found in your Semantic Scholar profile URL. https://www.semanticscholar.org/author/Yourname/6213406',
+                                            'rrze-research-data')
+                                            : ''
+                                        }
                                         onChange={(value) => setAttributes({authorId: value})}
                                     />
+
+
                                 </>
                             )}
                             <Spacer paddingTop=".5rem"/>
@@ -203,6 +209,7 @@ export default function Edit({attributes, setAttributes}: EditProps) {
                                     {label: __('arXiv', 'rrze-research-data'), value: 'arxiv'},
                                     {label: __('DBLP', 'rrze-research-data'), value: 'dblp'},
                                     {label: __('Crossref', 'rrze-research-data'), value: 'crossref'},
+                                    {label: __('Semantic Scholar', 'rrze-research-data'), value: 'semanticscholar'},
                                 ]}
                                 onChange={(value: string) =>
                                     setAttributes({source: value})}
@@ -216,7 +223,7 @@ export default function Edit({attributes, setAttributes}: EditProps) {
                                 value={authorId}
                                 placeholder={source === 'arxiv' ? 'lastname_x_x'
                                     : source === 'dblp' ? 'xx/0000'
-                                        : source === 'semanticscholar' ? '0000000000'
+                                        : source === 'semanticscholar' ? '0000000'
                                             : '0000-0000-0000-0000'
                                 }
                                 onChange={(value) => setAttributes({authorId: value})}

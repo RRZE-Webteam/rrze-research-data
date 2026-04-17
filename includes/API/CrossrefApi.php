@@ -87,8 +87,6 @@ class CrossrefApi
             }
         }
 
-
-
         return new Publication(
             title: $title,
             type: $type,

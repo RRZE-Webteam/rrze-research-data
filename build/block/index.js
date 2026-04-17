@@ -212,7 +212,8 @@ function Edit({
               children: source === 'dblp' ? (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)('DBLP PID', 'rrze-research-data') : (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)('SemanticScholar Author-ID', 'rrze-research-data')
             }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsx)(_wordpress_components__WEBPACK_IMPORTED_MODULE_2__.TextControl, {
               value: authorId,
-              placeholder: source === 'dblp' ? 'xx/0000' : '0000000000',
+              placeholder: source === 'dblp' ? 'xx/0000' : '0000000',
+              help: source === 'semanticscholar' ? (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)('Your ID can be found in your Semantic Scholar profile URL. https://www.semanticscholar.org/author/Yourname/6213406', 'rrze-research-data') : '',
               onChange: value => setAttributes({
                 authorId: value
               })
@@ -260,6 +261,9 @@ function Edit({
             }, {
               label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)('Crossref', 'rrze-research-data'),
               value: 'crossref'
+            }, {
+              label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)('Semantic Scholar', 'rrze-research-data'),
+              value: 'semanticscholar'
             }],
             onChange: value => setAttributes({
               source: value
@@ -267,7 +271,7 @@ function Edit({
           }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsx)(_wordpress_components__WEBPACK_IMPORTED_MODULE_2__.TextControl, {
             label: source === 'arxiv' ? (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)('arXiv Author-ID', 'rrze-research-data') : source === 'dblp' ? (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)('DBLP PID', 'rrze-research-data') : source === 'semanticscholar' ? (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)('Semantic Scholar Author-ID', 'rrze-research-data') : (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)('ORCID', 'rrze-research-data'),
             value: authorId,
-            placeholder: source === 'arxiv' ? 'lastname_x_x' : source === 'dblp' ? 'xx/0000' : source === 'semanticscholar' ? '0000000000' : '0000-0000-0000-0000',
+            placeholder: source === 'arxiv' ? 'lastname_x_x' : source === 'dblp' ? 'xx/0000' : source === 'semanticscholar' ? '0000000' : '0000-0000-0000-0000',
             onChange: value => setAttributes({
               authorId: value
             })
