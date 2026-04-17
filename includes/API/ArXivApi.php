@@ -41,8 +41,8 @@ class ArXivApi
         }
 
         $publications = [];
-        foreach ($xml->entry as $entry) {
-            $publications[] = $this->mapToPublication($entry);
+        foreach ($xml->entry as $item) {
+            $publications[] = $this->mapToPublication($item);
         }
 
         return $publications;
@@ -83,20 +83,20 @@ class ArXivApi
     /**
      * Maps a single arXiv Atom entry to a Publication model.
      */
-    private function mapToPublication(\SimpleXMLElement $entry): Publication
+    private function mapToPublication(\SimpleXMLElement $item): Publication
     {
-        $title = trim((string) $entry->title);
+        $title = trim((string) $item->title);
 
         $year = null;
-        $published = (string) $entry->published;
+        $published = (string) $item->published;
         if (!empty($published)) {
             $year = (int) substr($published, 0, 4);
         }
 
-        $url = (string) $entry->id;
+        $url = (string) $item->id;
 
         $doi = '';
-        foreach ($entry->link as $link) {
+        foreach ($item->link as $link) {
             $href = (string) $link['href'];
             if (str_contains($href, 'doi.org')) {
                 $doi = $href;
@@ -104,18 +104,16 @@ class ArXivApi
         }
 
         $authors = [];
-        foreach ($entry->author as $author) {
+        foreach ($item->author as $author) {
             $name = trim((string) $author->name);
             if ($name) {
                 $authors[] = $name;
             }
         }
 
-        $namespaces = $entry->getNamespaces(true);
-        $arxiv      = $entry->children($namespaces['arxiv']
-            ?? '');
-        $journal    = $arxiv ? trim((string)
-        ($arxiv->journal_ref ?? '')) : '';
+        $namespaces = $item->getNamespaces(true);
+        $arxiv      = $item->children($namespaces['arxiv'] ?? '');
+        $journal    = $arxiv ? trim((string) ($arxiv->journal_ref ?? '')) : '';
 
         return new Publication(
             title:   $title,

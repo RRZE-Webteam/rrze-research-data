@@ -154,10 +154,8 @@ class PubMedApi
         $pubdate = $item['pubdate'] ?? '';
         $year    = !empty($pubdate) ? (int) substr($pubdate, 0, 4) : null;
 
-
         $volume = $item['volume'] ?? '';
         $pages  = $item['pages'] ?? '';
-
 
         // Search the article ids array for the DOI
         $doi = '';
@@ -214,13 +212,13 @@ class PubMedApi
             );
         }
 
-        $body = wp_remote_retrieve_body($response);
-        $data = json_decode($body, true);
+        $body        = wp_remote_retrieve_body($response);
+        $decodedData = json_decode($body, true);
 
-        if (empty($data)) {
+        if (empty($decodedData)) {
             return new \WP_Error('pubmed_invalid_response', 'PubMed API returned no valid data.');
         }
 
-        return $data;
+        return $decodedData;
     }
 }

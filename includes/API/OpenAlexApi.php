@@ -29,15 +29,15 @@ class OpenAlexApi
         $url = self::BASE_URL . '/works?' . 'filter=author.orcid:' . $authorId . '&per_page=10' . '&mailto=webmaster@fau.de';
 
         // Step 2: Send HTTP request
-        $data = $this->request($url);
+        $response = $this->request($url);
 
         // Step 3: Return immediately if request failed
-        if (is_wp_error($data)) {
-            return $data;
+        if (is_wp_error($response)) {
+            return $response;
         }
 
         // Step 4: Loop through all results and map each to a Publication object
-        $results = $data['results'] ?? [];
+        $results = $response['results'] ?? [];
 
         $publications = [];
 
@@ -79,14 +79,14 @@ class OpenAlexApi
         }
 
         // Extract the response body (a JSON string) and decode it into a PHP array
-        $body = wp_remote_retrieve_body($response);
-        $data = json_decode($body, true);
+        $body        = wp_remote_retrieve_body($response);
+        $decodedData = json_decode($body, true);
 
-        if (empty($data)) {
+        if (empty($decodedData)) {
             return new \WP_Error('openalex_invalid_response', 'OpenAlex API returned no valid data.');
         }
 
-        return $data;
+        return $decodedData;
 
     }
 

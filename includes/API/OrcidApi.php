@@ -30,27 +30,27 @@ class OrcidApi
         $url = self::BASE_URL . '/' . $authorId . '/works';
 
         // Step 2: Send HTTP request
-        $data = $this->request($url);
+        $response = $this->request($url);
 
         // Step 3: Return immediately if request failed
-        if (is_wp_error($data)) {
-            return $data;
+        if (is_wp_error($response)) {
+            return $response;
         }
 
         // Step 4: ORCID groups works together (e.g. duplicate entries).
         // We take the first summary per group – it's the preferred version.
-        $groups = $data['group'] ?? [];
+        $groups = $response['group'] ?? [];
 
         $publications = [];
 
         foreach ($groups as $group) {
-            $summary = $group['work-summary'][0] ?? null;
+            $item = $group['work-summary'][0] ?? null;
 
-            if ($summary === null) {
+            if ($item === null) {
                 continue;
             }
 
-            $publications[] = $this->mapToPublication($summary);
+            $publications[] = $this->mapToPublication($item);
         }
 
         return $publications;
@@ -87,48 +87,45 @@ class OrcidApi
         }
 
         // Extract the response body (a JSON string) and decode it into a PHP array
-        $body = wp_remote_retrieve_body($response);
-        $data = json_decode($body, true);
+        $body        = wp_remote_retrieve_body($response);
+        $decodedData = json_decode($body, true);
 
-        if (empty($data)) {
+        if (empty($decodedData)) {
             return new \WP_Error('orcid_invalid_response', 'ORCID API returned no valid data.');
         }
 
-        return $data;
+        return $decodedData;
 
     }
 
     /**
      * Maps a single ORCID work summary to a Publication model.
      *
-     * @param array $summary  A single work-summary from the ORCID API response
+     * @param array $item A single work-summary from the ORCID API response
      * @return Publication
      */
-    public function mapToPublication(array $summary): Publication
+    public function mapToPublication(array $item): Publication
     {
         // Title – deeply nested in the ORCID structure
-        $title = $summary['title']['title']['value'] ?? '';
+        $title = $item['title']['title']['value'] ?? '';
 
         // Publication type, e.g. "journal-article", "book", "conference-paper"
-        $type = $summary['type'] ?? '';
+        $type = $item['type'] ?? '';
 
         // Publication year (maybe missing, so null as fallback)
-        $year = $summary['publication-date']['year']['value'] ?? null;
+        $year = $item['publication-date']['year']['value'] ?? null;
 
         // Journal name (or book title)
-        $journal = $summary['journal-title']['value'] ?? '';
+        $journal = $item['journal-title']['value'] ?? '';
 
         $authors = [];
 
         // URL to the publication (if provided)
-        $url = $summary['url']['value'] ?? '';
-
-        // put-code = ORCID's internal ID for this work
-        //$put_code = $summary['put-code'] ?? null;
+        $url = $item['url']['value'] ?? '';
 
         // Find the DOI in the external-ids list
         $doi = '';
-        $external_ids = $summary['external-ids']['external-id'] ?? [];
+        $external_ids = $item['external-ids']['external-id'] ?? [];
         foreach ($external_ids as $ext_id) {
             if (($ext_id['external-id-type'] ?? '') === 'doi') {
                 $doi = $ext_id['external-id-value'] ?? '';

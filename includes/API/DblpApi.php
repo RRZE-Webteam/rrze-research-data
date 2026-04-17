@@ -28,13 +28,13 @@ class DblpApi
     {
         $url = self::BASE_URL . $authorId . '.xml';
 
-        $data = $this->request($url);
+        $response = $this->request($url);
 
-        if (is_wp_error($data)) {
-            return $data;
+        if (is_wp_error($response)) {
+            return $response;
         }
 
-        $xml = simplexml_load_string($data);
+        $xml = simplexml_load_string($response);
 
         if ($xml === false) {
             return new \WP_Error('dblp-api-error', esc_html__('Invalid XML format.', 'rrze-research-data'));
@@ -42,9 +42,9 @@ class DblpApi
 
         $publications = [];
         foreach ($xml->r as $r) {
-            $entry = $r->children()[0];
-            if ($entry === null) continue;
-            $publications[] = $this->mapToPublication($entry);
+            $item = $r->children()[0];
+            if ($item === null) continue;
+            $publications[] = $this->mapToPublication($item);
         }
 
         return $publications;
@@ -54,52 +54,45 @@ class DblpApi
     /**
      * Maps a single DBLP XML entry to a Publication model.
      *
-     * @param \SimpleXMLElement $entry A single publication element
-    (article, inproceedings, ...)
+     * @param \SimpleXMLElement $item A single publication element (article, inproceedings, ...)
      * @return Publication
      */
-    private
-        function mapToPublication(\SimpleXMLElement $entry): Publication
-        {
-            $title = trim((string)$entry->title);
+    private function mapToPublication(\SimpleXMLElement $item): Publication
+    {
+        $title   = trim((string) $item->title);
+        $year    = (int) $item->year;
+        $journal = (string) ($item->journal ?? $item->booktitle ?? '');
+        $type    = $item->getName();
+        $volume  = (string) ($item->volume ?? '');
+        $pages   = (string) ($item->pages ?? '');
 
-            $year = (int)$entry->year;
-
-            $journal = (string)($entry->journal ?? $entry->booktitle ?? '');
-
-            $ee = (string) ($entry->ee ?? '');
-            if (str_contains($ee, 'doi.org')) {
-                $doi = $ee;
-                $url = '';
-            }  else {
-                $doi = '';
-                $url = $ee;
-            }
-
-            $authors = [];
-            foreach ($entry->author as $author) {
-                $authors[] = (string)$author;
-            }
-            // The tag name tells us the type: article, inproceedings, book, etc.
-            $type = $entry->getName();
-
-            $volume = (string) ($entry->volume ?? '');
-            $pages  = (string) ($entry->pages ?? '');
-
-            return new Publication(
-                title: $title,
-                type: $type,
-                year: $year,
-                url: $url,
-                doi: $doi,
-                source: 'dblp',
-                journal: $journal,
-                authors: $authors,
-                volume:  $volume,
-                pages: $pages,
-
-            );
+        $ee = (string) ($item->ee ?? '');
+        if (str_contains($ee, 'doi.org')) {
+            $doi = $ee;
+            $url = '';
+        } else {
+            $doi = '';
+            $url = $ee;
         }
+
+        $authors = [];
+        foreach ($item->author as $author) {
+            $authors[] = (string) $author;
+        }
+
+        return new Publication(
+            title:   $title,
+            type:    $type,
+            year:    $year,
+            url:     $url,
+            doi:     $doi,
+            source:  'dblp',
+            journal: $journal,
+            authors: $authors,
+            volume:  $volume,
+            pages:   $pages,
+        );
+    }
 
     /**
      * Sends an HTTP GET request and returns the raw response body.
@@ -111,8 +104,7 @@ class DblpApi
      * @return string|\WP_Error Raw response body, or WP_Error on failure
      */
 
-    private
-    function request(string $url): string|\WP_Error
+    private function request(string $url): string|\WP_Error
     {
         $response = wp_remote_get($url, [
             'headers' => ['Accept' => 'application/xml'],
