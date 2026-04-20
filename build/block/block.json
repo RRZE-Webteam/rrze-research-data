@@ -23,21 +23,17 @@
       "type": "string",
       "default": "orcid"
     },
-    "view": {
-      "type": "string",
-      "enum": [
-        "list",
-        "table"
-      ],
-      "default": "list"
-    },
     "limit": {
       "type": "number",
-      "default": 5
+      "default": 15
     },
     "year": {
       "type": "number",
       "default": 0
+    },
+    "type": {
+      "type": "string",
+      "default": ""
     }
   },
   "textdomain": "rrze-research-data",

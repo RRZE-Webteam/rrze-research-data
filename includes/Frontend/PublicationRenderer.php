@@ -11,13 +11,12 @@ defined('ABSPATH') || exit;
  * Renders publication data as HTML for the Research Data block.
  *
  * Receives a prepared list of Publication objects from ResearchService
- * and outputs them as a list or table depending on the block settings.
+ * and outputs them as an unordered list with optional JSON-LD markup.
  */
 class PublicationRenderer
 {
     /**
-     * Main render callback – extracts block attributes and delegates to the correct
-     * view.
+     * Main render callback – extracts block attributes and delegates to renderList()and renderJsonLD()
      *
      * @param array $attributes Block attributes from the editor
      * @return string            Rendered HTML output
@@ -26,14 +25,13 @@ class PublicationRenderer
     {
         $authorId = $attributes['authorId'] ?? '';
         $limit = $attributes['limit'] ?? 10;
-        $sort = $attributes['sort'] ?? 'desc';
-        $view = $attributes['view'] ?? 'list';
         $source = $attributes['source'] ?? '';
         $year = (int)($attributes['year'] ?? 0);
+        $type = $attributes['type'] ?? '';
 
 
         $service = new ResearchService();
-        $publications = $service->preparePublications($authorId, $limit, $sort, $source, $year);
+        $publications = $service->preparePublications($authorId, $limit, $source, $year, $type);
 
         if (is_wp_error($publications)) {
             return '<p>' . esc_html($publications->get_error_message()) . '</p>';
@@ -43,14 +41,8 @@ class PublicationRenderer
             return '<p>' . esc_html__('No publications found.', 'rrze-data-research') . '</p>';
         }
 
-        switch ($view) {
-            case 'table':
-                return self::renderJsonLd($publications) . self::renderTable($publications);
-            case 'list':
-            default:
-                return self::renderJsonLd($publications) . self::renderList($publications);
+        return self::renderJsonLd($publications) . self::renderList($publications);
 
-        }
     }
 
 
@@ -109,86 +101,38 @@ class PublicationRenderer
     }
 
     /**
-     * Renders publications as an HTML table with title and year columns.
+     * Generates a schema.org JSON-LD script tag for the given publications.
+     *
+     * Outputs structured data as a @graph array of ScholarlyArticle entries,
+     * which helps search engines understand and index the publications.
      *
      * @param array $publications Array of Publication objects
-     * @return string              Rendered HTML
+     * @return string             HTML <script> tag with JSON-LD markup
+     * @see https://schema.org/ScholarlyArticle
      */
-    private static function renderTable(array $publications): string
-    {
-        if (empty($publications)) {
-            return '<p>' . esc_html__('No files found.', 'rrze-data-research') . '</p>';
-        }
-
-        $html = '<figure class="wp-block-table"><table class="wp-block-research-table">';
-        $html .= '<thead><tr>';
-        $html .= '<th>' . esc_html__('Authors', 'rrze-research-data') . '</th>';
-        $html .= '<th>' . esc_html__('Year', 'rrze-research-data') . '</th>';
-        $html .= '<th>' . esc_html__('Title', 'rrze-research-data') . '</th>';
-        $html .= '<th>' . esc_html__('Source', 'rrze-research-data') . '</th>';
-        $html .= '</tr></thead>';
-        $html .= '<tbody>';
-
-        foreach ($publications as $publication) {
-            $title = wp_kses($publication->title ?? '', [
-                'sub' => [],
-                'sup' => [],
-                'i' => [],
-                'b' => [],
-            ]);
-            $year = esc_html($publication->year ?? '');
-            $link = !empty($publication->doi)
-                ? 'https://doi.org/' . $publication->doi
-                : esc_url($publication->url ?? '');
-            $journal = esc_html($publication->journal ?? '');
-            $volume = esc_html($publication->volume ?? '');
-            $pages = esc_html($publication->pages ?? '');
-
-            $volumeHtml = $volume ? ' , ' . $volume : '';
-            $pagesHtml = $pages ? ', ' . $pages : '';
-
-            $authorsHtml = !empty($publication->authors) ? esc_html(implode(', ', $publication->authors)) : '';
-
-
-            $html .= '<tr>';
-            $html .= '<td>' . $authorsHtml . '</td>';
-            $html .= '<td>' . $year . '</td>';
-            $html .= sprintf('<td><a href="%s" target="_blank" rel="noopener">%s</a></td>',
-                $link,
-                $title);
-            $html .= '<td class="publication-journal">' . $journal . $volumeHtml . $pagesHtml . '</td>';
-            $html .= '</tr>';
-        }
-
-        $html .= '</tbody></table></figure>';
-
-
-        return $html;
-    }
-
     private static function renderJsonLd(array $publications): string
     {
         $items = [];
 
         foreach ($publications as $pub) {
             $item = [
-                '@type'         => 'ScholarlyArticle',
-                'name'          => $pub->title ?? '',
-                'datePublished' => (string) ($pub->year ?? ''),
-                'url'           => !empty($pub->doi) ? 'https://doi.org/' . $pub->doi : ($pub->url ?? ''),
+                '@type' => 'ScholarlyArticle',
+                'name' => $pub->title ?? '',
+                'datePublished' => (string)($pub->year ?? ''),
+                'url' => !empty($pub->doi) ? 'https://doi.org/' . $pub->doi : ($pub->url ?? ''),
             ];
 
             if (!empty($pub->authors)) {
                 $item['author'] = array_map(fn($name) => [
                     '@type' => 'Person',
-                    'name'  => $name,
+                    'name' => $name,
                 ], $pub->authors);
             }
 
             if (!empty($pub->journal)) {
                 $item['isPartOf'] = [
                     '@type' => 'Periodical',
-                    'name'  => $pub->journal,
+                    'name' => $pub->journal,
                 ];
             }
 
@@ -197,7 +141,7 @@ class PublicationRenderer
 
         $schema = [
             '@context' => 'https://schema.org',
-            '@graph'   => $items,
+            '@graph' => $items,
         ];
 
         return '<script type="application/ld+json">'

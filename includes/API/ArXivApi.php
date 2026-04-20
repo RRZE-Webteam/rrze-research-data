@@ -105,7 +105,8 @@ class ArXivApi
 
         $authors = [];
         foreach ($item->author as $author) {
-            $name = trim((string) $author->name);
+            $name = trim((string) $author->name)
+            ;
             if ($name) {
                 $authors[] = $name;
             }

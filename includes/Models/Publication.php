@@ -44,7 +44,7 @@ class Publication
     public function __construct(string $title, string $type,?int $year, string $url, string $doi, string $source, ?string $journal = null, array $authors=[], string $volume='', string $pages='')
     {
         $this->title = $title;
-        $this->type = $type;
+        $this->type = self::normalizeType($type);
         $this->year = $year;
         $this->url = $url;
         $this->doi = $doi;
@@ -54,5 +54,22 @@ class Publication
         $this->volume = $volume;
         $this->pages  = $pages;
     }
+
+    private static function normalizeType($type): string
+    {
+        return match(strtolower($type)){
+            'journal-article', 'article', 'journalarticle', 'journal article' => 'journal-article',
+            'conference-paper', 'inproceedings', 'conference' => 'conference',
+            'book' => 'book',
+            'book-chapter', 'incollection' => 'book-chapter',
+            'preprint' => 'preprint',
+            'review' => 'review',
+            'phdthesis', 'mastersthesis' => 'thesis',
+            'editorship'=>'editorship',
+            default
+            => 'other',
+        };
+    }
+
 }
 

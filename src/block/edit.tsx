@@ -169,12 +169,13 @@ export default function Edit({attributes, setAttributes}: EditProps) {
                                     <TextControl
                                         value={authorId}
                                         placeholder={source === 'dblp' ? 'xx/0000' : '0000000'}
-                                        help={source === 'semanticscholar' ? __('Your ID can be found in your Semantic Scholar profile URL. https://www.semanticscholar.org/author/Yourname/6213406',
-                                            'rrze-research-data')
-                                            : ''
-                                        }
                                         onChange={(value) => setAttributes({authorId: value})}
                                     />
+                                    {source === 'semanticscholar' && (
+                                        <p className="rrze-research-data-help">
+                                            {__('ID from your profile URL:', 'rrze-research-data')} <code>/author/Yourname/<strong>0000000</strong></code>
+                                        </p>
+                                    )}
 
 
                                 </>
@@ -231,15 +232,23 @@ export default function Edit({attributes, setAttributes}: EditProps) {
                         </PanelBody>
                         <PanelBody title={__('Display Options', 'rrze-research-data')} initialOpen={false}>
                             <SelectControl
-                                label={__('View', 'rrze-research-data')}
-                                value={view}
+                                label={__('Publication Type', 'rrze-research-data')}
+                                value={type}
                                 options={[
-                                    {label: __('List', 'rrze-research-data'), value: 'list'},
-                                    {label: __('Table', 'rrze-research-data'), value: 'table'},
+                                    {label: __('All', 'rrze-research-data'), value: ''},
+                                    {label: __('Journal Article', 'rrze-research-data'), value: 'journal-article'},
+                                    {label: __('Conference', 'rrze-research-data'), value: 'conference'},
+                                    {label: __('Book', 'rrze-research-data'), value: 'book'},
+                                    {label: __('Book Chapter', 'rrze-research-data'), value: 'book-chapter'},
+                                    {label: __('Editorship', 'rrze-research-data'), value: 'editorship'},
+                                    {label: __('Preprint', 'rrze-research-data'), value: 'preprint'},
+                                    {label: __('Review', 'rrze-research-data'), value: 'review'},
+                                    {label: __('Thesis', 'rrze-research-data'), value: 'thesis'},
+                                    {label: __('Other', 'rrze-research-data'), value: 'other'},
                                 ]}
-                                onChange={(val: 'list' | 'table') => setAttributes({view: val as 'list' | 'table'})
-                                }
+                                onChange={(val: string) => setAttributes({type: val})}
                             />
+
                             <NumberControl
                                 label={__('Publications from year', 'rrze-research-data')}
                                 value={year === 0 ? '' : year}
