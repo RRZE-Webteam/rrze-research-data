@@ -24,7 +24,6 @@ import "./editor.scss";
 
 interface EditProps {
     attributes: {
-        view: 'list' | 'table';
         authorId: string;
         type: string;
         source: string;
@@ -38,7 +37,6 @@ interface EditProps {
 export default function Edit({attributes, setAttributes}: EditProps) {
 
     const {
-        view,
         authorId,
         type,
         source,
@@ -173,7 +171,14 @@ export default function Edit({attributes, setAttributes}: EditProps) {
                                     />
                                     {source === 'semanticscholar' && (
                                         <p className="rrze-research-data-help">
-                                            {__('ID from your profile URL:', 'rrze-research-data')} <code>/author/Yourname/<strong>0000000</strong></code>
+                                            {__('ID from your profile URL:', 'rrze-research-data')}
+                                            <code>/author/Yourname/<strong>0000000</strong></code>
+                                        </p>
+                                    )}
+                                    {source === 'dblp' && (
+                                        <p className="rrze-research-data-help">
+                                            {__('ID from your profile URL:', 'rrze-research-data')}
+                                            <code>/pid/<strong>xx/0000</strong></code>
                                         </p>
                                     )}
 
