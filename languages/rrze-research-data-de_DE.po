@@ -5,8 +5,8 @@ msgstr ""
 "Project-Id-Version: RRZE Research Data 0.0.1\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/rrze-research-"
 "data\n"
-"POT-Creation-Date: 2026-04-21T10:36:53+00:00\n"
-"PO-Revision-Date: 2026-04-21 12:55+0200\n"
+"POT-Creation-Date: 2026-04-21T11:19:05+00:00\n"
+"PO-Revision-Date: 2026-04-21 13:27+0200\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: de_DE\n"
@@ -49,6 +49,14 @@ msgstr "Ungültiges XML-Format."
 msgid "RRZE"
 msgstr ""
 
+#: includes/Frontend/PublicationRenderer.php:41
+msgid "No publications found."
+msgstr "Keine Publikationen gefunden."
+
+#: includes/Frontend/PublicationRenderer.php:58
+msgid "No files found."
+msgstr "Keine Dateien gefunden."
+
 #: includes/Services/PublicationService.php:37
 msgid "No author ID provided."
 msgstr "Es wurde keine Autoren-ID angegeben."
@@ -74,150 +82,149 @@ msgid ""
 "The server is running WordPress version %1$s. The Plugin requires at least "
 "WordPress version %2$s."
 msgstr ""
-"Auf dem Server läuft WordPress Version %1$s. Das Plugin erfordert "
-"mindestens WordPress Version %2$s."
+"Auf dem Server läuft WordPress Version %1$s. Das Plugin erfordert mindestens "
+"WordPress Version %2$s."
 
-#: build/block/index.js:108 build/block/index.js:247
+#: build/block/index.js:107 build/block/index.js:253
 msgid "Research Data"
 msgstr "Research Data"
 
-#: build/block/index.js:109
+#: build/block/index.js:108
 msgid "Display research publications from external sources."
 msgstr "Publikationen aus externen Quellen anzeigen"
 
-#: build/block/index.js:118 build/block/index.js:250
+#: build/block/index.js:117 build/block/index.js:256
 msgid "Publication Source"
 msgstr "Quelle der Publikation"
 
-#: build/block/index.js:122 build/block/index.js:187 build/block/index.js:201
-#: build/block/index.js:253 build/block/index.js:278
+#: build/block/index.js:121 build/block/index.js:186 build/block/index.js:200
+#: build/block/index.js:259 build/block/index.js:285
 msgid "ORCID"
 msgstr ""
 
-#: build/block/index.js:125 build/block/index.js:256
+#: build/block/index.js:124 build/block/index.js:262
 msgid "PubMed"
 msgstr ""
 
-#: build/block/index.js:128 build/block/index.js:259
+#: build/block/index.js:127 build/block/index.js:265
 msgid "OpenAlex"
 msgstr ""
 
-#: build/block/index.js:131 build/block/index.js:262
+#: build/block/index.js:130 build/block/index.js:268
 msgid "arXiv"
 msgstr ""
 
-#: build/block/index.js:134 build/block/index.js:265
+#: build/block/index.js:133 build/block/index.js:271
 msgid "DBLP"
 msgstr ""
 
-#: build/block/index.js:137 build/block/index.js:268
+#: build/block/index.js:136 build/block/index.js:274
 msgid "Crossref"
 msgstr ""
 
-#: build/block/index.js:140 build/block/index.js:271
+#: build/block/index.js:139 build/block/index.js:277
 msgid "Semantic Scholar"
 msgstr ""
 
-#: build/block/index.js:153
+#: build/block/index.js:152
 msgid "Loading…"
 msgstr "Wird geladen…"
 
-#: build/block/index.js:156
+#: build/block/index.js:155
 msgid "Person (FAUdir)"
 msgstr ""
 
-#: build/block/index.js:160
+#: build/block/index.js:159
 msgid "— Please select —"
 msgstr "— Bitte wählen —"
 
-#: build/block/index.js:185
+#: build/block/index.js:184
 msgid "No arXiv ID in FAUdir found. Please enter manually."
 msgstr ""
 "In FAUdir wurde keine arXiv-ID gefunden. Bitte geben Sie diese manuell ein."
 
-#: build/block/index.js:185
+#: build/block/index.js:184
 msgid "No ORCID in FAUdir found. Please enter manually."
 msgstr ""
-"In FAUdir wurde kein ORCID gefunden. Bitte geben Sie die Nummer manuell "
-"ein."
+"In FAUdir wurde kein ORCID gefunden. Bitte geben Sie die Nummer manuell ein."
 
-#: build/block/index.js:187 build/block/index.js:201 build/block/index.js:278
+#: build/block/index.js:186 build/block/index.js:200 build/block/index.js:285
 msgid "arXiv Author-ID"
 msgstr "arXiv-Autoren-ID"
 
-#: build/block/index.js:212 build/block/index.js:278
+#: build/block/index.js:211 build/block/index.js:285
 msgid "DBLP PID"
 msgstr ""
 
-#: build/block/index.js:212
+#: build/block/index.js:211
 msgid "SemanticScholar Author-ID"
 msgstr "SemanticScholar-Autor-ID"
 
-#: build/block/index.js:221
+#: build/block/index.js:220 build/block/index.js:227
 msgid "ID from your profile URL:"
 msgstr "ID aus Ihrer Profil-URL:"
 
-#: build/block/index.js:237
+#: build/block/index.js:243
 msgid "Save"
 msgstr "Speichern"
 
-#: build/block/index.js:278
+#: build/block/index.js:285
 msgid "Semantic Scholar Author-ID"
 msgstr "Semantic Scholar-Autor-ID"
 
-#: build/block/index.js:286
+#: build/block/index.js:293
 msgid "Display Options"
 msgstr "Anzeigeoptionen"
 
-#: build/block/index.js:289
+#: build/block/index.js:296
 msgid "Publication Type"
 msgstr "Publikationstyp"
 
-#: build/block/index.js:292
+#: build/block/index.js:299
 msgid "All"
 msgstr "Alle"
 
-#: build/block/index.js:295
+#: build/block/index.js:302
 msgid "Journal Article"
 msgstr "Zeitschriftenartikel"
 
-#: build/block/index.js:298
+#: build/block/index.js:305
 msgid "Conference"
 msgstr "Konferenzbeitrag"
 
-#: build/block/index.js:301
+#: build/block/index.js:308
 msgid "Book"
 msgstr "Buch"
 
-#: build/block/index.js:304
+#: build/block/index.js:311
 msgid "Book Chapter"
 msgstr "Buchkapitel"
 
-#: build/block/index.js:307
+#: build/block/index.js:314
 msgid "Editorship"
 msgstr "Herausgeberschaft"
 
-#: build/block/index.js:310
+#: build/block/index.js:317
 msgid "Preprint"
 msgstr "Preprint"
 
-#: build/block/index.js:313
+#: build/block/index.js:320
 msgid "Review"
 msgstr "Rezension"
 
-#: build/block/index.js:316
+#: build/block/index.js:323
 msgid "Thesis"
 msgstr "Abschlussarbeit"
 
-#: build/block/index.js:319
+#: build/block/index.js:326
 msgid "Other"
 msgstr "Sonstige"
 
-#: build/block/index.js:326
+#: build/block/index.js:333
 msgid "Publications from year"
 msgstr "Publikationsjahr"
 
-#: build/block/index.js:335
+#: build/block/index.js:342
 msgid "Limit"
 msgstr "Anzahl"
 
@@ -229,4 +236,4 @@ msgstr ""
 #: build/block/block.json
 msgctxt "block description"
 msgid "Displays publications from research platforms."
-msgstr "Zeigt Veröffentlichungen von Forschungsplattformen an."
+msgstr "Zeigt Publikationen von Forschungsplattformen an."

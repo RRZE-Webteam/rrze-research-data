@@ -38,7 +38,7 @@ class PublicationRenderer
         }
 
         if (empty ($publications)) {
-            return '<p>' . esc_html__('No publications found.', 'rrze-data-research') . '</p>';
+            return '<p>' . esc_html__('No publications found.', 'rrze-research-data') . '</p>';
         }
 
         return self::renderJsonLd($publications) . self::renderList($publications);
@@ -55,7 +55,7 @@ class PublicationRenderer
     private static function renderList(array $publications): string
     {
         if (empty($publications)) {
-            return '<p>' . esc_html__('No files found.', 'rrze-data-research') . '</p>';
+            return '<p>' . esc_html__('No files found.', 'rrze-research-data') . '</p>';
         }
 
         $html = '<ul class="wp-block-list wp-block-research-list">';

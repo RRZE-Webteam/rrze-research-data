@@ -218,7 +218,7 @@ export default function Edit({attributes, setAttributes}: EditProps) {
                                     {label: __('Semantic Scholar', 'rrze-research-data'), value: 'semanticscholar'},
                                 ]}
                                 onChange={(value: string) =>
-                                    setAttributes({source: value})}
+                                    setAttributes({source: value, authorId:''})}
                             />
                             <TextControl
                                 label={source === 'arxiv' ? __('arXiv Author-ID', 'rrze-research-data')
