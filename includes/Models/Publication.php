@@ -14,7 +14,7 @@ defined('ABSPATH') || exit;
  */
 class Publication
 {
-    //Eigenschaften
+    //Properties
     public string $title;
     public string $type;
     public ?int $year;

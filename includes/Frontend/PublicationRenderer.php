@@ -26,12 +26,13 @@ class PublicationRenderer
         $authorId = $attributes['authorId'] ?? '';
         $limit = $attributes['limit'] ?? 10;
         $source = $attributes['source'] ?? '';
-        $year = (int)($attributes['year'] ?? 0);
-        $type = $attributes['type'] ?? '';
+        $yearFrom = (int)($attributes['yearFrom'] ?? 0);
+        $yearTo   = (int)($attributes['yearTo']   ?? 0);
+        $type = $attributes['type'] ?? [];
 
 
         $service = new ResearchService();
-        $publications = $service->preparePublications($authorId, $limit, $source, $year, $type);
+        $publications = $service->preparePublications($authorId, $limit, $source, $yearFrom, $yearTo, $type);
 
         if (is_wp_error($publications)) {
             return '<p>' . esc_html($publications->get_error_message()) . '</p>';

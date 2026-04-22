@@ -35,7 +35,7 @@ var pages_default = /* @__PURE__ */ (0,react_jsx_runtime__WEBPACK_IMPORTED_MODUL
   \******************************/
 /***/ ((module) => {
 
-module.exports = /*#__PURE__*/JSON.parse('{"$schema":"https://schemas.wp.org/trunk/block.json","apiVersion":3,"name":"rrze/research-data","version":"0.0.1","title":"Research Data","category":"rrze","icon":"admin-page","description":"Displays publications from research platforms.","supports":{"html":false},"attributes":{"isInitialSetup":{"type":"boolean","default":true},"authorId":{"type":"string","default":""},"source":{"type":"string","default":"orcid"},"limit":{"type":"number","default":15},"year":{"type":"number","default":0},"type":{"type":"string","default":""}},"textdomain":"rrze-research-data","editorScript":"file:./index.js","editorStyle":"file:./index.css","style":"file:./style.css","example":{"attributes":{"isInitialSetup":false}}}');
+module.exports = /*#__PURE__*/JSON.parse('{"$schema":"https://schemas.wp.org/trunk/block.json","apiVersion":3,"name":"rrze/research-data","version":"0.0.1","title":"Research Data","category":"rrze","icon":"admin-page","description":"Displays publications from research platforms.","supports":{"html":false},"attributes":{"isInitialSetup":{"type":"boolean","default":true},"authorId":{"type":"string","default":""},"source":{"type":"string","default":"orcid"},"limit":{"type":"number","default":15},"yearFrom":{"type":"number","default":0},"yearTo":{"type":"number","default":0},"type":{"type":"array","items":{"type":"string"},"default":[]}},"textdomain":"rrze-research-data","editorScript":"file:./index.js","editorStyle":"file:./index.css","style":"file:./style.css","example":{"attributes":{"isInitialSetup":false}}}');
 
 /***/ }),
 
@@ -84,7 +84,8 @@ function Edit({
     source,
     limit,
     isInitialSetup,
-    year
+    yearFrom,
+    yearTo
   } = attributes;
   const [personList, setPersonList] = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_3__.useState)([]);
   const [isLoadingPersons, setIsLoadingPersons] = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_3__.useState)(true);
@@ -292,13 +293,11 @@ function Edit({
         }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsxs)(_wordpress_components__WEBPACK_IMPORTED_MODULE_2__.PanelBody, {
           title: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)('Display Options', 'rrze-research-data'),
           initialOpen: false,
-          children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsx)(_wordpress_components__WEBPACK_IMPORTED_MODULE_2__.SelectControl, {
+          children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsxs)(_wordpress_components__WEBPACK_IMPORTED_MODULE_2__.BaseControl, {
             label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)('Publication Type', 'rrze-research-data'),
-            value: type,
-            options: [{
-              label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)('All', 'rrze-research-data'),
-              value: ''
-            }, {
+            children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsx)(_wordpress_components__WEBPACK_IMPORTED_MODULE_2__.__experimentalSpacer, {
+              paddingTop: ".2rem"
+            }), [{
               label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)('Journal Article', 'rrze-research-data'),
               value: 'journal-article'
             }, {
@@ -325,17 +324,38 @@ function Edit({
             }, {
               label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)('Other', 'rrze-research-data'),
               value: 'other'
-            }],
-            onChange: val => setAttributes({
-              type: val
-            })
+            }].map(option => /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsx)(_wordpress_components__WEBPACK_IMPORTED_MODULE_2__.CheckboxControl, {
+              label: option.label,
+              checked: type.includes(option.value),
+              onChange: checked => {
+                if (checked) {
+                  setAttributes({
+                    type: [...type, option.value]
+                  });
+                } else {
+                  setAttributes({
+                    type: type.filter(t => t !== option.value)
+                  });
+                }
+              }
+            }, option.value))]
+          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsx)(_wordpress_components__WEBPACK_IMPORTED_MODULE_2__.__experimentalSpacer, {
+            paddingTop: ".5rem"
           }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsx)(_wordpress_components__WEBPACK_IMPORTED_MODULE_2__.__experimentalNumberControl, {
-            label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)('Publications from year', 'rrze-research-data'),
-            value: year === 0 ? '' : year,
+            label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)('Year from', 'rrze-research-data'),
+            value: yearFrom === 0 ? '' : yearFrom,
             min: 1900,
             max: 2100,
             onChange: value => setAttributes({
-              year: parseInt(value) || 0
+              yearFrom: parseInt(value) || 0
+            })
+          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsx)(_wordpress_components__WEBPACK_IMPORTED_MODULE_2__.__experimentalNumberControl, {
+            label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)('Year to', 'rrze-research-data'),
+            value: yearTo === 0 ? '' : yearTo,
+            min: 1900,
+            max: 2100,
+            onChange: value => setAttributes({
+              yearTo: parseInt(value) || 0
             })
           }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsx)(_wordpress_components__WEBPACK_IMPORTED_MODULE_2__.__experimentalNumberControl, {
             __next40pxDefaultSize: true,

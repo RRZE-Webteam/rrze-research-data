@@ -9,6 +9,8 @@ import {
     Placeholder,
     __experimentalSpacer as Spacer,
     Button,
+    CheckboxControl,
+    BaseControl,
     TextControl,
     PanelBody,
     SelectControl,
@@ -25,11 +27,12 @@ import "./editor.scss";
 interface EditProps {
     attributes: {
         authorId: string;
-        type: string;
+        type: string[];
         source: string;
         limit: number;
         isInitialSetup: boolean;
-        year: number;
+        yearFrom: number;
+        yearTo: number;
     }
     setAttributes: (attributes: Partial<EditProps["attributes"]>) => void;
 }
@@ -42,7 +45,8 @@ export default function Edit({attributes, setAttributes}: EditProps) {
         source,
         limit,
         isInitialSetup,
-        year
+        yearFrom,
+        yearTo,
     } = attributes;
 
     const [personList, setPersonList] = useState([]);
@@ -236,11 +240,9 @@ export default function Edit({attributes, setAttributes}: EditProps) {
                             />
                         </PanelBody>
                         <PanelBody title={__('Display Options', 'rrze-research-data')} initialOpen={false}>
-                            <SelectControl
-                                label={__('Publication Type', 'rrze-research-data')}
-                                value={type}
-                                options={[
-                                    {label: __('All', 'rrze-research-data'), value: ''},
+                            <BaseControl label={__('Publication Type', 'rrze-research-data')}>
+                                <Spacer paddingTop=".2rem"/>
+                                {[
                                     {label: __('Journal Article', 'rrze-research-data'), value: 'journal-article'},
                                     {label: __('Conference', 'rrze-research-data'), value: 'conference'},
                                     {label: __('Book', 'rrze-research-data'), value: 'book'},
@@ -250,16 +252,40 @@ export default function Edit({attributes, setAttributes}: EditProps) {
                                     {label: __('Review', 'rrze-research-data'), value: 'review'},
                                     {label: __('Thesis', 'rrze-research-data'), value: 'thesis'},
                                     {label: __('Other', 'rrze-research-data'), value: 'other'},
-                                ]}
-                                onChange={(val: string) => setAttributes({type: val})}
-                            />
+                                ].map(option => (
+                                    <CheckboxControl
+                                        key={option.value}
+                                        label={option.label}
+                                        checked={type.includes(option.value)}
+                                        onChange={(checked) => {
+                                            if (checked) {
+                                                setAttributes({type: [...type, option.value]
+                                                });
+                                            } else {
+                                                setAttributes({type: type.filter(t => t !==
+                                                        option.value)});
+                                            }
+                                        }}
+                                    />
+                                ))}
+                            </BaseControl>
+                            <Spacer paddingTop=".5rem"/>
 
                             <NumberControl
-                                label={__('Publications from year', 'rrze-research-data')}
-                                value={year === 0 ? '' : year}
-                                min={1900}
-                                max={2100}
-                                onChange={(value) => setAttributes({year: parseInt(value as string) || 0})}
+                            label={__('Year from', 'rrze-research-data')}
+                            value={yearFrom === 0 ? '' : yearFrom}
+                            min={1900}
+                            max={2100}
+                            onChange={(value) => setAttributes({yearFrom: parseInt(value as
+                            string) || 0})}
+                            />
+                            <NumberControl
+                            label={__('Year to', 'rrze-research-data')}
+                            value={yearTo === 0 ? '' : yearTo}
+                            min={1900}
+                            max={2100}
+                            onChange={(value) => setAttributes({yearTo: parseInt(value as
+                            string) || 0})}
                             />
                             <NumberControl
                                 __next40pxDefaultSize

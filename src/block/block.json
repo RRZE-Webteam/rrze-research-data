@@ -27,13 +27,18 @@
       "type": "number",
       "default": 15
     },
-    "year": {
+    "yearFrom": {
+      "type": "number",
+      "default": 0
+    },
+    "yearTo": {
       "type": "number",
       "default": 0
     },
     "type": {
-      "type": "string",
-      "default": ""
+      "type": "array",
+      "items": {"type":  "string"},
+      "default": []
     }
   },
   "textdomain": "rrze-research-data",
