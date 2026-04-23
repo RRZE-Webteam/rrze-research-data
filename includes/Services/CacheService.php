@@ -70,4 +70,27 @@ class CacheService
         delete_transient($key);
     }
 
+    /**
+     * Deletes all cached research data transients from the
+     * database.
+     *
+     * Searches for all transients whose key starts with
+     * "rrze_research_"
+     * and removes them.
+     */
+    public function deleteAll(): void
+    {
+        global $wpdb;
+
+        $keys = $wpdb->get_col("SELECT option_name FROM {$wpdb->options} WHERE option_name LIKE '_transient_rrze_research_%'"
+        );
+
+        foreach ($keys as $key) {
+            $transientName = str_replace('_transient_', '',
+                $key);
+            delete_transient($transientName);
+        }
+    }
+
+
 }

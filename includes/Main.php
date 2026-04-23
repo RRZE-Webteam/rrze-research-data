@@ -6,7 +6,7 @@ defined('ABSPATH') || exit;
 
 use RRZE\ResearchData\Rest\RestController;
 use RRZE\ResearchData\Blocks\BlockRegistration;
-//use RRZE\ResearchData\Admin\Settings;
+use RRZE\ResearchData\Admin\Settings;
 
 
 
@@ -32,7 +32,7 @@ class Main
     {
     new RestController();
     new BlockRegistration();
-    //new Settings();
+    new Settings();
 
     }
 }

@@ -14,13 +14,15 @@ import {
     TextControl,
     PanelBody,
     SelectControl,
+    Tooltip,
+    Icon,
     __experimentalNumberControl as NumberControl
 } from "@wordpress/components";
 
 import {useState, useEffect} from "@wordpress/element";
 import apiFetch from '@wordpress/api-fetch';
 
-import {pages} from "@wordpress/icons";
+import {pages, info} from "@wordpress/icons";
 import ServerSideRender from '@wordpress/server-side-render';
 import "./editor.scss";
 
@@ -33,6 +35,7 @@ interface EditProps {
         isInitialSetup: boolean;
         yearFrom: number;
         yearTo: number;
+        groupBy: string;
     }
     setAttributes: (attributes: Partial<EditProps["attributes"]>) => void;
 }
@@ -47,6 +50,7 @@ export default function Edit({attributes, setAttributes}: EditProps) {
         isInitialSetup,
         yearFrom,
         yearTo,
+        groupBy
     } = attributes;
 
     const [personList, setPersonList] = useState([]);
@@ -147,8 +151,15 @@ export default function Edit({attributes, setAttributes}: EditProps) {
                                                         placeholder={source === 'arxiv' ? 'lastname_f_1' : '0000-0000-0000-0000'}
                                                         onChange={(value) => setAttributes({authorId: value})}
                                                     />
+                                                    <Tooltip text={source === 'arxiv'
+                                                        ? __('Enter your arXiv Author-ID in idm.fau.de under: FAUdir → Entries →  Portals and networks', 'rrze-research-data')
+                                                        : __('Enter your ORCID in idm.fau.de under: FAUdir → Entries →  Portals and networks', 'rrze-research-data')
+                                                    }>
+                                                        <span className="rrze-research-data-info"><Icon icon={info} /></span>
+                                                    </Tooltip>
                                                 </>
                                             )}
+
                                         </>
                                     ) : (
                                         // if FAUdir ist not active → TextControl
@@ -159,6 +170,12 @@ export default function Edit({attributes, setAttributes}: EditProps) {
                                                 placeholder={source === 'arxiv' ? 'lastname_f_1': '0000-0000-0000-0000'}
                                                 onChange={(value) => setAttributes({authorId: value})}
                                             />
+                                            <Tooltip text={source === 'arxiv'
+                                                ? __('Enter your arXiv Author-ID in idm.fau.de under: FAUdir → Entries →  Portals and networks', 'rrze-research-data')
+                                                : __('Enter your ORCID in idm.fau.de under: FAUdir → Entries →  Portals and networks', 'rrze-research-data')
+                                            }>
+                                                <span className="rrze-research-data-info"><Icon icon={info} /></span>
+                                            </Tooltip>
                                         </>
                                     )}
                                 </>
@@ -238,6 +255,14 @@ export default function Edit({attributes, setAttributes}: EditProps) {
                                 }
                                 onChange={(value) => setAttributes({authorId: value})}
                             />
+                            {(source === 'orcid' || source === 'arxiv' || source === 'pubmed' || source === 'openAlex' || source === 'crossref') && (
+                                <Tooltip text={source === 'arxiv'
+                                    ? __('Enter your arXiv Author-ID in idm.fau.de under: FAUdir → Entries →  Portals and networks', 'rrze-research-data')
+                                    : __('Enter your ORCID in idm.fau.de under: FAUdir → Entries →  Portals and networks', 'rrze-research-data')
+                                }>
+                                    <span className="rrze-research-data-info"><Icon icon={info} /></span>
+                                </Tooltip>
+                            )}
                         </PanelBody>
                         <PanelBody title={__('Display Options', 'rrze-research-data')} initialOpen={false}>
                             <BaseControl label={__('Publication Type', 'rrze-research-data')}>
@@ -270,7 +295,16 @@ export default function Edit({attributes, setAttributes}: EditProps) {
                                 ))}
                             </BaseControl>
                             <Spacer paddingTop=".5rem"/>
-
+                            <SelectControl
+                                label={__('Group by', 'rrze-research-data')}
+                                value={groupBy}
+                                options={[
+                                    {label: __('No grouping', 'rrze-research-data'), value: ''},
+                                    {label: __('Year', 'rrze-research-data'), value: 'year'},
+                                    {label: __('Publication Type', 'rrze-research-data'), value: 'type'},
+                                ]}
+                                onChange={(val: string) => setAttributes({groupBy: val})}
+                            />
                             <NumberControl
                             label={__('Year from', 'rrze-research-data')}
                             value={yearFrom === 0 ? '' : yearFrom}

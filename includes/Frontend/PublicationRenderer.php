@@ -16,9 +16,9 @@ defined('ABSPATH') || exit;
 class PublicationRenderer
 {
     /**
-     * Main render callback – extracts block attributes and delegates to renderList()and renderJsonLD()
+     * Main render callback – extracts block attributes and delegates torenderList() and renderJsonLd().
      *
-     * @param array $attributes Block attributes from the editor
+     * @param array $attributes Block attributes from the editor (authorId, source,limit, yearFrom, yearTo, type, groupBy)
      * @return string            Rendered HTML output
      */
     public static function render(array $attributes = []): string
@@ -29,6 +29,7 @@ class PublicationRenderer
         $yearFrom = (int)($attributes['yearFrom'] ?? 0);
         $yearTo   = (int)($attributes['yearTo']   ?? 0);
         $type = $attributes['type'] ?? [];
+        $groupBy = $attributes['groupBy'] ?? '';
 
 
         $service = new ResearchService();
@@ -42,64 +43,140 @@ class PublicationRenderer
             return '<p>' . esc_html__('No publications found.', 'rrze-research-data') . '</p>';
         }
 
-        return self::renderJsonLd($publications) . self::renderList($publications);
+        return self::renderJsonLd($publications) . self::renderList($publications, $groupBy);
 
     }
 
 
     /**
-     * Renders publications as an unordered list.
+     * Renders publications as an HTML list, optionally grouped by year or type.
      *
-     * @param array $publications Array of Publication objects
+     * If groupBy is "year", publications are grouped under <h3> headings by year(descending).
+     * If groupBy is "type", publications are grouped under <h3> headings bypublication type (ascending).
+     * If groupBy is empty, all publications are rendered as a single flat list.
+     *
+     * @param array  $publications Array of Publication objects
+     * @param string $groupBy      Grouping mode: "year", "type", or "" (nogrouping)
      * @return string              Rendered HTML
      */
-    private static function renderList(array $publications): string
+
+    private static function renderList(array $publications, string $groupBy=''): string
     {
         if (empty($publications)) {
-            return '<p>' . esc_html__('No files found.', 'rrze-research-data') . '</p>';
+            return '<p>' . esc_html__('No publications found.', 'rrze-research-data') . '</p>';
+        }
+
+        if ($groupBy === 'year' || $groupBy === 'type') {
+            $groups = [];
+            foreach ($publications as $publication) {
+                $key = $groupBy === 'year'
+                    ? ($publication->year ?? '?')
+                    : ($publication->type ?? 'other');
+                $groups[$key][] = $publication;
+            }
+            $groupBy === 'year' ? krsort($groups) : ksort($groups);
+
+            $html = '';
+            foreach ($groups as $groupKey => $groupPublications) {
+                $label = $groupBy === 'type' ? self::getTranslatedLabel($groupKey) : esc_html($groupKey);
+                $html .= '<h3>' . $label . '</h3>';
+                $html .= '<ul class="wp-block-list wp-block-research-list">';
+                foreach ($groupPublications as $publication) {
+                    $html .= self::renderItem($publication);
+                }
+                $html .= '</ul>';
+            }
+            return $html;
         }
 
         $html = '<ul class="wp-block-list wp-block-research-list">';
-
         foreach ($publications as $publication) {
-            $title = wp_kses($publication->title ?? '', [
-                'sub' => [],
-                'sup' => [],
-                'i' => [],
-                'b' => [],
-            ]);
-            $year = esc_html($publication->year ?? '');
-            $journal = esc_html($publication->journal ?? '');
-            $link = !empty($publication->doi)
-                ? 'https://doi.org/' . $publication->doi
-                : esc_url($publication->url ?? '');
-            $volume = esc_html($publication->volume ?? '');
-            $pages = esc_html($publication->pages ?? '');
-
-            $volumeHtml = $volume ? ' | ' . $volume : '';
-            $pagesHtml = $pages ? ', ' . $pages : '';
-            $yearHtml = $year ? $year . ' | ' : '';
-            $journalHtml = $journal ? ' | <span class="publication-journal">' .
-                $journal . '</span>' : '';
-
-            $authorsHtml = !empty($publication->authors) ? esc_html(implode(', ', $publication->authors)) . ' | ' : '';
-
-            $html .= sprintf(
-                '<li>%s%s<a href="%s" target="_blank" rel="noopener">%s</a>%s%s%s</li>',
-                $authorsHtml,
-                $yearHtml,
-                $link,
-                $title,
-                $journalHtml,
-                $volumeHtml,
-                $pagesHtml
-            );
+            $html .= self::renderItem($publication);
         }
-
         $html .= '</ul>';
-
         return $html;
     }
+
+
+    /**
+     * Renders a single publication as an HTML list item.
+     *
+     * Outputs authors, year, title (linked via DOI or URL), journal, volume andpages.
+     * Fields are separated by " | " and omitted if empty.
+     *
+     * @param object $publication A Publication object
+     * @return string             HTML <li> element
+     */
+    private static function renderItem(object $publication): string
+  {
+      $title = wp_kses($publication->title ?? '', [
+          'sub' => [],
+          'sup' => [],
+          'i' => [],
+          'b' => []]);
+
+      $year = esc_html($publication->year ?? '');
+
+      $journal = esc_html($publication->journal ?? '');
+
+      $link = !empty($publication->doi)
+          ? 'https://doi.org/' . $publication->doi
+          : esc_url($publication->url ?? '');
+
+      $volume = esc_html($publication->volume ?? '');
+
+      $pages = esc_html($publication->pages ?? '');
+
+      $volumeHtml  = $volume  ? ' | ' . $volume : '';
+
+      $pagesHtml   = $pages   ? ', ' . $pages : '';
+
+      $yearHtml    = $year    ? $year . ' | ' : '';
+
+      $journalHtml = $journal ? ' | <span class="publication-journal">' . $journal
+          . '</span>' : '';
+
+      $authorsHtml = !empty($publication->authors)
+          ? esc_html(implode(', ', $publication->authors)) . ' | '
+          : '';
+
+      return sprintf(
+          '<li>%s%s<a href="%s" target="_blank" rel="noopener">%s</a>%s%s%s</li>',
+          $authorsHtml,
+          $yearHtml,
+          $link,
+          $title,
+          $journalHtml,
+          $volumeHtml,
+          $pagesHtml
+      );
+  }
+
+
+    /**
+     * Returns a human-readable, translated label for a publication type.
+     *
+     * @param string $type Canonical publication type, e.g. "journal-article"
+     * @return string      Translated label
+     */
+    private static function getTranslatedLabel(string $type): string
+    {
+        $labels = [
+            'journal-article' => __('Journal Article', 'rrze-research-data'),
+            'conference'      => __('Conference', 'rrze-research-data'),
+            'book'            => __('Book', 'rrze-research-data'),
+            'book-chapter'    => __('Book Chapter', 'rrze-research-data'),
+            'editorship'      => __('Editorship', 'rrze-research-data'),
+            'preprint'        => __('Preprint', 'rrze-research-data'),
+            'review'          => __('Review', 'rrze-research-data'),
+            'thesis'          => __('Thesis', 'rrze-research-data'),
+            'other'           => __('Other', 'rrze-research-data'),
+        ];
+
+        return $labels[$type] ?? esc_html($type);
+    }
+
+
 
     /**
      * Generates a schema.org JSON-LD script tag for the given publications.
