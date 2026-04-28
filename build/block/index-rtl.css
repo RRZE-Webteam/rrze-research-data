@@ -3,7 +3,7 @@
   \**********************************************************************************************************************************************************************************************************************************************/
 .rrze-research-data-form {
   display: grid;
-  grid-template-columns: 120px 300px;
+  grid-template-columns: 200px 300px;
   gap: 12px 16px;
   align-items: center;
 }
@@ -24,4 +24,14 @@
 }
 label {
   font-weight: 600;
+}
+.rrze-research-data-info {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+.rrze-research-data-info svg {
+  width: 22px;
+  height: 22px;
+  fill: #cc0000;
 }

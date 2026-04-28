@@ -9,7 +9,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2026-04-21T11:27:16+00:00\n"
+"POT-Creation-Date: 2026-04-28T09:19:20+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.12.0\n"
 "X-Domain: rrze-research-data\n"
@@ -39,6 +39,36 @@ msgstr ""
 msgid "https://www.wp.rrze.fau.de/"
 msgstr ""
 
+#: includes/Admin/Settings.php:43
+msgid "Research Data Settings"
+msgstr ""
+
+#: includes/Admin/Settings.php:97
+msgid "RRZE Research Data Settings"
+msgstr ""
+
+#: includes/Admin/Settings.php:98
+msgid "Publication data from external sources (ORCID, PubMed, OpenAlexetc.) is cached for 12 hours to reduce API requests and improve page load times."
+msgstr ""
+
+#: includes/Admin/Settings.php:103
+msgid "Cache cleared successfully."
+msgstr ""
+
+#: includes/Admin/Settings.php:106
+msgid "Cache"
+msgstr ""
+
+#: includes/Admin/Settings.php:108
+msgid ""
+"If publications are not up to date, you can clear the cache manually. New data will be fetched from the\n"
+"  source on the next page load."
+msgstr ""
+
+#: includes/Admin/Settings.php:114
+msgid "Clear Cache"
+msgstr ""
+
 #: includes/API/ArXivApi.php:40
 #: includes/API/DblpApi.php:40
 msgid "Invalid XML format."
@@ -48,12 +78,66 @@ msgstr ""
 msgid "RRZE"
 msgstr ""
 
-#: includes/Frontend/PublicationRenderer.php:41
+#: includes/Frontend/CitationFormatter.php:210
+msgid "and"
+msgstr ""
+
+#: includes/Frontend/CitationFormatter.php:217
+msgid "vol."
+msgstr ""
+
+#: includes/Frontend/CitationFormatter.php:219
+msgid "pp."
+msgstr ""
+
+#: includes/Frontend/PublicationRenderer.php:45
+#: includes/Frontend/PublicationRenderer.php:68
 msgid "No publications found."
 msgstr ""
 
-#: includes/Frontend/PublicationRenderer.php:58
-msgid "No files found."
+#: includes/Frontend/PublicationRenderer.php:128
+#: build/block/index.js:343
+msgid "Journal Article"
+msgstr ""
+
+#: includes/Frontend/PublicationRenderer.php:129
+#: build/block/index.js:346
+msgid "Conference"
+msgstr ""
+
+#: includes/Frontend/PublicationRenderer.php:130
+#: build/block/index.js:349
+msgid "Book"
+msgstr ""
+
+#: includes/Frontend/PublicationRenderer.php:131
+#: build/block/index.js:352
+msgid "Book Chapter"
+msgstr ""
+
+#: includes/Frontend/PublicationRenderer.php:132
+#: build/block/index.js:355
+msgid "Editorship"
+msgstr ""
+
+#: includes/Frontend/PublicationRenderer.php:133
+#: build/block/index.js:358
+msgid "Preprint"
+msgstr ""
+
+#: includes/Frontend/PublicationRenderer.php:134
+#: build/block/index.js:361
+msgid "Review"
+msgstr ""
+
+#: includes/Frontend/PublicationRenderer.php:135
+#: build/block/index.js:364
+msgid "Thesis"
+msgstr ""
+
+#: includes/Frontend/PublicationRenderer.php:136
+#: build/block/index.js:367
+msgid "Other"
 msgstr ""
 
 #: includes/Services/PublicationService.php:37
@@ -76,159 +160,163 @@ msgstr ""
 msgid "The server is running WordPress version %1$s. The Plugin requires at least WordPress version %2$s."
 msgstr ""
 
-#: build/block/index.js:107
-#: build/block/index.js:253
+#: build/block/index.js:141
+#: build/block/index.js:296
 msgid "Research Data"
 msgstr ""
 
-#: build/block/index.js:108
+#: build/block/index.js:142
 msgid "Display research publications from external sources."
 msgstr ""
 
-#: build/block/index.js:117
-#: build/block/index.js:256
+#: build/block/index.js:151
+#: build/block/index.js:299
 msgid "Publication Source"
 msgstr ""
 
-#: build/block/index.js:121
-#: build/block/index.js:186
-#: build/block/index.js:200
-#: build/block/index.js:259
-#: build/block/index.js:285
+#: build/block/index.js:155
+#: build/block/index.js:229
+#: build/block/index.js:243
+#: build/block/index.js:302
+#: build/block/index.js:328
 msgid "ORCID"
 msgstr ""
 
-#: build/block/index.js:124
-#: build/block/index.js:262
+#: build/block/index.js:158
+#: build/block/index.js:305
 msgid "PubMed"
 msgstr ""
 
-#: build/block/index.js:127
-#: build/block/index.js:265
+#: build/block/index.js:161
+#: build/block/index.js:308
 msgid "OpenAlex"
 msgstr ""
 
-#: build/block/index.js:130
-#: build/block/index.js:268
+#: build/block/index.js:164
+#: build/block/index.js:311
 msgid "arXiv"
 msgstr ""
 
-#: build/block/index.js:133
-#: build/block/index.js:271
-msgid "DBLP"
-msgstr ""
-
-#: build/block/index.js:136
-#: build/block/index.js:274
+#: build/block/index.js:167
+#: build/block/index.js:314
 msgid "Crossref"
 msgstr ""
 
-#: build/block/index.js:139
-#: build/block/index.js:277
+#: build/block/index.js:170
+#: build/block/index.js:317
+msgid "DBLP"
+msgstr ""
+
+#: build/block/index.js:173
+#: build/block/index.js:320
 msgid "Semantic Scholar"
 msgstr ""
 
-#: build/block/index.js:152
+#: build/block/index.js:186
 msgid "Loading…"
 msgstr ""
 
-#: build/block/index.js:155
+#: build/block/index.js:189
 msgid "Person (FAUdir)"
 msgstr ""
 
-#: build/block/index.js:159
+#: build/block/index.js:193
 msgid "— Please select —"
 msgstr ""
 
-#: build/block/index.js:184
+#: build/block/index.js:218
 msgid "No arXiv ID in FAUdir found. Please enter manually."
 msgstr ""
 
-#: build/block/index.js:184
+#: build/block/index.js:218
 msgid "No ORCID in FAUdir found. Please enter manually."
 msgstr ""
 
-#: build/block/index.js:186
-#: build/block/index.js:200
-#: build/block/index.js:285
+#: build/block/index.js:219
+msgid "Enter your arXiv Author-ID in idm.fau.de under: FAUdir → Entries → Portals and networks"
+msgstr ""
+
+#: build/block/index.js:219
+msgid "Enter your ORCID in idm.fau.de under: FAUdir → Entries → Portals and networks"
+msgstr ""
+
+#: build/block/index.js:229
+#: build/block/index.js:243
+#: build/block/index.js:328
 msgid "arXiv Author-ID"
 msgstr ""
 
-#: build/block/index.js:211
-#: build/block/index.js:285
+#: build/block/index.js:254
+#: build/block/index.js:328
 msgid "DBLP PID"
 msgstr ""
 
-#: build/block/index.js:211
+#: build/block/index.js:254
 msgid "SemanticScholar Author-ID"
 msgstr ""
 
-#: build/block/index.js:220
-#: build/block/index.js:227
-msgid "ID from your profile URL:"
+#: build/block/index.js:263
+msgid "ID from your Semantic Scholar profile URL:"
 msgstr ""
 
-#: build/block/index.js:243
+#: build/block/index.js:270
+msgid "ID from your DBLP profile URL:"
+msgstr ""
+
+#: build/block/index.js:286
 msgid "Save"
 msgstr ""
 
-#: build/block/index.js:285
+#: build/block/index.js:328
 msgid "Semantic Scholar Author-ID"
 msgstr ""
 
-#: build/block/index.js:293
+#: build/block/index.js:336
 msgid "Display Options"
 msgstr ""
 
-#: build/block/index.js:296
+#: build/block/index.js:339
+#: build/block/index.js:396
 msgid "Publication Type"
 msgstr ""
 
-#: build/block/index.js:299
-msgid "All"
+#: build/block/index.js:387
+msgid "Group by"
 msgstr ""
 
-#: build/block/index.js:302
-msgid "Journal Article"
+#: build/block/index.js:390
+msgid "No grouping"
 msgstr ""
 
-#: build/block/index.js:305
-msgid "Conference"
+#: build/block/index.js:393
+msgid "Year"
 msgstr ""
 
-#: build/block/index.js:308
-msgid "Book"
+#: build/block/index.js:403
+msgid "Citation Style"
 msgstr ""
 
-#: build/block/index.js:311
-msgid "Book Chapter"
+#: build/block/index.js:406
+msgid "Standard"
 msgstr ""
 
-#: build/block/index.js:314
-msgid "Editorship"
+#: build/block/index.js:409
+msgid "APA"
 msgstr ""
 
-#: build/block/index.js:317
-msgid "Preprint"
+#: build/block/index.js:412
+msgid "MLA"
 msgstr ""
 
-#: build/block/index.js:320
-msgid "Review"
+#: build/block/index.js:419
+msgid "Year from"
 msgstr ""
 
-#: build/block/index.js:323
-msgid "Thesis"
+#: build/block/index.js:427
+msgid "Year to"
 msgstr ""
 
-#: build/block/index.js:326
-msgid "Other"
-msgstr ""
-
-#: build/block/index.js:333
-msgid "Publications from year"
-msgstr ""
-
-#: build/block/index.js:342
+#: build/block/index.js:436
 msgid "Limit"
 msgstr ""
 

@@ -65,7 +65,7 @@ var pages_default = /* @__PURE__ */ (0,react_jsx_runtime__WEBPACK_IMPORTED_MODUL
   \******************************/
 /***/ ((module) => {
 
-module.exports = /*#__PURE__*/JSON.parse('{"$schema":"https://schemas.wp.org/trunk/block.json","apiVersion":3,"name":"rrze/research-data","version":"0.0.1","title":"Research Data","category":"rrze","icon":"admin-page","description":"Displays publications from research platforms.","supports":{"html":false},"attributes":{"isInitialSetup":{"type":"boolean","default":true},"authorId":{"type":"string","default":""},"source":{"type":"string","default":"orcid"},"limit":{"type":"number","default":15},"yearFrom":{"type":"number","default":0},"yearTo":{"type":"number","default":0},"type":{"type":"array","items":{"type":"string"},"default":[]},"groupBy":{"type":"string","default":""}},"textdomain":"rrze-research-data","editorScript":"file:./index.js","editorStyle":"file:./index.css","style":"file:./style.css","example":{"attributes":{"isInitialSetup":false}}}');
+module.exports = /*#__PURE__*/JSON.parse('{"$schema":"https://schemas.wp.org/trunk/block.json","apiVersion":3,"name":"rrze/research-data","version":"0.0.1","title":"Research Data","category":"rrze","icon":"admin-page","description":"Displays publications from research platforms.","supports":{"html":false},"attributes":{"isInitialSetup":{"type":"boolean","default":true},"authorId":{"type":"string","default":""},"source":{"type":"string","default":"orcid"},"limit":{"type":"number","default":15},"yearFrom":{"type":"number","default":0},"yearTo":{"type":"number","default":0},"type":{"type":"array","items":{"type":"string"},"default":[]},"groupBy":{"type":"string","default":""},"citationStyle":{"type":"string","default":""}},"textdomain":"rrze-research-data","editorScript":"file:./index.js","editorStyle":"file:./index.css","style":"file:./style.css","example":{"attributes":{"isInitialSetup":false}}}');
 
 /***/ }),
 
@@ -117,7 +117,8 @@ function Edit({
     isInitialSetup,
     yearFrom,
     yearTo,
-    groupBy
+    groupBy,
+    citationStyle
   } = attributes;
   const [personList, setPersonList] = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_3__.useState)([]);
   const [isLoadingPersons, setIsLoadingPersons] = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_3__.useState)(true);
@@ -163,11 +164,11 @@ function Edit({
               label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)('arXiv', 'rrze-research-data'),
               value: 'arxiv'
             }, {
-              label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)('DBLP', 'rrze-research-data'),
-              value: 'dblp'
-            }, {
               label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)('Crossref', 'rrze-research-data'),
               value: 'crossref'
+            }, {
+              label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)('DBLP', 'rrze-research-data'),
+              value: 'dblp'
             }, {
               label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)('Semantic Scholar', 'rrze-research-data'),
               value: 'semanticscholar'
@@ -210,11 +211,20 @@ function Edit({
                   });
                 }
               }), showManualInput && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_9__.jsxs)(react_jsx_runtime__WEBPACK_IMPORTED_MODULE_9__.Fragment, {
-                children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_9__.jsx)("p", {
+                children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_9__.jsxs)("p", {
                   style: {
                     color: '#cc0000'
                   },
-                  children: source === 'arxiv' ? (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)('No arXiv ID in FAUdir found. Please enter manually.', 'rrze-research-data') : (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)('No ORCID in FAUdir found. Please enter manually.', 'rrze-research-data')
+                  children: [source === 'arxiv' ? (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)('No arXiv ID in FAUdir found. Please enter manually.', 'rrze-research-data') : (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)('No ORCID in FAUdir found. Please enter manually.', 'rrze-research-data'), ' ', /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_9__.jsx)(_wordpress_components__WEBPACK_IMPORTED_MODULE_2__.Tooltip, {
+                    text: source === 'arxiv' ? (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)('Enter your arXiv Author-ID in idm.fau.de under: FAUdir → Entries → Portals and networks', 'rrze-research-data') : (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)('Enter your ORCID in idm.fau.de under: FAUdir → Entries → Portals and networks', 'rrze-research-data'),
+                    placement: "right",
+                    children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_9__.jsx)("span", {
+                      className: "rrze-research-data-info",
+                      children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_9__.jsx)(_wordpress_components__WEBPACK_IMPORTED_MODULE_2__.Icon, {
+                        icon: _wordpress_icons__WEBPACK_IMPORTED_MODULE_5__["default"]
+                      })
+                    })
+                  })]
                 }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_9__.jsx)("label", {
                   children: source === 'arxiv' ? (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)('arXiv Author-ID', 'rrze-research-data') : (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)('ORCID', 'rrze-research-data')
                 }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_9__.jsx)(_wordpress_components__WEBPACK_IMPORTED_MODULE_2__.TextControl, {
@@ -222,14 +232,6 @@ function Edit({
                   placeholder: source === 'arxiv' ? 'lastname_f_1' : '0000-0000-0000-0000',
                   onChange: value => setAttributes({
                     authorId: value
-                  })
-                }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_9__.jsx)(_wordpress_components__WEBPACK_IMPORTED_MODULE_2__.Tooltip, {
-                  text: source === 'arxiv' ? (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)('Enter your arXiv Author-ID in idm.fau.de under: FAUdir → Entries →  Portals and networks', 'rrze-research-data') : (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)('Enter your ORCID in idm.fau.de under: FAUdir → Entries →  Portals and networks', 'rrze-research-data'),
-                  children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_9__.jsx)("span", {
-                    className: "rrze-research-data-info",
-                    children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_9__.jsx)(_wordpress_components__WEBPACK_IMPORTED_MODULE_2__.Icon, {
-                      icon: _wordpress_icons__WEBPACK_IMPORTED_MODULE_5__["default"]
-                    })
                   })
                 })]
               })]
@@ -245,14 +247,6 @@ function Edit({
                 onChange: value => setAttributes({
                   authorId: value
                 })
-              }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_9__.jsx)(_wordpress_components__WEBPACK_IMPORTED_MODULE_2__.Tooltip, {
-                text: source === 'arxiv' ? (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)('Enter your arXiv Author-ID in idm.fau.de under: FAUdir → Entries →  Portals and networks', 'rrze-research-data') : (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)('Enter your ORCID in idm.fau.de under: FAUdir → Entries →  Portals and networks', 'rrze-research-data'),
-                children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_9__.jsx)("span", {
-                  className: "rrze-research-data-info",
-                  children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_9__.jsx)(_wordpress_components__WEBPACK_IMPORTED_MODULE_2__.Icon, {
-                    icon: _wordpress_icons__WEBPACK_IMPORTED_MODULE_5__["default"]
-                  })
-                })
               })]
             })
           }), ['dblp', 'semanticscholar'].includes(source) && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_9__.jsxs)(react_jsx_runtime__WEBPACK_IMPORTED_MODULE_9__.Fragment, {
@@ -266,14 +260,14 @@ function Edit({
               })
             }), source === 'semanticscholar' && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_9__.jsxs)("p", {
               className: "rrze-research-data-help",
-              children: [(0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)('ID from your profile URL:', 'rrze-research-data'), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_9__.jsxs)("code", {
+              children: [(0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)('ID from your Semantic Scholar profile URL:', 'rrze-research-data'), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_9__.jsxs)("code", {
                 children: ["/author/Yourname/", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_9__.jsx)("strong", {
                   children: "0000000"
                 })]
               })]
             }), source === 'dblp' && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_9__.jsxs)("p", {
               className: "rrze-research-data-help",
-              children: [(0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)('ID from your profile URL:', 'rrze-research-data'), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_9__.jsxs)("code", {
+              children: [(0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)('ID from your DBLP profile URL:', 'rrze-research-data'), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_9__.jsxs)("code", {
                 children: ["/pid/", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_9__.jsx)("strong", {
                   children: "xx/0000"
                 })]
@@ -317,11 +311,11 @@ function Edit({
               label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)('arXiv', 'rrze-research-data'),
               value: 'arxiv'
             }, {
-              label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)('DBLP', 'rrze-research-data'),
-              value: 'dblp'
-            }, {
               label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)('Crossref', 'rrze-research-data'),
               value: 'crossref'
+            }, {
+              label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)('DBLP', 'rrze-research-data'),
+              value: 'dblp'
             }, {
               label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)('Semantic Scholar', 'rrze-research-data'),
               value: 'semanticscholar'
@@ -336,14 +330,6 @@ function Edit({
             placeholder: source === 'arxiv' ? 'lastname_x_x' : source === 'dblp' ? 'xx/0000' : source === 'semanticscholar' ? '0000000' : '0000-0000-0000-0000',
             onChange: value => setAttributes({
               authorId: value
-            })
-          }), (source === 'orcid' || source === 'arxiv' || source === 'pubmed' || source === 'openAlex' || source === 'crossref') && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_9__.jsx)(_wordpress_components__WEBPACK_IMPORTED_MODULE_2__.Tooltip, {
-            text: source === 'arxiv' ? (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)('Enter your arXiv Author-ID in idm.fau.de under: FAUdir → Entries →  Portals and networks', 'rrze-research-data') : (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)('Enter your ORCID in idm.fau.de under: FAUdir → Entries →  Portals and networks', 'rrze-research-data'),
-            children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_9__.jsx)("span", {
-              className: "rrze-research-data-info",
-              children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_9__.jsx)(_wordpress_components__WEBPACK_IMPORTED_MODULE_2__.Icon, {
-                icon: _wordpress_icons__WEBPACK_IMPORTED_MODULE_5__["default"]
-              })
             })
           })]
         }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_9__.jsxs)(_wordpress_components__WEBPACK_IMPORTED_MODULE_2__.PanelBody, {
@@ -412,6 +398,22 @@ function Edit({
             }],
             onChange: val => setAttributes({
               groupBy: val
+            })
+          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_9__.jsx)(_wordpress_components__WEBPACK_IMPORTED_MODULE_2__.SelectControl, {
+            label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)('Citation Style', 'rrze-research-data'),
+            value: citationStyle,
+            options: [{
+              label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)('Standard', 'rrze-research-data'),
+              value: ''
+            }, {
+              label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)('APA', 'rrze-research-data'),
+              value: 'apa'
+            }, {
+              label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)('MLA', 'rrze-research-data'),
+              value: 'mla'
+            }],
+            onChange: val => setAttributes({
+              citationStyle: val
             })
           }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_9__.jsx)(_wordpress_components__WEBPACK_IMPORTED_MODULE_2__.__experimentalNumberControl, {
             label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)('Year from', 'rrze-research-data'),

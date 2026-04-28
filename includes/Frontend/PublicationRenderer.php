@@ -5,6 +5,7 @@ namespace RRZE\ResearchData\Frontend;
 
 use RRZE\ResearchData\Services\ResearchService;
 
+
 defined('ABSPATH') || exit;
 
 /**
@@ -18,7 +19,7 @@ class PublicationRenderer
     /**
      * Main render callback – extracts block attributes and delegates torenderList() and renderJsonLd().
      *
-     * @param array $attributes Block attributes from the editor (authorId, source,limit, yearFrom, yearTo, type, groupBy)
+     * @param array $attributes Block attributes from the editor (authorId, source,limit, yearFrom, yearTo, type, groupBy, citationStyle)
      * @return string            Rendered HTML output
      */
     public static function render(array $attributes = []): string
@@ -30,6 +31,7 @@ class PublicationRenderer
         $yearTo   = (int)($attributes['yearTo']   ?? 0);
         $type = $attributes['type'] ?? [];
         $groupBy = $attributes['groupBy'] ?? '';
+        $citationStyle = $attributes['citationStyle'] ?? '';
 
 
         $service = new ResearchService();
@@ -43,7 +45,7 @@ class PublicationRenderer
             return '<p>' . esc_html__('No publications found.', 'rrze-research-data') . '</p>';
         }
 
-        return self::renderJsonLd($publications) . self::renderList($publications, $groupBy);
+        return self::renderJsonLd($publications) . self::renderList($publications, $groupBy, $citationStyle);
 
     }
 
@@ -60,7 +62,7 @@ class PublicationRenderer
      * @return string              Rendered HTML
      */
 
-    private static function renderList(array $publications, string $groupBy=''): string
+    private static function renderList(array $publications, string $groupBy='', string $citationStyle=''): string
     {
         if (empty($publications)) {
             return '<p>' . esc_html__('No publications found.', 'rrze-research-data') . '</p>';
@@ -82,7 +84,7 @@ class PublicationRenderer
                 $html .= '<h3>' . $label . '</h3>';
                 $html .= '<ul class="wp-block-list wp-block-research-list">';
                 foreach ($groupPublications as $publication) {
-                    $html .= self::renderItem($publication);
+                    $html .= self::renderItem($publication, $citationStyle);
                 }
                 $html .= '</ul>';
             }
@@ -91,7 +93,7 @@ class PublicationRenderer
 
         $html = '<ul class="wp-block-list wp-block-research-list">';
         foreach ($publications as $publication) {
-            $html .= self::renderItem($publication);
+            $html .= self::renderItem($publication, $citationStyle);
         }
         $html .= '</ul>';
         return $html;
@@ -101,56 +103,17 @@ class PublicationRenderer
     /**
      * Renders a single publication as an HTML list item.
      *
-     * Outputs authors, year, title (linked via DOI or URL), journal, volume andpages.
+     * Outputs authors, year, title (linked via DOI or URL), journal, volume and pages.
      * Fields are separated by " | " and omitted if empty.
      *
      * @param object $publication A Publication object
      * @return string             HTML <li> element
      */
-    private static function renderItem(object $publication): string
-  {
-      $title = wp_kses($publication->title ?? '', [
-          'sub' => [],
-          'sup' => [],
-          'i' => [],
-          'b' => []]);
+    private static function renderItem(object $publication, $citationStyle=''): string
+    {
+        return CitationFormatter::format($publication, $citationStyle);
 
-      $year = esc_html($publication->year ?? '');
-
-      $journal = esc_html($publication->journal ?? '');
-
-      $link = !empty($publication->doi)
-          ? 'https://doi.org/' . $publication->doi
-          : esc_url($publication->url ?? '');
-
-      $volume = esc_html($publication->volume ?? '');
-
-      $pages = esc_html($publication->pages ?? '');
-
-      $volumeHtml  = $volume  ? ' | ' . $volume : '';
-
-      $pagesHtml   = $pages   ? ', ' . $pages : '';
-
-      $yearHtml    = $year    ? $year . ' | ' : '';
-
-      $journalHtml = $journal ? ' | <span class="publication-journal">' . $journal
-          . '</span>' : '';
-
-      $authorsHtml = !empty($publication->authors)
-          ? esc_html(implode(', ', $publication->authors)) . ' | '
-          : '';
-
-      return sprintf(
-          '<li>%s%s<a href="%s" target="_blank" rel="noopener">%s</a>%s%s%s</li>',
-          $authorsHtml,
-          $yearHtml,
-          $link,
-          $title,
-          $journalHtml,
-          $volumeHtml,
-          $pagesHtml
-      );
-  }
+    }
 
 
     /**

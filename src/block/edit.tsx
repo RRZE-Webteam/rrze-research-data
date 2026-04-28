@@ -36,6 +36,7 @@ interface EditProps {
         yearFrom: number;
         yearTo: number;
         groupBy: string;
+        citationStyle: string;
     }
     setAttributes: (attributes: Partial<EditProps["attributes"]>) => void;
 }
@@ -50,7 +51,8 @@ export default function Edit({attributes, setAttributes}: EditProps) {
         isInitialSetup,
         yearFrom,
         yearTo,
-        groupBy
+        groupBy,
+        citationStyle
     } = attributes;
 
     const [personList, setPersonList] = useState([]);
@@ -96,8 +98,8 @@ export default function Edit({attributes, setAttributes}: EditProps) {
                                     {label: __('PubMed', 'rrze-research-data'), value: 'pubmed'},
                                     {label: __('OpenAlex', 'rrze-research-data'), value: 'openAlex'},
                                     {label: __('arXiv', 'rrze-research-data'), value: 'arxiv'},
-                                    {label: __('DBLP', 'rrze-research-data'), value: 'dblp'},
                                     {label: __('Crossref', 'rrze-research-data'), value: 'crossref'},
+                                    {label: __('DBLP', 'rrze-research-data'), value: 'dblp'},
                                     {label: __('Semantic Scholar', 'rrze-research-data'), value: 'semanticscholar'},
                                 ]}
                                 onChange={(value: string) => {
@@ -129,8 +131,7 @@ export default function Edit({attributes, setAttributes}: EditProps) {
                                                     setSelectedPersonId(personId);
                                                     if (!personId) return;
                                                     apiFetch({path: `/rrze-research-data/v1/faudir/person/${personId}`})
-                                                        .then((platformIds: any) =>
-                                                        {
+                                                        .then((platformIds: any) => {
                                                             const id = source === 'arxiv' ? platformIds?.arxiv ?? '' : platformIds?.orcid ?? '';
                                                             setAttributes({authorId: id});
                                                             if (!id) setShowManualInput(true);
@@ -144,6 +145,17 @@ export default function Edit({attributes, setAttributes}: EditProps) {
                                                             ? __('No arXiv ID in FAUdir found. Please enter manually.', 'rrze-research-data')
                                                             : __('No ORCID in FAUdir found. Please enter manually.', 'rrze-research-data')
                                                         }
+                                                        {' '}
+                                                        <Tooltip
+                                                            text={source === 'arxiv'
+                                                                ? __('Enter your arXiv Author-ID in idm.fau.de under: FAUdir → Entries → Portals and networks', 'rrze-research-data')
+                                                                : __('Enter your ORCID in idm.fau.de under: FAUdir → Entries → Portals and networks', 'rrze-research-data')
+                                                            }
+                                                            placement="right"
+                                                        >
+                                                            <span className="rrze-research-data-info"><Icon
+                                                                icon={info}/></span>
+                                                        </Tooltip>
                                                     </p>
                                                     <label>{source === 'arxiv' ? __('arXiv Author-ID', 'rrze-research-data') : __('ORCID', 'rrze-research-data')}</label>
                                                     <TextControl
@@ -151,12 +163,6 @@ export default function Edit({attributes, setAttributes}: EditProps) {
                                                         placeholder={source === 'arxiv' ? 'lastname_f_1' : '0000-0000-0000-0000'}
                                                         onChange={(value) => setAttributes({authorId: value})}
                                                     />
-                                                    <Tooltip text={source === 'arxiv'
-                                                        ? __('Enter your arXiv Author-ID in idm.fau.de under: FAUdir → Entries →  Portals and networks', 'rrze-research-data')
-                                                        : __('Enter your ORCID in idm.fau.de under: FAUdir → Entries →  Portals and networks', 'rrze-research-data')
-                                                    }>
-                                                        <span className="rrze-research-data-info"><Icon icon={info} /></span>
-                                                    </Tooltip>
                                                 </>
                                             )}
 
@@ -167,15 +173,9 @@ export default function Edit({attributes, setAttributes}: EditProps) {
                                             <label>{source === 'arxiv' ? __('arXiv Author-ID', 'rrze-research-data') : __('ORCID', 'rrze-research-data')}</label>
                                             <TextControl
                                                 value={authorId}
-                                                placeholder={source === 'arxiv' ? 'lastname_f_1': '0000-0000-0000-0000'}
+                                                placeholder={source === 'arxiv' ? 'lastname_f_1' : '0000-0000-0000-0000'}
                                                 onChange={(value) => setAttributes({authorId: value})}
                                             />
-                                            <Tooltip text={source === 'arxiv'
-                                                ? __('Enter your arXiv Author-ID in idm.fau.de under: FAUdir → Entries →  Portals and networks', 'rrze-research-data')
-                                                : __('Enter your ORCID in idm.fau.de under: FAUdir → Entries →  Portals and networks', 'rrze-research-data')
-                                            }>
-                                                <span className="rrze-research-data-info"><Icon icon={info} /></span>
-                                            </Tooltip>
                                         </>
                                     )}
                                 </>
@@ -192,13 +192,13 @@ export default function Edit({attributes, setAttributes}: EditProps) {
                                     />
                                     {source === 'semanticscholar' && (
                                         <p className="rrze-research-data-help">
-                                            {__('ID from your profile URL:', 'rrze-research-data')}
+                                            {__('ID from your Semantic Scholar profile URL:', 'rrze-research-data')}
                                             <code>/author/Yourname/<strong>0000000</strong></code>
                                         </p>
                                     )}
                                     {source === 'dblp' && (
                                         <p className="rrze-research-data-help">
-                                            {__('ID from your profile URL:', 'rrze-research-data')}
+                                            {__('ID from your DBLP profile URL:', 'rrze-research-data')}
                                             <code>/pid/<strong>xx/0000</strong></code>
                                         </p>
                                     )}
@@ -234,12 +234,12 @@ export default function Edit({attributes, setAttributes}: EditProps) {
                                     {label: __('PubMed', 'rrze-research-data'), value: 'pubmed'},
                                     {label: __('OpenAlex', 'rrze-research-data'), value: 'openAlex'},
                                     {label: __('arXiv', 'rrze-research-data'), value: 'arxiv'},
-                                    {label: __('DBLP', 'rrze-research-data'), value: 'dblp'},
                                     {label: __('Crossref', 'rrze-research-data'), value: 'crossref'},
+                                    {label: __('DBLP', 'rrze-research-data'), value: 'dblp'},
                                     {label: __('Semantic Scholar', 'rrze-research-data'), value: 'semanticscholar'},
                                 ]}
                                 onChange={(value: string) =>
-                                    setAttributes({source: value, authorId:''})}
+                                    setAttributes({source: value, authorId: ''})}
                             />
                             <TextControl
                                 label={source === 'arxiv' ? __('arXiv Author-ID', 'rrze-research-data')
@@ -255,14 +255,6 @@ export default function Edit({attributes, setAttributes}: EditProps) {
                                 }
                                 onChange={(value) => setAttributes({authorId: value})}
                             />
-                            {(source === 'orcid' || source === 'arxiv' || source === 'pubmed' || source === 'openAlex' || source === 'crossref') && (
-                                <Tooltip text={source === 'arxiv'
-                                    ? __('Enter your arXiv Author-ID in idm.fau.de under: FAUdir → Entries →  Portals and networks', 'rrze-research-data')
-                                    : __('Enter your ORCID in idm.fau.de under: FAUdir → Entries →  Portals and networks', 'rrze-research-data')
-                                }>
-                                    <span className="rrze-research-data-info"><Icon icon={info} /></span>
-                                </Tooltip>
-                            )}
                         </PanelBody>
                         <PanelBody title={__('Display Options', 'rrze-research-data')} initialOpen={false}>
                             <BaseControl label={__('Publication Type', 'rrze-research-data')}>
@@ -284,11 +276,14 @@ export default function Edit({attributes, setAttributes}: EditProps) {
                                         checked={type.includes(option.value)}
                                         onChange={(checked) => {
                                             if (checked) {
-                                                setAttributes({type: [...type, option.value]
+                                                setAttributes({
+                                                    type: [...type, option.value]
                                                 });
                                             } else {
-                                                setAttributes({type: type.filter(t => t !==
-                                                        option.value)});
+                                                setAttributes({
+                                                    type: type.filter(t => t !==
+                                                        option.value)
+                                                });
                                             }
                                         }}
                                     />
@@ -305,21 +300,35 @@ export default function Edit({attributes, setAttributes}: EditProps) {
                                 ]}
                                 onChange={(val: string) => setAttributes({groupBy: val})}
                             />
-                            <NumberControl
-                            label={__('Year from', 'rrze-research-data')}
-                            value={yearFrom === 0 ? '' : yearFrom}
-                            min={1900}
-                            max={2100}
-                            onChange={(value) => setAttributes({yearFrom: parseInt(value as
-                            string) || 0})}
+                            <SelectControl
+                                label={__('Citation Style', 'rrze-research-data')}
+                                value={citationStyle}
+                                options={[
+                                    {label: __('Standard', 'rrze-research-data'), value: ''},
+                                    {label: __('APA', 'rrze-research-data'), value: 'apa'},
+                                    {label: __('MLA', 'rrze-research-data'), value: 'mla'},
+                                ]}
+                                onChange={(val: string) => setAttributes({citationStyle: val})}
                             />
                             <NumberControl
-                            label={__('Year to', 'rrze-research-data')}
-                            value={yearTo === 0 ? '' : yearTo}
-                            min={1900}
-                            max={2100}
-                            onChange={(value) => setAttributes({yearTo: parseInt(value as
-                            string) || 0})}
+                                label={__('Year from', 'rrze-research-data')}
+                                value={yearFrom === 0 ? '' : yearFrom}
+                                min={1900}
+                                max={2100}
+                                onChange={(value) => setAttributes({
+                                    yearFrom: parseInt(value as
+                                        string) || 0
+                                })}
+                            />
+                            <NumberControl
+                                label={__('Year to', 'rrze-research-data')}
+                                value={yearTo === 0 ? '' : yearTo}
+                                min={1900}
+                                max={2100}
+                                onChange={(value) => setAttributes({
+                                    yearTo: parseInt(value as
+                                        string) || 0
+                                })}
                             />
                             <NumberControl
                                 __next40pxDefaultSize

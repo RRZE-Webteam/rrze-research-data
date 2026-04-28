@@ -45,6 +45,10 @@
     "groupBy": {
       "type": "string",
       "default": ""
+    },
+    "citationStyle": {
+      "type": "string",
+      "default": ""
     }
   },
   "textdomain": "rrze-research-data",

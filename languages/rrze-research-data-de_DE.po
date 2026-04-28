@@ -5,8 +5,8 @@ msgstr ""
 "Project-Id-Version: RRZE Research Data 0.0.1\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/rrze-research-"
 "data\n"
-"POT-Creation-Date: 2026-04-21T11:19:05+00:00\n"
-"PO-Revision-Date: 2026-04-21 13:27+0200\n"
+"POT-Creation-Date: 2026-04-28T09:19:20+00:00\n"
+"PO-Revision-Date: 2026-04-28 11:24+0200\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: de_DE\n"
@@ -41,6 +41,45 @@ msgstr ""
 msgid "https://www.wp.rrze.fau.de/"
 msgstr ""
 
+#: includes/Admin/Settings.php:43
+msgid "Research Data Settings"
+msgstr "Research Data Einstellungen"
+
+#: includes/Admin/Settings.php:97
+msgid "RRZE Research Data Settings"
+msgstr "RRZE Research Data Einstellungen"
+
+#: includes/Admin/Settings.php:98
+msgid ""
+"Publication data from external sources (ORCID, PubMed, OpenAlexetc.) is "
+"cached for 12 hours to reduce API requests and improve page load times."
+msgstr ""
+"Publikationsdaten aus externen Quellen (ORCID, PubMed, OpenAlex usw.) werden "
+"für 12 Stunden zwischengespeichert, um die Anzahl der API-Anfragen zu "
+"reduzieren und die Ladezeiten der Seiten zu verbessern."
+
+#: includes/Admin/Settings.php:103
+msgid "Cache cleared successfully."
+msgstr "Der Cache wurde erfolgreich geleert."
+
+#: includes/Admin/Settings.php:106
+msgid "Cache"
+msgstr ""
+
+#: includes/Admin/Settings.php:108
+msgid ""
+"If publications are not up to date, you can clear the cache manually. New "
+"data will be fetched from the\n"
+"  source on the next page load."
+msgstr ""
+"Wenn die Inhalte nicht auf dem neuesten Stand sind, können Sie den Cache "
+"manuell leeren. Beim nächsten Laden der Seite werden neue Daten von der\n"
+"  Quelle abgerufen."
+
+#: includes/Admin/Settings.php:114
+msgid "Clear Cache"
+msgstr "Cache leeren"
+
 #: includes/API/ArXivApi.php:40 includes/API/DblpApi.php:40
 msgid "Invalid XML format."
 msgstr "Ungültiges XML-Format."
@@ -49,13 +88,58 @@ msgstr "Ungültiges XML-Format."
 msgid "RRZE"
 msgstr ""
 
-#: includes/Frontend/PublicationRenderer.php:41
+#: includes/Frontend/CitationFormatter.php:210
+msgid "and"
+msgstr "und"
+
+#: includes/Frontend/CitationFormatter.php:217
+msgid "vol."
+msgstr "Jg."
+
+#: includes/Frontend/CitationFormatter.php:219
+msgid "pp."
+msgstr "S."
+
+#: includes/Frontend/PublicationRenderer.php:45
+#: includes/Frontend/PublicationRenderer.php:68
 msgid "No publications found."
 msgstr "Keine Publikationen gefunden."
 
-#: includes/Frontend/PublicationRenderer.php:58
-msgid "No files found."
-msgstr "Keine Dateien gefunden."
+#: includes/Frontend/PublicationRenderer.php:128 build/block/index.js:343
+msgid "Journal Article"
+msgstr "Zeitschriftenartikel"
+
+#: includes/Frontend/PublicationRenderer.php:129 build/block/index.js:346
+msgid "Conference"
+msgstr "Konferenzbeitrag"
+
+#: includes/Frontend/PublicationRenderer.php:130 build/block/index.js:349
+msgid "Book"
+msgstr "Buch"
+
+#: includes/Frontend/PublicationRenderer.php:131 build/block/index.js:352
+msgid "Book Chapter"
+msgstr "Buchkapitel"
+
+#: includes/Frontend/PublicationRenderer.php:132 build/block/index.js:355
+msgid "Editorship"
+msgstr "Herausgeberschaft"
+
+#: includes/Frontend/PublicationRenderer.php:133 build/block/index.js:358
+msgid "Preprint"
+msgstr "Preprint"
+
+#: includes/Frontend/PublicationRenderer.php:134 build/block/index.js:361
+msgid "Review"
+msgstr "Rezension"
+
+#: includes/Frontend/PublicationRenderer.php:135 build/block/index.js:364
+msgid "Thesis"
+msgstr "Abschlussarbeit"
+
+#: includes/Frontend/PublicationRenderer.php:136 build/block/index.js:367
+msgid "Other"
+msgstr "Sonstige"
 
 #: includes/Services/PublicationService.php:37
 msgid "No author ID provided."
@@ -85,155 +169,179 @@ msgstr ""
 "Auf dem Server läuft WordPress Version %1$s. Das Plugin erfordert mindestens "
 "WordPress Version %2$s."
 
-#: build/block/index.js:107 build/block/index.js:253
+#: build/block/index.js:141 build/block/index.js:296
 msgid "Research Data"
 msgstr "Research Data"
 
-#: build/block/index.js:108
+#: build/block/index.js:142
 msgid "Display research publications from external sources."
 msgstr "Publikationen aus externen Quellen anzeigen"
 
-#: build/block/index.js:117 build/block/index.js:256
+#: build/block/index.js:151 build/block/index.js:299
 msgid "Publication Source"
 msgstr "Quelle der Publikation"
 
-#: build/block/index.js:121 build/block/index.js:186 build/block/index.js:200
-#: build/block/index.js:259 build/block/index.js:285
+#: build/block/index.js:155 build/block/index.js:229 build/block/index.js:243
+#: build/block/index.js:302 build/block/index.js:328
 msgid "ORCID"
 msgstr ""
 
-#: build/block/index.js:124 build/block/index.js:262
+#: build/block/index.js:158 build/block/index.js:305
 msgid "PubMed"
 msgstr ""
 
-#: build/block/index.js:127 build/block/index.js:265
+#: build/block/index.js:161 build/block/index.js:308
 msgid "OpenAlex"
 msgstr ""
 
-#: build/block/index.js:130 build/block/index.js:268
+#: build/block/index.js:164 build/block/index.js:311
 msgid "arXiv"
 msgstr ""
 
-#: build/block/index.js:133 build/block/index.js:271
-msgid "DBLP"
-msgstr ""
-
-#: build/block/index.js:136 build/block/index.js:274
+#: build/block/index.js:167 build/block/index.js:314
 msgid "Crossref"
 msgstr ""
 
-#: build/block/index.js:139 build/block/index.js:277
+#: build/block/index.js:170 build/block/index.js:317
+msgid "DBLP"
+msgstr ""
+
+#: build/block/index.js:173 build/block/index.js:320
 msgid "Semantic Scholar"
 msgstr ""
 
-#: build/block/index.js:152
+#: build/block/index.js:186
 msgid "Loading…"
 msgstr "Wird geladen…"
 
-#: build/block/index.js:155
+#: build/block/index.js:189
 msgid "Person (FAUdir)"
 msgstr ""
 
-#: build/block/index.js:159
+#: build/block/index.js:193
 msgid "— Please select —"
 msgstr "— Bitte wählen —"
 
-#: build/block/index.js:184
+#: build/block/index.js:218
 msgid "No arXiv ID in FAUdir found. Please enter manually."
 msgstr ""
 "In FAUdir wurde keine arXiv-ID gefunden. Bitte geben Sie diese manuell ein."
 
-#: build/block/index.js:184
+#: build/block/index.js:218
 msgid "No ORCID in FAUdir found. Please enter manually."
 msgstr ""
 "In FAUdir wurde kein ORCID gefunden. Bitte geben Sie die Nummer manuell ein."
 
-#: build/block/index.js:186 build/block/index.js:200 build/block/index.js:285
+#: build/block/index.js:219
+msgid ""
+"Enter your arXiv Author-ID in idm.fau.de under: FAUdir → Entries → Portals "
+"and networks"
+msgstr ""
+"Geben Sie Ihre arXiv-Autor-ID auf idm.fau.de unter „FAUdir → Einträge → "
+"Portale und Netzwerke“ ein."
+
+#: build/block/index.js:219
+msgid ""
+"Enter your ORCID in idm.fau.de under: FAUdir → Entries → Portals and networks"
+msgstr ""
+"Geben Sie Ihre ORCID-Nummer auf idm.fau.de unter „FAUdir → Einträge → "
+"Portale und Netzwerke“ ein."
+
+#: build/block/index.js:229 build/block/index.js:243 build/block/index.js:328
 msgid "arXiv Author-ID"
 msgstr "arXiv-Autoren-ID"
 
-#: build/block/index.js:211 build/block/index.js:285
+#: build/block/index.js:254 build/block/index.js:328
 msgid "DBLP PID"
 msgstr ""
 
-#: build/block/index.js:211
+#: build/block/index.js:254
 msgid "SemanticScholar Author-ID"
 msgstr "SemanticScholar-Autor-ID"
 
-#: build/block/index.js:220 build/block/index.js:227
-msgid "ID from your profile URL:"
+#: build/block/index.js:263
+#, fuzzy
+#| msgid "ID from your profile URL:"
+msgid "ID from your Semantic Scholar profile URL:"
 msgstr "ID aus Ihrer Profil-URL:"
 
-#: build/block/index.js:243
+#: build/block/index.js:270
+#, fuzzy
+#| msgid "ID from your profile URL:"
+msgid "ID from your DBLP profile URL:"
+msgstr "ID aus Ihrer Profil-URL:"
+
+#: build/block/index.js:286
 msgid "Save"
 msgstr "Speichern"
 
-#: build/block/index.js:285
+#: build/block/index.js:328
 msgid "Semantic Scholar Author-ID"
 msgstr "Semantic Scholar-Autor-ID"
 
-#: build/block/index.js:293
+#: build/block/index.js:336
 msgid "Display Options"
 msgstr "Anzeigeoptionen"
 
-#: build/block/index.js:296
+#: build/block/index.js:339 build/block/index.js:396
 msgid "Publication Type"
 msgstr "Publikationstyp"
 
-#: build/block/index.js:299
-msgid "All"
-msgstr "Alle"
+#: build/block/index.js:387
+msgid "Group by"
+msgstr "Gruppierung nach"
 
-#: build/block/index.js:302
-msgid "Journal Article"
-msgstr "Zeitschriftenartikel"
+#: build/block/index.js:390
+msgid "No grouping"
+msgstr "Keine Gruppierung"
 
-#: build/block/index.js:305
-msgid "Conference"
-msgstr "Konferenzbeitrag"
+#: build/block/index.js:393
+msgid "Year"
+msgstr "Jahr"
 
-#: build/block/index.js:308
-msgid "Book"
-msgstr "Buch"
+#: build/block/index.js:403
+msgid "Citation Style"
+msgstr "Zitierstil"
 
-#: build/block/index.js:311
-msgid "Book Chapter"
-msgstr "Buchkapitel"
+#: build/block/index.js:406
+msgid "Standard"
+msgstr ""
 
-#: build/block/index.js:314
-msgid "Editorship"
-msgstr "Herausgeberschaft"
+#: build/block/index.js:409
+msgid "APA"
+msgstr ""
 
-#: build/block/index.js:317
-msgid "Preprint"
-msgstr "Preprint"
+#: build/block/index.js:412
+msgid "MLA"
+msgstr ""
 
-#: build/block/index.js:320
-msgid "Review"
-msgstr "Rezension"
+#: build/block/index.js:419
+msgid "Year from"
+msgstr "Von Jahr"
 
-#: build/block/index.js:323
-msgid "Thesis"
-msgstr "Abschlussarbeit"
+#: build/block/index.js:427
+msgid "Year to"
+msgstr "bis Jahr"
 
-#: build/block/index.js:326
-msgid "Other"
-msgstr "Sonstige"
-
-#: build/block/index.js:333
-msgid "Publications from year"
-msgstr "Publikationsjahr"
-
-#: build/block/index.js:342
+#: build/block/index.js:436
 msgid "Limit"
 msgstr "Anzahl"
 
 #: build/block/block.json
 msgctxt "block title"
 msgid "Research Data"
-msgstr ""
+msgstr "Research Data"
 
 #: build/block/block.json
 msgctxt "block description"
 msgid "Displays publications from research platforms."
 msgstr "Zeigt Publikationen von Forschungsplattformen an."
+
+#~ msgid "No files found."
+#~ msgstr "Keine Dateien gefunden."
+
+#~ msgid "All"
+#~ msgstr "Alle"
+
+#~ msgid "Publications from year"
+#~ msgstr "Publikationsjahr"
