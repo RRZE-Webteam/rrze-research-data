@@ -9,7 +9,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2026-04-28T09:19:20+00:00\n"
+"POT-Creation-Date: 2026-04-29T12:37:06+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.12.0\n"
 "X-Domain: rrze-research-data\n"
@@ -26,7 +26,7 @@ msgstr ""
 
 #. Description of the plugin
 #: rrze-research-data.php
-msgid "A Plugin for research data integration"
+msgid "Displays scientific publications from external research platforms"
 msgstr ""
 
 #. Author of the plugin
@@ -39,7 +39,7 @@ msgstr ""
 msgid "https://www.wp.rrze.fau.de/"
 msgstr ""
 
-#: includes/Admin/Settings.php:43
+#: includes/Admin/Settings.php:42
 msgid "Research Data Settings"
 msgstr ""
 
@@ -48,10 +48,10 @@ msgid "RRZE Research Data Settings"
 msgstr ""
 
 #: includes/Admin/Settings.php:98
-msgid "Publication data from external sources (ORCID, PubMed, OpenAlexetc.) is cached for 12 hours to reduce API requests and improve page load times."
+msgid "Publication data from external sources (ORCID, PubMed, OpenAlex etc.) is cached for 12 hours to reduce API requests and improve page load times."
 msgstr ""
 
-#: includes/Admin/Settings.php:103
+#: includes/Admin/Settings.php:102
 msgid "Cache cleared successfully."
 msgstr ""
 
@@ -59,92 +59,149 @@ msgstr ""
 msgid "Cache"
 msgstr ""
 
-#: includes/Admin/Settings.php:108
-msgid ""
-"If publications are not up to date, you can clear the cache manually. New data will be fetched from the\n"
-"  source on the next page load."
+#: includes/Admin/Settings.php:107
+msgid "If publications are not up to date, you can clear the cache manually. New data will be fetched from the source on the next page load."
 msgstr ""
 
-#: includes/Admin/Settings.php:114
+#: includes/Admin/Settings.php:112
 msgid "Clear Cache"
 msgstr ""
 
-#: includes/API/ArXivApi.php:40
-#: includes/API/DblpApi.php:40
+#: includes/API/ArXivApi.php:44
+#: includes/API/DblpApi.php:44
 msgid "Invalid XML format."
 msgstr ""
 
-#: includes/Blocks/BlockRegistration.php:63
+#: includes/API/ArXivApi.php:79
+#, php-format
+msgid "arXiv API returned status code %d."
+msgstr ""
+
+#: includes/API/CrossrefApi.php:135
+#, php-format
+msgid "Crossref API returned status code %d."
+msgstr ""
+
+#: includes/API/CrossrefApi.php:143
+msgid "Crossref API returned no valid data."
+msgstr ""
+
+#: includes/API/DblpApi.php:81
+#, php-format
+msgid "DBLP API returned status code %d."
+msgstr ""
+
+#: includes/API/OpenAlexApi.php:82
+#, php-format
+msgid "OpenAlex API returned status code %d."
+msgstr ""
+
+#: includes/API/OpenAlexApi.php:92
+msgid "OpenAlex API returned no valid data."
+msgstr ""
+
+#: includes/API/OrcidApi.php:84
+#, php-format
+msgid "ORCID API returned status code %d."
+msgstr ""
+
+#: includes/API/OrcidApi.php:92
+msgid "ORCID API returned no valid data."
+msgstr ""
+
+#: includes/API/PubMedApi.php:149
+#, php-format
+msgid "PubMed API returned status code %d."
+msgstr ""
+
+#: includes/API/PubMedApi.php:157
+msgid "PubMed API returned no valid data."
+msgstr ""
+
+#: includes/API/SemanticScholarApi.php:89
+#, php-format
+msgid "Semantic Scholar API returned status code %d."
+msgstr ""
+
+#: includes/API/SemanticScholarApi.php:98
+msgid "Semantic Scholar API returned no valid data."
+msgstr ""
+
+#: includes/Blocks/BlockRegistration.php:71
 msgid "RRZE"
 msgstr ""
 
-#: includes/Frontend/CitationFormatter.php:210
+#: includes/Frontend/CitationFormatter.php:192
 msgid "and"
 msgstr ""
 
-#: includes/Frontend/CitationFormatter.php:217
+#: includes/Frontend/CitationFormatter.php:198
 msgid "vol."
 msgstr ""
 
-#: includes/Frontend/CitationFormatter.php:219
+#: includes/Frontend/CitationFormatter.php:200
 msgid "pp."
 msgstr ""
 
 #: includes/Frontend/PublicationRenderer.php:45
-#: includes/Frontend/PublicationRenderer.php:68
+#: includes/Frontend/PublicationRenderer.php:73
 msgid "No publications found."
 msgstr ""
 
-#: includes/Frontend/PublicationRenderer.php:128
+#: includes/Frontend/PublicationRenderer.php:50
+msgid "Print list as PDF"
+msgstr ""
+
+#: includes/Frontend/PublicationRenderer.php:132
 #: build/block/index.js:343
 msgid "Journal Article"
 msgstr ""
 
-#: includes/Frontend/PublicationRenderer.php:129
+#: includes/Frontend/PublicationRenderer.php:133
 #: build/block/index.js:346
 msgid "Conference"
 msgstr ""
 
-#: includes/Frontend/PublicationRenderer.php:130
+#: includes/Frontend/PublicationRenderer.php:134
 #: build/block/index.js:349
 msgid "Book"
 msgstr ""
 
-#: includes/Frontend/PublicationRenderer.php:131
+#: includes/Frontend/PublicationRenderer.php:135
 #: build/block/index.js:352
 msgid "Book Chapter"
 msgstr ""
 
-#: includes/Frontend/PublicationRenderer.php:132
+#: includes/Frontend/PublicationRenderer.php:136
 #: build/block/index.js:355
 msgid "Editorship"
 msgstr ""
 
-#: includes/Frontend/PublicationRenderer.php:133
+#: includes/Frontend/PublicationRenderer.php:137
 #: build/block/index.js:358
 msgid "Preprint"
 msgstr ""
 
-#: includes/Frontend/PublicationRenderer.php:134
+#: includes/Frontend/PublicationRenderer.php:138
 #: build/block/index.js:361
 msgid "Review"
 msgstr ""
 
-#: includes/Frontend/PublicationRenderer.php:135
+#: includes/Frontend/PublicationRenderer.php:139
 #: build/block/index.js:364
 msgid "Thesis"
 msgstr ""
 
-#: includes/Frontend/PublicationRenderer.php:136
+#: includes/Frontend/PublicationRenderer.php:140
 #: build/block/index.js:367
 msgid "Other"
 msgstr ""
 
-#: includes/Services/PublicationService.php:37
+#: includes/Services/PublicationService.php:38
 msgid "No author ID provided."
 msgstr ""
 
-#: includes/Services/PublicationService.php:41
+#: includes/Services/PublicationService.php:42
 msgid "Invalid author ID format."
 msgstr ""
 
