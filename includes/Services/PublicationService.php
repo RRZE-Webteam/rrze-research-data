@@ -23,13 +23,14 @@ use RRZE\ResearchData\API\SemanticScholarApi;
 class PublicationService
 {
     /**
-     * Fetches all publications for a given author ID.
+     * Fetches all publications for a given author ID and source.
      *
-     * Currently delegates to OrcidAPI. Additional sources can be added here later.
+     * Validates the ID format, checks the cache, and delegates
+     * to the appropriate API class.
      *
-     * @param string $authorId The author identifier, e.g. an ORCID "0000-0003-4713-5941"
-     * @param string $source The publication source, eg. PubMed
-     * @return array|\WP_Error  Array of Publication objects, or WP_Error on failure
+     * @param string $authorId The author identifier, e.g."0000-0003-4713-5941"
+     * @param string $source The publication source, e.g. "orcid", "openAlex", "dblp"
+     * @return array|\WP_Error Array of Publication objects, or WP_Error on failure
      */
     public function getPublications(string $authorId, string $source): array|\WP_Error
     {
@@ -41,10 +42,8 @@ class PublicationService
             return new \WP_Error('invalid_argument', __('Invalid author ID format.', 'rrze-research-data'));
         }
 
-
         $cache = new CacheService();
         $key = $cache->buildKey($source, $authorId, 'publications');
-        //$cache->delete($key);
         $cachedData = $cache->get($key);
         if ($cachedData !== false) {
             return $cachedData;
@@ -91,37 +90,35 @@ class PublicationService
      * Validates the author ID format depending on the chosen source.
      *
      * @param string $authorId The ID entered by the editor
-     * @param string $source The chosen platform (orcid, arxiv, dblp, ...)
-     * @return bool             true = valid, false = invalid
+     * @param string $source The chosen platform (orcid, pubmed, openAlex, crossref, arxiv, dblp, semanticscholar)
+     * @return bool            true = valid, false = invalid
      */
     private function isValidAuthorId(string $authorId, string $source): bool
     {
         return match ($source) {
 
-            // ORCID-Format: 4 Blöcke à 4 Ziffern, letztes Zeichen darf X sein
-            // Beispiel: 0000-0003-4713-5941
+            // ORCID format: 4 blocks of 4 digits, last character may be X
+            // Example: 0000-0003-4713-5941
             'orcid', 'pubmed', 'openAlex', 'crossref' => (bool)preg_match(
                 '/^\d{4}-\d{4}-\d{4}-[\dX]{4}$/',
                 $authorId
             ),
 
-            // arXiv: Kleinbuchstaben, Unterstriche, Zahl am Ende Beispiel: thiemann_t_1
-            // ODER eine ORCID (wenn der Autor diese in arXiv verknüpft hat)
+            // arXiv: lowercase letters, underscores, number suffix –e.g. thiemann_t_1
+            // Also accepts an ORCID if the author has linked it in their arXiv profile
             'arxiv' => (bool)preg_match('/^[a-z]+_[a-z]_\d+$/', $authorId)
                 || (bool)preg_match('/^\d{4}-\d{4}-\d{4}-[\dX]{4}$/', $authorId),
 
 
-            // DBLP: Pfad-Format wie pid/l/LieblerA
-            // Beispiel: pid/l/LastnameF
+            // DBLP PID: numeric path (06/3501) or letter-based path (l/LieblerA)
             'dblp' => (bool)preg_match('/^\d+\/\d+$/', $authorId)
                 || (bool)preg_match('/^[a-z]\/\w+$/', $authorId),
 
             'semanticscholar' => (bool)preg_match('/^\d+$/', $authorId),
 
-            // Unbekannte Quelle → ablehnen
+            // Unknown source → reject
             default => false,
         };
     }
-
 
 }

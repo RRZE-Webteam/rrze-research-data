@@ -17,7 +17,7 @@ defined('ABSPATH') || exit;
 class PublicationRenderer
 {
     /**
-     * Main render callback – extracts block attributes and delegates torenderList() and renderJsonLd().
+     * Main render callback – extracts block attributes and delegates to renderList() and renderJsonLd().
      *
      * @param array $attributes Block attributes from the editor (authorId, source,limit, yearFrom, yearTo, type, groupBy, citationStyle)
      * @return string            Rendered HTML output
@@ -28,7 +28,7 @@ class PublicationRenderer
         $limit = $attributes['limit'] ?? 10;
         $source = $attributes['source'] ?? '';
         $yearFrom = (int)($attributes['yearFrom'] ?? 0);
-        $yearTo   = (int)($attributes['yearTo']   ?? 0);
+        $yearTo = (int)($attributes['yearTo'] ?? 0);
         $type = $attributes['type'] ?? [];
         $groupBy = $attributes['groupBy'] ?? '';
         $citationStyle = $attributes['citationStyle'] ?? '';
@@ -45,7 +45,12 @@ class PublicationRenderer
             return '<p>' . esc_html__('No publications found.', 'rrze-research-data') . '</p>';
         }
 
-        return self::renderJsonLd($publications) . self::renderList($publications, $groupBy, $citationStyle);
+        $printButton =
+            '<button class="wp-element-button rrze-research-print" onclick="window.print()">'
+            . esc_html__('Print list as PDF', 'rrze-research-data')
+            . '</button>';
+
+        return self::renderJsonLd($publications) . self::renderList($publications, $groupBy, $citationStyle) . $printButton;
 
     }
 
@@ -53,16 +58,16 @@ class PublicationRenderer
     /**
      * Renders publications as an HTML list, optionally grouped by year or type.
      *
-     * If groupBy is "year", publications are grouped under <h3> headings by year(descending).
-     * If groupBy is "type", publications are grouped under <h3> headings bypublication type (ascending).
+     * If groupBy is "year", publications are grouped under <h3> headings by year (descending).
+     * If groupBy is "type", publications are grouped under <h3> headings by publication type (ascending).
      * If groupBy is empty, all publications are rendered as a single flat list.
      *
-     * @param array  $publications Array of Publication objects
-     * @param string $groupBy      Grouping mode: "year", "type", or "" (nogrouping)
-     * @return string              Rendered HTML
+     * @param array $publications Array of Publication objects
+     * @param string $groupBy Grouping mode: "year", "type", or "" (no grouping)
+     * @param string $citationStyle Citation style: "apa", "mla", or "" (standard)
+     * @return string               Rendered HTML
      */
-
-    private static function renderList(array $publications, string $groupBy='', string $citationStyle=''): string
+    private static function renderList(array $publications, string $groupBy = '', string $citationStyle = ''): string
     {
         if (empty($publications)) {
             return '<p>' . esc_html__('No publications found.', 'rrze-research-data') . '</p>';
@@ -99,7 +104,6 @@ class PublicationRenderer
         return $html;
     }
 
-
     /**
      * Renders a single publication as an HTML list item.
      *
@@ -109,7 +113,7 @@ class PublicationRenderer
      * @param object $publication A Publication object
      * @return string             HTML <li> element
      */
-    private static function renderItem(object $publication, $citationStyle=''): string
+    private static function renderItem(object $publication, string $citationStyle = ''): string
     {
         return CitationFormatter::format($publication, $citationStyle);
 
@@ -126,19 +130,18 @@ class PublicationRenderer
     {
         $labels = [
             'journal-article' => __('Journal Article', 'rrze-research-data'),
-            'conference'      => __('Conference', 'rrze-research-data'),
-            'book'            => __('Book', 'rrze-research-data'),
-            'book-chapter'    => __('Book Chapter', 'rrze-research-data'),
-            'editorship'      => __('Editorship', 'rrze-research-data'),
-            'preprint'        => __('Preprint', 'rrze-research-data'),
-            'review'          => __('Review', 'rrze-research-data'),
-            'thesis'          => __('Thesis', 'rrze-research-data'),
-            'other'           => __('Other', 'rrze-research-data'),
+            'conference' => __('Conference', 'rrze-research-data'),
+            'book' => __('Book', 'rrze-research-data'),
+            'book-chapter' => __('Book Chapter', 'rrze-research-data'),
+            'editorship' => __('Editorship', 'rrze-research-data'),
+            'preprint' => __('Preprint', 'rrze-research-data'),
+            'review' => __('Review', 'rrze-research-data'),
+            'thesis' => __('Thesis', 'rrze-research-data'),
+            'other' => __('Other', 'rrze-research-data'),
         ];
 
         return $labels[$type] ?? esc_html($type);
     }
-
 
 
     /**
@@ -154,7 +157,6 @@ class PublicationRenderer
     private static function renderJsonLd(array $publications): string
     {
         $items = [];
-
         foreach ($publications as $pub) {
             $item = [
                 '@type' => 'ScholarlyArticle',

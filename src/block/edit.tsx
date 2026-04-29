@@ -108,8 +108,7 @@ export default function Edit({attributes, setAttributes}: EditProps) {
                                     setShowManualInput(false);
                                 }}
                             />
-
-                            {/* step2: ID for platform */}
+                            {/* Step 2: ID for platform */}
                             {/* ORCID platforms + arXiv: if FAUdir available */}
                             {['orcid', 'pubmed', 'openAlex', 'arxiv', 'crossref'].includes(source) && (
                                 <>
@@ -168,7 +167,7 @@ export default function Edit({attributes, setAttributes}: EditProps) {
 
                                         </>
                                     ) : (
-                                        // if FAUdir ist not active → TextControl
+                                        // FAUdir is not active → show TextControl directly
                                         <>
                                             <label>{source === 'arxiv' ? __('arXiv Author-ID', 'rrze-research-data') : __('ORCID', 'rrze-research-data')}</label>
                                             <TextControl
@@ -181,7 +180,7 @@ export default function Edit({attributes, setAttributes}: EditProps) {
                                 </>
                             )}
 
-                            {/* DBLP + Crossref: directly in TextControl, no FAUdir */}
+                            {/* DBLP + Semantic Scholar: directly in TextControl, no FAUdir */}
                             {['dblp', 'semanticscholar'].includes(source) && (
                                 <>
                                     <label>{source === 'dblp' ? __('DBLP PID', 'rrze-research-data') : __('SemanticScholar Author-ID', 'rrze-research-data')}</label>
@@ -202,8 +201,6 @@ export default function Edit({attributes, setAttributes}: EditProps) {
                                             <code>/pid/<strong>xx/0000</strong></code>
                                         </p>
                                     )}
-
-
                                 </>
                             )}
                             <Spacer paddingTop=".5rem"/>
@@ -218,14 +215,13 @@ export default function Edit({attributes, setAttributes}: EditProps) {
                             </div>
                             <Spacer paddingBottom={"0.5rem"}/>
                         </div>
-
                     </div>
                 </Placeholder>
             ) : (
                 <>
                     <InspectorControls>
-                        <PanelBody title={__('Research Data',
-                            'rrze-research-data')} initialOpen={true}>
+                        <PanelBody title={__('Research Data', 'rrze-research-data')}
+                                   initialOpen={true}>
                             <SelectControl
                                 label={__('Publication Source', 'rrze-research-data')}
                                 value={source}
@@ -238,8 +234,7 @@ export default function Edit({attributes, setAttributes}: EditProps) {
                                     {label: __('DBLP', 'rrze-research-data'), value: 'dblp'},
                                     {label: __('Semantic Scholar', 'rrze-research-data'), value: 'semanticscholar'},
                                 ]}
-                                onChange={(value: string) =>
-                                    setAttributes({source: value, authorId: ''})}
+                                onChange={(value: string) => setAttributes({source: value, authorId: ''})}
                             />
                             <TextControl
                                 label={source === 'arxiv' ? __('arXiv Author-ID', 'rrze-research-data')
@@ -256,7 +251,8 @@ export default function Edit({attributes, setAttributes}: EditProps) {
                                 onChange={(value) => setAttributes({authorId: value})}
                             />
                         </PanelBody>
-                        <PanelBody title={__('Display Options', 'rrze-research-data')} initialOpen={false}>
+                        <PanelBody title={__('Display Options', 'rrze-research-data')}
+                                   initialOpen={false}>
                             <BaseControl label={__('Publication Type', 'rrze-research-data')}>
                                 <Spacer paddingTop=".2rem"/>
                                 {[
@@ -315,20 +311,14 @@ export default function Edit({attributes, setAttributes}: EditProps) {
                                 value={yearFrom === 0 ? '' : yearFrom}
                                 min={1900}
                                 max={2100}
-                                onChange={(value) => setAttributes({
-                                    yearFrom: parseInt(value as
-                                        string) || 0
-                                })}
+                                onChange={(value) => setAttributes({yearFrom: parseInt(value as string) || 0})}
                             />
                             <NumberControl
                                 label={__('Year to', 'rrze-research-data')}
                                 value={yearTo === 0 ? '' : yearTo}
                                 min={1900}
                                 max={2100}
-                                onChange={(value) => setAttributes({
-                                    yearTo: parseInt(value as
-                                        string) || 0
-                                })}
+                                onChange={(value) => setAttributes({yearTo: parseInt(value as string) || 0})}
                             />
                             <NumberControl
                                 __next40pxDefaultSize

@@ -10,8 +10,14 @@ use RRZE\ResearchData\Models\Publication;
 /**
  * Fetches publication data from the Crossref API.
  *
- * Uses the public works endpoint filtered by ORCID. No authentication required.
- * Sends a mailto parameter to use the polite pool for faster responses.
+ * Crossref is a DOI registration agency that indexes metadata for
+ * scholarly publications. It provides a free public API that can be searched by ORCID identifier.
+ *
+ * The mailto parameter in the request URL identifies the caller and
+ * places the request in Crossref's "polite pool" — a separate queue with higher rate limits and better reliability.
+ *
+ * No authentication is required.
+ *
  * @see https://api.crossref.org
  */
 class CrossrefApi
@@ -41,12 +47,12 @@ class CrossrefApi
 
         $publications = [];
 
-            foreach ($items as $item) {
-                if ($item === null) {
-                    continue;
-                }
-                $publications[] = $this->mapToPublication($item);
+        foreach ($items as $item) {
+            if ($item === null) {
+                continue;
             }
+            $publications[] = $this->mapToPublication($item);
+        }
 
         return $publications;
 
@@ -55,9 +61,14 @@ class CrossrefApi
     /**
      * Maps a single Crossref work item to a Publication model.
      *
-     * Crossref delivers title and container-title as arrays — we take the first element.
-     * Authors are stored as separate given/family fields and are joined here.
-     * The year is nested three levels deep: published → date-parts → [0][0].
+     * Crossref delivers some fields as arrays even when only one value
+     * is expected — title and container-title (journal name) are both
+     * arrays, so we always take the first element.
+     *
+     * Authors are stored as separate "given" and "family" fields
+     * and are joined into "Firstname Lastname" here.
+     *
+     * The publication year is nested three levels deep: published → date-parts → [0][0]
      *
      * @param array $item A single work item from the Crossref API response
      * @return Publication
@@ -65,20 +76,14 @@ class CrossrefApi
     private function mapToPublication(array $item): Publication
     {
         $title = $item['title'][0] ?? '';
-
         $year = $item['published']['date-parts'][0][0] ?? null;
-
         $journal = $item['container-title'][0] ?? '';
-
         $doi = $item['DOI'] ?? '';
-
         $url = $item['URL'] ?? '';
-
-        $type = $item['type']?? '';
-
-        $volume = $item['volume']?? '';
-        $pages  = $item['page']?? '';
-
+        $type = $item['type'] ?? '';
+        $volume = $item['volume'] ?? '';
+        $pages = $item['page'] ?? '';
+        $issue = $item['issue'] ?? '';
         $authors = [];
         foreach ($item['author'] ?? [] as $author) {
             $name = trim(($author['given'] ?? '') . ' ' . ($author['family'] ?? ''));
@@ -96,17 +101,17 @@ class CrossrefApi
             source: 'crossref',
             journal: $journal,
             authors: $authors,
-            volume:  $volume,
+            volume: $volume,
             pages: $pages,
+            issue: $issue,
 
         );
     }
 
-
     /**
      * Sends an HTTP GET request and returns the decoded JSON response.
      *
-     * @param string $url  Full request URL
+     * @param string $url Full request URL
      * @return array|\WP_Error  Decoded PHP array, or WP_Error on failure
      */
     private function request(string $url): array|\WP_Error
@@ -119,26 +124,23 @@ class CrossrefApi
             'timeout' => 15,
         ]);
 
-        // Check if WordPress itself had an error (e.g. no internet, DNS failure)
         if (is_wp_error($response)) {
             return $response;
         }
 
-        // Check the HTTP status code (200 = OK, 404 = not found, etc.)
         $status = wp_remote_retrieve_response_code($response);
         if ($status !== 200) {
             return new \WP_Error(
                 'crossref_api_error',
-                sprintf('Crossref API returned status code %d.', $status)
+                sprintf(__('Crossref API returned status code %d.', 'rrze-research-data'), $status)
             );
         }
 
-        // Extract the response body (a JSON string) and decode it into a PHP array
         $body = wp_remote_retrieve_body($response);
         $decodedData = json_decode($body, true);
 
         if (empty($decodedData)) {
-            return new \WP_Error('crossref_invalid_response', 'Crossref API returned no valid data.');
+            return new \WP_Error('crossref_invalid_response', __('Crossref API returned no valid data.', 'rrze-research-data'));
         }
 
         return $decodedData;

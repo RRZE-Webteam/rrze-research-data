@@ -9,10 +9,19 @@ use RRZE\ResearchData\Models\Publication;
 /**
  * Fetches publication data from the PubMed E-utilities API.
  *
- * Uses a two-step process: first search for PMIDs, then fetch details.
- * No API key required for basic use (max. 3 requests/second).
+ * PubMed is a free database of biomedical and life science literature,
+ * maintained by the National Center for Biotechnology Information (NCBI).
+ *
+ * The retrieval process uses two steps:
+ * 1. esearch — searches for PubMed IDs (PMIDs) by ORCID identifier
+ * 2. esummary — fetches publication details for those PMIDs
+ *
+ * No API key is required for basic use (rate limit: 3 requests/second).
+ * With an API key the limit increases to 10 requests/second.
+ *
  * @see https://www.ncbi.nlm.nih.gov/books/NBK25499/
  */
+
 class PubMedApi
 {
     const BASE_URL = 'https://eutils.ncbi.nlm.nih.gov/entrez/eutils';
@@ -29,26 +38,22 @@ class PubMedApi
      */
     public function getAllWorks(string $authorId): array|\WP_Error
     {
-        // Step 1: Search for PMIDs
         $pmids = $this->searchPubMedIds($authorId);
 
         if (is_wp_error($pmids)) {
             return $pmids;
         }
 
-        // No publications found → return empty list
         if (empty($pmids)) {
             return [];
         }
 
-        // Step 2: Fetch details for those PMIDs
         $items = $this->fetchDetails($pmids);
 
         if (is_wp_error($items)) {
             return $items;
         }
 
-        // Step 3: Map each item to a Publication object
         $publications = [];
 
         foreach ($items as $item) {
@@ -84,7 +89,6 @@ class PubMedApi
             return $data;
         }
 
-        // PMIDs are located at data["esearchresult"]["idlist"]
         return $data['esearchresult']['idlist'] ?? [];
     }
 
@@ -120,72 +124,6 @@ class PubMedApi
     }
 
     /**
-     * Maps a single PubMed esummary item to a Publication model.
-     *
-     * The esummary JSON structure (relevant fields):
-     * - item["title"]              → publication title
-     * - item["pubdate"]            → e.g. "2023 Mar" — we take the first 4 chars
-     * - item["fulljournalname"]    → journal name
-     * - item["pubtype"][0]         → publication type, e.g. "Journal Article"
-     * - item["articleids"]         → array of IDs, we search for type "doi"
-     * - item["uid"]                → the PMID, used to build the PubMed URL
-     * - item["volume"]             → source
-     * - item["pages"]               → pages
-     *
-     * @param array $item A single item from the esummary result
-     * @return Publication
-     */
-    public function mapToPublication(array $item): Publication
-    {
-        $title   = $item['title'] ?? '';
-        $type    = $item['pubtype'][0] ?? '';
-        $journal = $item['fulljournalname'] ?? '';
-        $pmid    = $item['uid'] ?? '';
-
-        $authors = [];
-        foreach ($item['authors'] ?? [] as $author) {
-            $name = $author['name'] ?? '';
-            if ($name) {
-                $authors[] = $name;
-            }
-        }
-
-        // pubdate is e.g. "2023 Mar" or "2023" — we only want the 4-digit year
-        $pubdate = $item['pubdate'] ?? '';
-        $year    = !empty($pubdate) ? (int) substr($pubdate, 0, 4) : null;
-
-        $volume = $item['volume'] ?? '';
-        $pages  = $item['pages'] ?? '';
-
-        // Search the article ids array for the DOI
-        $doi = '';
-        foreach ($item['articleids'] ?? [] as $id) {
-            if (($id['idtype'] ?? '') === 'doi') {
-                $doi = $id['value'] ?? '';
-                break;
-            }
-        }
-
-        // Use DOI link if available, otherwise fall back to PubMed URL
-        $url = !empty($doi)
-            ? 'https://doi.org/' . $doi
-            : 'https://pubmed.ncbi.nlm.nih.gov/' . $pmid . '/';
-
-        return new Publication(
-            title:   $title,
-            type:    $type,
-            year:    $year,
-            url:     $url,
-            doi:     $doi,
-            source:  'pubmed',
-            journal: $journal,
-            authors: $authors,
-            volume: $volume,
-            pages: $pages,
-        );
-    }
-
-    /**
      * Sends an HTTP GET request and returns the decoded JSON response.
      *
      * @param string $url Full request URL
@@ -208,17 +146,85 @@ class PubMedApi
         if ($status !== 200) {
             return new \WP_Error(
                 'pubmed_api_error',
-                sprintf('PubMed API returned status code %d.', $status)
+                sprintf(__('PubMed API returned status code %d.', 'rrze-research-data'), $status)
             );
         }
 
-        $body        = wp_remote_retrieve_body($response);
+        $body = wp_remote_retrieve_body($response);
         $decodedData = json_decode($body, true);
 
         if (empty($decodedData)) {
-            return new \WP_Error('pubmed_invalid_response', 'PubMed API returned no valid data.');
+            return new \WP_Error('pubmed_invalid_response', __('PubMed API returned no valid data.', 'rrze-research-data'));
         }
 
         return $decodedData;
+    }
+
+    /**
+     * Maps a single PubMed esummary item to a Publication model.
+     *
+     * The esummary JSON structure (relevant fields):
+     * - item["title"]              → publication title
+     * - item["pubdate"]            → e.g. "2023 Mar" — we take the first 4 chars
+     * - item["fulljournalname"]    → journal name
+     * - item["pubtype"][0]         → publication type, e.g. "Journal Article"
+     * - item["articleids"]         → array of IDs, we search for type "doi"
+     * - item["uid"]                → the PMID, used to build the PubMed URL
+     * - item["volume"]             → volume number
+     * - item["pages"]              → pages
+     * - item ["issue"]             → issue number
+     *
+     * @param array $item A single item from the esummary result
+     * @return Publication
+     */
+    private function mapToPublication(array $item): Publication
+    {
+        $title = $item['title'] ?? '';
+        $type = $item['pubtype'][0] ?? '';
+        $journal = $item['fulljournalname'] ?? '';
+        $pmid = $item['uid'] ?? '';
+        $authors = [];
+        foreach ($item['authors'] ?? [] as $author) {
+            $name = $author['name'] ?? '';
+            if ($name) {
+                $authors[] = $name;
+            }
+        }
+
+        // pubdate is e.g. "2023 Mar" or "2023" — we only want the 4-digit year
+        $pubdate = $item['pubdate'] ?? '';
+        $year = !empty($pubdate) ? (int)substr($pubdate, 0, 4) : null;
+        $volume = $item['volume'] ?? '';
+        $pages = $item['pages'] ?? '';
+        $issue = $item['issue'] ?? '';
+
+        // Search the article ids array for the DOI
+        $doi = '';
+        foreach ($item['articleids'] ?? [] as $id) {
+            if (($id['idtype'] ?? '') === 'doi') {
+                $doi = $id['value'] ?? '';
+                break;
+            }
+        }
+
+        // The DOI prefix added here will be normalized (stripped) in the Publication model.
+        // The url field serves as a fallback link when no DOI is available.
+        $url = !empty($doi)
+            ? 'https://doi.org/' . $doi
+            : 'https://pubmed.ncbi.nlm.nih.gov/' . $pmid . '/';
+
+        return new Publication(
+            title: $title,
+            type: $type,
+            year: $year,
+            url: $url,
+            doi: $doi,
+            source: 'pubmed',
+            journal: $journal,
+            authors: $authors,
+            volume: $volume,
+            pages: $pages,
+            issue: $issue,
+        );
     }
 }

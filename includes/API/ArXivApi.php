@@ -10,10 +10,14 @@ use RRZE\ResearchData\Models\Publication;
 /**
  * Fetches publication data from the arXiv API.
  *
- * Uses the public Atom feed endpoint which requires no authentication.
+ * arXiv is an open-access repository for preprints in physics,
+ * mathematics, computer science and related fields.
+ *
+ * The API returns an Atom feed (XML) — a standard format for content syndication.
+ * No authentication is required.
+ *
  * @see https://arxiv.org/help/api
  */
-
 class ArXivApi
 {
     const BASE_URL = 'https://arxiv.org/a/';
@@ -72,7 +76,7 @@ class ArXivApi
         if ($statusCode !== 200) {
             return new \WP_Error(
                 'arxiv-api-error',
-                sprintf('arXiv API returned status code %d.', $statusCode)
+                sprintf(__('arXiv API returned status code %d.', 'rrze-research-data'), $statusCode)
             );
         }
 
@@ -81,53 +85,67 @@ class ArXivApi
 
 
     /**
-     * Maps a single arXiv Atom entry to a Publication model.
+     * Maps a single arXiv feed entry to a Publication model.
+     *
+     * arXiv delivers its API responses as an Atom feed — a standard XML format for syndication (similar to RSS).
+     * Each publication appears as an <entry> element inside this feed.
+     *
+     * Extracted fields:
+     * - title        → publication title
+     * - published    → publication date (we extract the 4-digit year)
+     * - author/name  → list of author names
+     * - link[href]   → if the link contains "doi.org", it is used as the DOI
+     * - id           → arXiv URL, used as fallback link
+     * - journal_ref  → optional field set by the author (e.g. "Nature 2023")
+     *
+     * All arXiv entries are treated as preprints because arXiv does not
+     * provide a publication type.
+     *
+     * @param \SimpleXMLElement $item A single <entry> element from the arXiv Atom feed
+     * @return Publication
      */
+
     private function mapToPublication(\SimpleXMLElement $item): Publication
     {
-        $title = trim((string) $item->title);
+        $title = trim((string)$item->title);
 
         $year = null;
-        $published = (string) $item->published;
+        $published = (string)$item->published;
         if (!empty($published)) {
-            $year = (int) substr($published, 0, 4);
+            $year = (int)substr($published, 0, 4);
         }
-
-        $url = (string) $item->id;
-
+        $url = (string)$item->id;
         $doi = '';
         foreach ($item->link as $link) {
-            $href = (string) $link['href'];
+            $href = (string)$link['href'];
             if (str_contains($href, 'doi.org')) {
                 $doi = $href;
             }
         }
-
         $authors = [];
         foreach ($item->author as $author) {
-            $name = trim((string) $author->name)
-            ;
+            $name = trim((string)$author->name);
             if ($name) {
                 $authors[] = $name;
             }
         }
-
         $namespaces = $item->getNamespaces(true);
-        $arxiv      = $item->children($namespaces['arxiv'] ?? '');
-        $journal    = $arxiv ? trim((string) ($arxiv->journal_ref ?? '')) : '';
+        $arxiv = $item->children($namespaces['arxiv'] ?? '');
+        $journal = $arxiv ? trim((string)($arxiv->journal_ref ?? '')) : '';
 
         return new Publication(
-            title:   $title,
-            type:    'preprint',
-            year:    $year,
-            url:     $url,
-            doi:     $doi,
-            source:  'arxiv',
+            title: $title,
+            // arXiv does not provide a publication type — all entries are treated as preprints.
+            type: 'preprint',
+            year: $year,
+            url: $url,
+            doi: $doi,
+            source: 'arxiv',
             journal: $journal,
             authors: $authors,
-            volume:  '',
-            pages:   '',
+            volume: '',
+            pages: '',
         );
     }
 
-    }
+}

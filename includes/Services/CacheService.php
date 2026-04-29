@@ -14,9 +14,7 @@ defined('ABSPATH') || exit;
  */
 class CacheService
 {
-
-    const expiration = 43200; //12 hours in sec
-
+    const EXPIRATION = 43200; //12 hours in seconds
 
     /**
      * Builds a unique cache key from source, author ID and data type.
@@ -28,9 +26,9 @@ class CacheService
      * @param string $type The data type, e.g. "publications"
      * @return string           The cache key
      */
-    public function buildKey(string $source, string $authorID, string $type): string
+    public function buildKey(string $source, string $authorId, string $type): string
     {
-        return 'rrze_research_' . md5($source . $authorID . $type);
+        return 'rrze_research_' . md5($source . $authorId . $type);
     }
 
 
@@ -53,10 +51,9 @@ class CacheService
      * @param mixed $data The data to cache
      * @param int $expiration Expiration time in seconds (default: 12 hours)
      */
-    public function set(string $key, mixed $data, int $expiration = self::expiration): void
+    public function set(string $key, mixed $data, int $expiration = self::EXPIRATION): void
     {
         set_transient($key, $data, $expiration);
-
     }
 
 
@@ -71,13 +68,12 @@ class CacheService
     }
 
     /**
-     * Deletes all cached research data transients from the
-     * database.
+     * Deletes all cached research data transients from the database.
      *
-     * Searches for all transients whose key starts with
-     * "rrze_research_"
-     * and removes them.
+     * Searches for all transients whose key starts with "rrze_research_"
+     * and removes them via delete_transient().
      */
+
     public function deleteAll(): void
     {
         global $wpdb;
@@ -86,8 +82,7 @@ class CacheService
         );
 
         foreach ($keys as $key) {
-            $transientName = str_replace('_transient_', '',
-                $key);
+            $transientName = str_replace('_transient_', '', $key);
             delete_transient($transientName);
         }
     }

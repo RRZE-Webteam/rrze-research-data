@@ -25,13 +25,14 @@ class BlockRegistration
 
 
     /**
-     * Register the block.
+     * Registers the Research Data Gutenberg block with its server-side
+     * render callback, and loads JavaScript translations for the editor.
      *
      * @return void
      */
+
     public function registerBlock(): void
     {
-
         register_block_type(
             dirname(__DIR__, 2) . '/build/block',
             [
@@ -46,11 +47,18 @@ class BlockRegistration
         );
     }
 
-
     /**
-     * Adds the RRZE block category (if not present).
+     * Adds the RRZE block category to the Gutenberg block inserter.
+     *
+     * Checks first if the category already exists to avoid duplicates —
+     * other RRZE plugins may have registered it already.
+     *
+     * @param array   $categories Existing block categories
+     * @param WP_Post $_post       The current post being edited
+     * @return array              Updated list of block categories
      */
-    public function addRrzeCategory(array $categories, $post): array
+
+    public function addRrzeCategory(array $categories, $_post): array
     {
         foreach ($categories as $category) {
             if ($category['slug'] === 'rrze') {

@@ -1,0 +1,20 @@
+.rrze-research-print {
+  display: block;
+  margin-top: 1rem;
+  cursor: pointer;
+}
+
+@media print {
+  body > * {
+    display: none !important;
+  }
+
+  .wp-block-rrze-research-data,
+  .wp-block-rrze-research-data * {
+    display: revert !important;
+  }
+
+  .rrze-research-print {
+    display: none !important;
+  }
+}

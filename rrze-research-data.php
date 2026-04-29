@@ -4,7 +4,7 @@
  * Plugin Name:        RRZE Research Data
  * Plugin URI:         https://github.com/RRZE-Webteam/rrze-research-data
  * Version:            0.0.1
- * Description:        A Plugin for research data integration
+ * Description:        Displays scientific publications from external research platforms
  * Author:             RRZE Webteam
  * Author URI:         https://www.wp.rrze.fau.de/
  * License:            GNU General Public License Version 3
@@ -24,7 +24,6 @@ defined('ABSPATH') || exit;
 const RESEARCH_DATA_PHP_VERSION = '8.2';
 const RESEARCH_DATA_WP_VERSION = '6.8';
 
-
 spl_autoload_register(function ($class) {
     $prefix = __NAMESPACE__ . '\\';
     $baseDir = __DIR__ . '/includes/';
@@ -40,13 +39,14 @@ spl_autoload_register(function ($class) {
     if (file_exists($file)) {
         require $file;
     }
-
 });
 
 /**
- * System requirements verification.
- * @return string Return an error message.
+ * Checks whether the server meets the minimum PHP and WordPress version requirements.
+ *
+ * @return string Error message if requirements are not met, empty string otherwise.
  */
+
 function systemRequirements(): string
 {
     $error = '';
@@ -70,7 +70,9 @@ function systemRequirements(): string
 
 
 /**
- * Load the Textdomain and new Main
+ * Loads the text domain and initializes the plugin.
+ *
+ * Hooked into plugins_loaded. Shows an admin notice if system requirements are not met.
  */
 add_action('plugins_loaded', __NAMESPACE__ . '\initializePlugin');
 
@@ -86,7 +88,6 @@ function initializePlugin(): void
         add_action('admin_notices', static function () use ($error): void {
             echo '<div class="notice notice-error"><p>' . esc_html($error) . '</p></div>';
         });
-
         return;
     }
     new Main();

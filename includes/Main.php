@@ -9,14 +9,10 @@ use RRZE\ResearchData\Blocks\BlockRegistration;
 use RRZE\ResearchData\Admin\Settings;
 
 
-
 /**
- * Main class
+ * Plugin entry point.
  *
- * This class serves as the entry point for the plugin.
- * It initializes blocks, REST endpoints and other components.
- *
- * @package RRZE\ResearchData
+ * Bootstraps all plugin components: REST API endpoints, block registration, and admin settings.
  */
 class Main
 {
@@ -26,13 +22,13 @@ class Main
     }
 
     /**
-     * Create shared service instances.
+     * Initializes all plugin components.
      */
     private function init(): void
     {
-    new RestController();
-    new BlockRegistration();
-    new Settings();
+        new RestController();
+        new BlockRegistration();
+        new Settings();
 
     }
 }

@@ -18,7 +18,6 @@ class FAUdirService
      *
      * @return bool True if the plugin is active, false otherwise
      */
-
     public function isAvailable(): bool
     {
         return class_exists('RRZE\FAUdir\API');
@@ -31,10 +30,8 @@ class FAUdirService
      * FAUdir identifier and display name — used to populate the
      * person dropdown in the block editor.
      *
-     * @return array List of persons: [['id' => '...', 'name' => '...'],
-     * ...]
+     * @return array List of persons: [['id' => '...', 'name' => '...'], ...]
      */
-
     public function getPersons(): array
     {
         if (!$this->isAvailable()) {
@@ -50,12 +47,12 @@ class FAUdirService
         $persons = [];
 
         foreach ($posts as $post) {
-            // person_id = FAUdir-Identifier, z.B. "abc123"
-            // person_name = "Jörg Libuda" (von FAUdir gespeichert)
+            // FAUdir identifier, e.g. "abc123"
+            // Display name as stored by FAUdir
             $id = get_post_meta($post->ID, 'person_id', true);
             $name = get_post_meta($post->ID, 'person_name', true);
 
-            // Nur hinzufügen wenn eine ID vorhanden ist
+            // Only add if an ID is present
             if (!empty($id)) {
                 $persons[] = ['id' => $id, 'name' => $name];
             }
@@ -65,8 +62,7 @@ class FAUdirService
     }
 
     /**
-     * Fetches platform IDs (e.g. ORCID) for a given FAUdir person
-     * identifier.
+     * Fetches platform IDs (e.g. ORCID) for a given FAUdir person identifier.
      *
      * Uses the rrze-faudir API to retrieve the full person data and
      * extracts research platform identifiers. These are used to query
@@ -77,10 +73,8 @@ class FAUdirService
      * production.
      *
      * @param string $personId FAUdir person identifier, e.g. "abc123"
-     * @return array Platform IDs, e.g. ['orcid' =>
-     * '0000-0003-4713-5941']
+     * @return array Platform IDs, e.g. ['orcid' => '0000-0003-4713-5941']
      */
-
     public function getPlatformIds(string $personId): array
     {
         if (!$this->isAvailable()) {
@@ -98,10 +92,12 @@ class FAUdirService
 
         foreach ($person['contacts'] as $contact) {
             $contactId = $contact['identifier'] ?? null;
-            error_log('FAUdirService contact: ' .
-                print_r($contact, true));
-            error_log('FAUdirService contactId: ' .
-                var_export($contactId, true));
+            if (defined('WP_DEBUG') && WP_DEBUG) {
+                error_log('FAUdirService contact: ' . print_r($contact,
+                        true));
+                error_log('FAUdirService contactId: ' .
+                    var_export($contactId, true));
+            }
 
             if (!$contactId) {
                 continue;
@@ -114,11 +110,10 @@ class FAUdirService
             foreach ($socials as $social) {
                 $platform = $social['platform'] ?? '';
                 $url = $social['url'] ?? '';
-
                 if (!empty($platform) && !empty($url)) {
-                    // ID aus URL extrahieren
+                    // ID from URL
                     $id = basename($url);
-                    // .html-Endung entfernen (z.B. bei arXiv - Profil - URLs)
+                    // delete .html
                     $id = preg_replace('/\.html$/', '', $id);
 
                     $result[$platform] = $id;
@@ -128,6 +123,5 @@ class FAUdirService
 
         return $result;
     }
-
 
 }
