@@ -1,0 +1,1 @@
+document.addEventListener("click",function(n){n.target.classList.contains("rrze-research-print")&&window.print()});
