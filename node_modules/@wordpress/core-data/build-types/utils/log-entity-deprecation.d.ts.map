@@ -1,1 +1,0 @@
-{"version":3,"file":"log-entity-deprecation.d.ts","sourceRoot":"","sources":["../../src/utils/log-entity-deprecation.ts"],"names":[],"mappings":"AAYA;;;;;;;;;GASG;AACH,MAAM,CAAC,OAAO,UAAU,oBAAoB,CAC3C,IAAI,EAAE,MAAM,EACZ,IAAI,EAAE,MAAM,EACZ,YAAY,EAAE,MAAM,EACpB,EACC,uBAAuB,EACvB,mBAA2B,GAC3B,GAAE;IACF,uBAAuB,CAAC,EAAE,MAAM,CAAC;IACjC,mBAAmB,CAAC,EAAE,OAAO,CAAC;CACzB,QAkCN"}
