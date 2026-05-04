@@ -45,6 +45,17 @@ class BlockRegistration
             'rrze-research-data',
             dirname(__DIR__, 2) . '/languages'
         );
+
+        wp_register_script(
+            'rrze-research-data-frontend',
+            plugins_url('build/block/frontend.js', dirname(__DIR__, 2)
+                . '/rrze-research-data.php'),
+            [],
+            '1.0',
+            true
+        );
+        wp_enqueue_script('rrze-research-data-frontend');
+
     }
 
     /**

@@ -77,7 +77,7 @@ class RestController
      */
     public function getPlatformIds(\WP_REST_Request $request): \WP_REST_Response
     {
-        $personId = $request->get_param('id');
+        $personId =  sanitize_text_field($request->get_param('id'));
         $service = new \RRZE\ResearchData\Services\FAUdirService();
         $ids = $service->getPlatformIds($personId);
         return new \WP_REST_Response($ids, 200);

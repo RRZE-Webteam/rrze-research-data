@@ -98,7 +98,6 @@ export default function Edit({attributes, setAttributes}: EditProps) {
                                     {label: __('PubMed', 'rrze-research-data'), value: 'pubmed'},
                                     {label: __('OpenAlex', 'rrze-research-data'), value: 'openAlex'},
                                     {label: __('arXiv', 'rrze-research-data'), value: 'arxiv'},
-                                    {label: __('Crossref', 'rrze-research-data'), value: 'crossref'},
                                     {label: __('DBLP', 'rrze-research-data'), value: 'dblp'},
                                     {label: __('Semantic Scholar', 'rrze-research-data'), value: 'semanticscholar'},
                                 ]}
@@ -110,7 +109,7 @@ export default function Edit({attributes, setAttributes}: EditProps) {
                             />
                             {/* Step 2: ID for platform */}
                             {/* ORCID platforms + arXiv: if FAUdir available */}
-                            {['orcid', 'pubmed', 'openAlex', 'arxiv', 'crossref'].includes(source) && (
+                            {['orcid', 'pubmed', 'openAlex', 'arxiv'].includes(source) && (
                                 <>
                                     {isLoadingPersons ? (
                                         <p>{__('Loading…', 'rrze-research-data')}</p>
@@ -230,7 +229,6 @@ export default function Edit({attributes, setAttributes}: EditProps) {
                                     {label: __('PubMed', 'rrze-research-data'), value: 'pubmed'},
                                     {label: __('OpenAlex', 'rrze-research-data'), value: 'openAlex'},
                                     {label: __('arXiv', 'rrze-research-data'), value: 'arxiv'},
-                                    {label: __('Crossref', 'rrze-research-data'), value: 'crossref'},
                                     {label: __('DBLP', 'rrze-research-data'), value: 'dblp'},
                                     {label: __('Semantic Scholar', 'rrze-research-data'), value: 'semanticscholar'},
                                 ]}

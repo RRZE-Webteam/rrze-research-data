@@ -46,6 +46,11 @@ class ResearchService
             return ($b->year ?? 0) - ($a->year ?? 0);
         });
 
+        //shows only one single year
+        if ($yearFrom > 0 && $yearTo === 0) {
+            $yearTo = $yearFrom;
+        }
+
         if($yearFrom > 0) {
             $preparedPublications = array_filter($preparedPublications, fn($p) => ($p->year ?? 0) >= $yearFrom);
         }

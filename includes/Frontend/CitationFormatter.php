@@ -49,9 +49,7 @@ class CitationFormatter
             ]);
         $year = esc_html($publication->year ?? '');
         $journal = esc_html($publication->journal ?? '');
-        $link = !empty($publication->doi)
-            ? 'https://doi.org/' . $publication->doi
-            : esc_url($publication->url ?? '');
+        $link = !empty($publication->doi) ? esc_url('https://doi.org/' . $publication->doi) : esc_url($publication->url ?? '');
         $volume = esc_html($publication->volume ?? '');
         $pages = esc_html($publication->pages ?? '');
 
@@ -91,7 +89,8 @@ class CitationFormatter
         $issue = esc_html($publication->issue ?? '');
         $pages = str_replace('-', '–', esc_html($publication->pages ?? ''));
         $doi = $publication->doi ?? '';
-        $link = !empty($doi) ? 'https://doi.org/' . $doi : esc_url($publication->url ?? '');
+        $link = !empty($doi)  ? esc_url('https://doi.org/' . $publication->doi) : esc_url($publication->url ?? '');
+
 
         // Convert "Firstname Lastname" → "Lastname, F."
         // array_pop() removes and returns the last element (= last name).
@@ -133,7 +132,8 @@ class CitationFormatter
         // e.g. "Vitamin D<sup>2</sup>". str_ends_with() then sees '>' not '.',
         // and appends a wrong suffix. Acceptable for v1.
         // Future fix: strip_tags($title) before this check.
-        $titleSuffix = str_ends_with(trim($title), '.') ? ' ' : '. ';
+        $titleSuffix = str_ends_with(trim(strip_tags($title)), '.') ? ' ' : '. ';
+
 
         return sprintf(
             '<li>%s%s%s%s%s%s%s</li>',
@@ -167,11 +167,11 @@ class CitationFormatter
         $volume = esc_html($publication->volume ?? '');
         $pages = str_replace('-', '–', esc_html($publication->pages ?? ''));
         $doi = $publication->doi ?? '';
-        $link = !empty($doi) ? 'https://doi.org/' . $doi : esc_url($publication->url ?? '');
+        $link = !empty($doi)  ? esc_url('https://doi.org/' . $publication->doi) : esc_url($publication->url ?? '');
 
         // MLA: only first author is inverted ("Lastname,Firstname"),
         // all others remain in natural order ("Firstname Lastname").
-        // 4+ authors → first author + "et al."
+        // 3+ authors → first author + "et al." (MLA 9th edition)
         $rawAuthors = $publication->authors ?? [];
         $authorsHtml = '';
         if (!empty($rawAuthors)) {
@@ -218,5 +218,4 @@ class CitationFormatter
             $doiHtml
         );
     }
-
 }

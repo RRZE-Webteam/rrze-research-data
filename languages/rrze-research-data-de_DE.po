@@ -6,7 +6,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/rrze-research-"
 "data\n"
 "POT-Creation-Date: 2026-04-29T12:37:06+00:00\n"
-"PO-Revision-Date: 2026-04-29 14:52+0200\n"
+"PO-Revision-Date: 2026-04-30 11:42+0200\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: de_DE\n"
@@ -28,9 +28,6 @@ msgstr ""
 
 #. Description of the plugin
 #: rrze-research-data.php
-#, fuzzy
-#| msgctxt "block description"
-#| msgid "Displays publications from research platforms."
 msgid "Displays scientific publications from external research platforms"
 msgstr "Zeigt Publikationen von Forschungsplattformen an."
 
@@ -53,10 +50,6 @@ msgid "RRZE Research Data Settings"
 msgstr "RRZE Research Data Einstellungen"
 
 #: includes/Admin/Settings.php:98
-#, fuzzy
-#| msgid ""
-#| "Publication data from external sources (ORCID, PubMed, OpenAlexetc.) is "
-#| "cached for 12 hours to reduce API requests and improve page load times."
 msgid ""
 "Publication data from external sources (ORCID, PubMed, OpenAlex etc.) is "
 "cached for 12 hours to reduce API requests and improve page load times."
@@ -74,11 +67,6 @@ msgid "Cache"
 msgstr ""
 
 #: includes/Admin/Settings.php:107
-#, fuzzy
-#| msgid ""
-#| "If publications are not up to date, you can clear the cache manually. New "
-#| "data will be fetched from the\n"
-#| "  source on the next page load."
 msgid ""
 "If publications are not up to date, you can clear the cache manually. New "
 "data will be fetched from the source on the next page load."

@@ -16,7 +16,7 @@ Publikationen werden serverseitig dedupliziert (anhand der DOI), sodass ein Pape
 | OpenAlex | ORCID |
 | PubMed | ORCID |
 | arXiv | z. B. `warner_s_1` |
-| Crossref | ORCID |
+| Crossref | Crossref als eigene Quelle im Block anzubieten ergibt wenig Sinn, weil OpenAlex dieselben Daten bereits enthält — nur vollständiger angereichert.
 | DBLP | z. B. `l/LieblerA` oder `06/3501` |
 | Semantic Scholar | z. B. `6213406` |
 

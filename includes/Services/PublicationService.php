@@ -11,7 +11,6 @@ use RRZE\ResearchData\Services\CacheService;
 use RRZE\ResearchData\API\PubMedApi;
 use RRZE\ResearchData\API\ArXivApi;
 use RRZE\ResearchData\API\DblpApi;
-use RRZE\ResearchData\API\CrossrefApi;
 use RRZE\ResearchData\API\SemanticScholarApi;
 
 /**
@@ -65,14 +64,9 @@ class PublicationService
             case 'dblp':
                 $api = new DblpApi();
                 break;
-            case 'crossref':
-                $api = new CrossrefApi();
-                break;
             case 'semanticscholar':
                 $api = new SemanticScholarApi();
                 break;
-            default:
-                $api = new OrcidApi(); // Fallback
         }
 
         $publications = $api->getAllWorks($authorId);
@@ -90,7 +84,7 @@ class PublicationService
      * Validates the author ID format depending on the chosen source.
      *
      * @param string $authorId The ID entered by the editor
-     * @param string $source The chosen platform (orcid, pubmed, openAlex, crossref, arxiv, dblp, semanticscholar)
+     * @param string $source The chosen platform (orcid, pubmed, openAlex, arxiv, dblp, semanticscholar)
      * @return bool            true = valid, false = invalid
      */
     private function isValidAuthorId(string $authorId, string $source): bool
@@ -99,7 +93,7 @@ class PublicationService
 
             // ORCID format: 4 blocks of 4 digits, last character may be X
             // Example: 0000-0003-4713-5941
-            'orcid', 'pubmed', 'openAlex', 'crossref' => (bool)preg_match(
+            'orcid', 'pubmed', 'openAlex' => (bool)preg_match(
                 '/^\d{4}-\d{4}-\d{4}-[\dX]{4}$/',
                 $authorId
             ),
