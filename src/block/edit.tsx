@@ -232,7 +232,12 @@ export default function Edit({attributes, setAttributes}: EditProps) {
                                     {label: __('DBLP', 'rrze-research-data'), value: 'dblp'},
                                     {label: __('Semantic Scholar', 'rrze-research-data'), value: 'semanticscholar'},
                                 ]}
-                                onChange={(value: string) => setAttributes({source: value, authorId: ''})}
+                                onChange={(value: string) => {
+                                    const orcidSources = ['orcid', 'pubmed', 'openAlex'];
+                                    const keepId = orcidSources.includes(source) &&
+                                        orcidSources.includes(value);
+                                    setAttributes({source: value, authorId: keepId ? authorId : ''});
+                                }}
                             />
                             <TextControl
                                 label={source === 'arxiv' ? __('arXiv Author-ID', 'rrze-research-data')
