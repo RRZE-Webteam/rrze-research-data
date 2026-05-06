@@ -52,21 +52,22 @@ class CitationFormatter
         $link = !empty($publication->doi) ? esc_url('https://doi.org/' . $publication->doi) : esc_url($publication->url ?? '');
         $volume = esc_html($publication->volume ?? '');
         $pages = str_replace('-', '–', esc_html($publication->pages ?? ''));
-
+        $titleSuffix = str_ends_with(trim(strip_tags($title)), '.') ? ' ' : '. ';
         $volumeHtml = $volume ? ', ' . __('vol.', 'rrze-research-data') . ' ' . $volume : '';
         $pagesHtml = $pages ? ', ' . __('pp.', 'rrze-research-data') . ' ' . $pages : '';
         $yearHtml = $year ? $year . '. ' : '';
-        $journalHtml = $journal ? ' <span class="publication-journal">' . $journal . '</span>' : '';
+        $journalHtml = $journal ? '<em>' . $journal . '</em>' : '';
         $authorsHtml = !empty($publication->authors)
             ? esc_html(implode(', ', $publication->authors)) . '. '
             : '';
 
         return sprintf(
-            '<li>%s%s<a href="%s" target="_blank" rel="noopener">%s</a>%s%s%s</li>',
+            '<li>%s%s<a href="%s" target="_blank" rel="noopener">%s</a>%s%s%s%s</li>',
             $authorsHtml,
             $yearHtml,
             $link,
             $title,
+            $titleSuffix,
             $journalHtml,
             $volumeHtml,
             $pagesHtml
