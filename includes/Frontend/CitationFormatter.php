@@ -51,14 +51,14 @@ class CitationFormatter
         $journal = esc_html($publication->journal ?? '');
         $link = !empty($publication->doi) ? esc_url('https://doi.org/' . $publication->doi) : esc_url($publication->url ?? '');
         $volume = esc_html($publication->volume ?? '');
-        $pages = esc_html($publication->pages ?? '');
+        $pages = str_replace('-', '–', esc_html($publication->pages ?? ''));
 
-        $volumeHtml = $volume ? ' | ' . $volume : '';
-        $pagesHtml = $pages ? ', ' . $pages : '';
-        $yearHtml = $year ? $year . ' | ' : '';
-        $journalHtml = $journal ? ' | <span class="publication-journal">' . $journal . '</span>' : '';
+        $volumeHtml = $volume ? ', ' . __('vol.', 'rrze-research-data') . ' ' . $volume : '';
+        $pagesHtml = $pages ? ', ' . __('pp.', 'rrze-research-data') . ' ' . $pages : '';
+        $yearHtml = $year ? $year . '. ' : '';
+        $journalHtml = $journal ? ' <span class="publication-journal">' . $journal . '</span>' : '';
         $authorsHtml = !empty($publication->authors)
-            ? esc_html(implode(', ', $publication->authors)) . ' | '
+            ? esc_html(implode(', ', $publication->authors)) . '. '
             : '';
 
         return sprintf(
@@ -194,9 +194,9 @@ class CitationFormatter
             $authorsHtml .= str_ends_with($authorsHtml, '.') ? ' ' : '. ';
         }
         $titleSuffix = str_ends_with(trim($title), '.') ? '' : '.';
-        $journalHtml = $journal ? ' <em>' . $journal . '</em>,' : '';
+        $journalHtml = $journal ? ' <em>' . $journal . '</em>' : '';
         $volumeHtml = $volume ? ', ' . __('vol.', 'rrze-research-data') . ' ' . $volume . ',' : '';
-        $yearHtml = $year ? ' ' . $year : '';
+        $yearHtml = $year ? ($volume ? ' ' . $year :  ($journal ? ', ' . $year : ' ' . $year)) : '';
         $pagesHtml = $pages ? ', ' . __('pp.', 'rrze-research-data') . ' ' . $pages : '';
         $doiHtml = !empty($doi)
             ? '. <a href="' . esc_url($link) . '" target="_blank" rel="noopener">' . esc_html($link) . '</a>.'
