@@ -1,0 +1,39 @@
+/*!**********************************************************************************************************************************************************************************************************************************************!*\
+  !*** css ./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[4].use[1]!./node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[4].use[2]!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[4].use[3]!./src/block/editor.scss ***!
+  \**********************************************************************************************************************************************************************************************************************************************/
+.rrze-research-data-form {
+  display: grid;
+  grid-template-columns: 200px 300px;
+  gap: 12px 16px;
+  align-items: center;
+}
+.rrze-research-data-form p {
+  grid-column: 1/-1;
+}
+/** Help text **/
+.rrze-research-data-help {
+  font-size: 12px;
+  color: #757575;
+  margin-top: -5px;
+}
+.rrze-research-data-help code {
+  font-size: 11px;
+  background: #f0f0f0;
+  padding: 1px 4px;
+  border-radius: 3px;
+}
+label {
+  font-weight: 600;
+}
+.rrze-research-data-info {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+.rrze-research-data-info svg {
+  width: 22px;
+  height: 22px;
+  fill: #cc0000;
+}
+
+/*# sourceMappingURL=index.css.map*/

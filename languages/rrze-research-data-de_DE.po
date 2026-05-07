@@ -1,0 +1,408 @@
+# Copyright (C) 2026 RRZE Webteam
+# This file is distributed under the GNU General Public License Version 3.
+msgid ""
+msgstr ""
+"Project-Id-Version: RRZE Research Data 0.0.1\n"
+"Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/rrze-research-"
+"data\n"
+"POT-Creation-Date: 2026-04-29T12:37:06+00:00\n"
+"PO-Revision-Date: 2026-04-30 11:42+0200\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"Language: de_DE\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 3.9\n"
+"X-Domain: rrze-research-data\n"
+
+#. Plugin Name of the plugin
+#: rrze-research-data.php
+msgid "RRZE Research Data"
+msgstr ""
+
+#. Plugin URI of the plugin
+#: rrze-research-data.php
+msgid "https://github.com/RRZE-Webteam/rrze-research-data"
+msgstr ""
+
+#. Description of the plugin
+#: rrze-research-data.php
+msgid "Displays scientific publications from external research platforms"
+msgstr "Zeigt Publikationen von Forschungsplattformen an."
+
+#. Author of the plugin
+#: rrze-research-data.php
+msgid "RRZE Webteam"
+msgstr ""
+
+#. Author URI of the plugin
+#: rrze-research-data.php
+msgid "https://www.wp.rrze.fau.de/"
+msgstr ""
+
+#: includes/Admin/Settings.php:42
+msgid "Research Data Settings"
+msgstr "Research Data Einstellungen"
+
+#: includes/Admin/Settings.php:97
+msgid "RRZE Research Data Settings"
+msgstr "RRZE Research Data Einstellungen"
+
+#: includes/Admin/Settings.php:98
+msgid ""
+"Publication data from external sources (ORCID, PubMed, OpenAlex etc.) is "
+"cached for 12 hours to reduce API requests and improve page load times."
+msgstr ""
+"Publikationsdaten aus externen Quellen (ORCID, PubMed, OpenAlex usw.) werden "
+"für 12 Stunden zwischengespeichert, um die Anzahl der API-Anfragen zu "
+"reduzieren und die Ladezeiten der Seiten zu verbessern."
+
+#: includes/Admin/Settings.php:102
+msgid "Cache cleared successfully."
+msgstr "Der Cache wurde erfolgreich geleert."
+
+#: includes/Admin/Settings.php:106
+msgid "Cache"
+msgstr ""
+
+#: includes/Admin/Settings.php:107
+msgid ""
+"If publications are not up to date, you can clear the cache manually. New "
+"data will be fetched from the source on the next page load."
+msgstr ""
+"Wenn die Inhalte nicht auf dem neuesten Stand sind, können Sie den Cache "
+"manuell leeren. Beim nächsten Laden der Seite werden neue Daten von der\n"
+"  Quelle abgerufen."
+
+#: includes/Admin/Settings.php:112
+msgid "Clear Cache"
+msgstr "Cache leeren"
+
+#: includes/API/ArXivApi.php:44 includes/API/DblpApi.php:44
+msgid "Invalid XML format."
+msgstr "Ungültiges XML-Format."
+
+#: includes/API/ArXivApi.php:79
+#, php-format
+msgid "arXiv API returned status code %d."
+msgstr "Die arXiv-API hat den Statuscode %d zurückgegeben."
+
+#: includes/API/CrossrefApi.php:135
+#, php-format
+msgid "Crossref API returned status code %d."
+msgstr "Die Crossref-API hat den Statuscode %d zurückgegeben."
+
+#: includes/API/CrossrefApi.php:143
+msgid "Crossref API returned no valid data."
+msgstr "Die Crossref-API hat keine gültigen Daten zurückgegeben."
+
+#: includes/API/DblpApi.php:81
+#, php-format
+msgid "DBLP API returned status code %d."
+msgstr "Die DBLP-API hat den Statuscode %d zurückgegeben."
+
+#: includes/API/OpenAlexApi.php:82
+#, php-format
+msgid "OpenAlex API returned status code %d."
+msgstr "Die OpenAlex-API hat den Statuscode %d zurückgegeben."
+
+#: includes/API/OpenAlexApi.php:92
+msgid "OpenAlex API returned no valid data."
+msgstr "Die OpenAlex-API hat keine gültigen Daten zurückgegeben."
+
+#: includes/API/OrcidApi.php:84
+#, php-format
+msgid "ORCID API returned status code %d."
+msgstr "Die ORCID-API hat den Statuscode %d zurückgegeben."
+
+#: includes/API/OrcidApi.php:92
+msgid "ORCID API returned no valid data."
+msgstr "Die ORCID-API hat keine gültigen Daten zurückgegeben."
+
+#: includes/API/PubMedApi.php:149
+#, php-format
+msgid "PubMed API returned status code %d."
+msgstr "Die PubMed-API hat den Statuscode %d zurückgegeben."
+
+#: includes/API/PubMedApi.php:157
+msgid "PubMed API returned no valid data."
+msgstr "Die PubMed-API hat keine gültigen Daten zurückgegeben."
+
+#: includes/API/SemanticScholarApi.php:89
+#, php-format
+msgid "Semantic Scholar API returned status code %d."
+msgstr "Die Semantic Scholar-API hat den Statuscode %d zurückgegeben."
+
+#: includes/API/SemanticScholarApi.php:98
+msgid "Semantic Scholar API returned no valid data."
+msgstr "Die Semantic Scholar-API hat keine gültigen Daten zurückgegeben."
+
+#: includes/Blocks/BlockRegistration.php:71
+msgid "RRZE"
+msgstr ""
+
+#: includes/Frontend/CitationFormatter.php:192
+msgid "and"
+msgstr "und"
+
+#: includes/Frontend/CitationFormatter.php:198
+msgid "vol."
+msgstr "Jg."
+
+#: includes/Frontend/CitationFormatter.php:200
+msgid "pp."
+msgstr "S."
+
+#: includes/Frontend/PublicationRenderer.php:45
+#: includes/Frontend/PublicationRenderer.php:73
+msgid "No publications found."
+msgstr "Keine Publikationen gefunden."
+
+#: includes/Frontend/PublicationRenderer.php:50
+msgid "Print list as PDF"
+msgstr "Liste als PDF"
+
+#: includes/Frontend/PublicationRenderer.php:132 build/block/index.js:343
+msgid "Journal Article"
+msgstr "Zeitschriftenartikel"
+
+#: includes/Frontend/PublicationRenderer.php:133 build/block/index.js:346
+msgid "Conference"
+msgstr "Konferenzbeitrag"
+
+#: includes/Frontend/PublicationRenderer.php:134 build/block/index.js:349
+msgid "Book"
+msgstr "Buch"
+
+#: includes/Frontend/PublicationRenderer.php:135 build/block/index.js:352
+msgid "Book Chapter"
+msgstr "Buchkapitel"
+
+#: includes/Frontend/PublicationRenderer.php:136 build/block/index.js:355
+msgid "Editorship"
+msgstr "Herausgeberschaft"
+
+#: includes/Frontend/PublicationRenderer.php:137 build/block/index.js:358
+msgid "Preprint"
+msgstr "Preprint"
+
+#: includes/Frontend/PublicationRenderer.php:138 build/block/index.js:361
+msgid "Review"
+msgstr "Rezension"
+
+#: includes/Frontend/PublicationRenderer.php:139 build/block/index.js:364
+msgid "Thesis"
+msgstr "Abschlussarbeit"
+
+#: includes/Frontend/PublicationRenderer.php:140 build/block/index.js:367
+msgid "Other"
+msgstr "Sonstige"
+
+#: includes/Services/PublicationService.php:38
+msgid "No author ID provided."
+msgstr "Es wurde keine Autoren-ID angegeben."
+
+#: includes/Services/PublicationService.php:42
+msgid "Invalid author ID format."
+msgstr "Ungültiges Format der Autoren-ID."
+
+#. translators: 1: Server PHP version number, 2: Required PHP version number.
+#: rrze-research-data.php:56
+#, php-format
+msgid ""
+"The server is running PHP version %1$s. The Plugin requires at least PHP "
+"version %2$s."
+msgstr ""
+"Auf dem Server läuft PHP-Version %1$s. Das Plugin erfordert mindestens PHP-"
+"Version %2$s."
+
+#. translators: 1: Server WordPress version number, 2: Required WordPress version number.
+#: rrze-research-data.php:63
+#, php-format
+msgid ""
+"The server is running WordPress version %1$s. The Plugin requires at least "
+"WordPress version %2$s."
+msgstr ""
+"Auf dem Server läuft WordPress Version %1$s. Das Plugin erfordert mindestens "
+"WordPress Version %2$s."
+
+#: build/block/index.js:141 build/block/index.js:296
+msgid "Research Data"
+msgstr "Research Data"
+
+#: build/block/index.js:142
+msgid "Display research publications from external sources."
+msgstr "Publikationen aus externen Quellen anzeigen"
+
+#: build/block/index.js:151 build/block/index.js:299
+msgid "Publication Source"
+msgstr "Quelle der Publikation"
+
+#: build/block/index.js:155 build/block/index.js:229 build/block/index.js:243
+#: build/block/index.js:302 build/block/index.js:328
+msgid "ORCID"
+msgstr ""
+
+#: build/block/index.js:158 build/block/index.js:305
+msgid "PubMed"
+msgstr ""
+
+#: build/block/index.js:161 build/block/index.js:308
+msgid "OpenAlex"
+msgstr ""
+
+#: build/block/index.js:164 build/block/index.js:311
+msgid "arXiv"
+msgstr ""
+
+#: build/block/index.js:167 build/block/index.js:314
+msgid "Crossref"
+msgstr ""
+
+#: build/block/index.js:170 build/block/index.js:317
+msgid "DBLP"
+msgstr ""
+
+#: build/block/index.js:173 build/block/index.js:320
+msgid "Semantic Scholar"
+msgstr ""
+
+#: build/block/index.js:186
+msgid "Loading…"
+msgstr "Wird geladen…"
+
+#: build/block/index.js:189
+msgid "Person (FAUdir)"
+msgstr ""
+
+#: build/block/index.js:193
+msgid "— Please select —"
+msgstr "— Bitte wählen —"
+
+#: build/block/index.js:218
+msgid "No arXiv ID in FAUdir found. Please enter manually."
+msgstr ""
+"In FAUdir wurde keine arXiv-ID gefunden. Bitte geben Sie diese manuell ein."
+
+#: build/block/index.js:218
+msgid "No ORCID in FAUdir found. Please enter manually."
+msgstr ""
+"In FAUdir wurde kein ORCID gefunden. Bitte geben Sie die Nummer manuell ein."
+
+#: build/block/index.js:219
+msgid ""
+"Enter your arXiv Author-ID in idm.fau.de under: FAUdir → Entries → Portals "
+"and networks"
+msgstr ""
+"Geben Sie Ihre arXiv-Autor-ID auf idm.fau.de unter „FAUdir → Einträge → "
+"Portale und Netzwerke“ ein."
+
+#: build/block/index.js:219
+msgid ""
+"Enter your ORCID in idm.fau.de under: FAUdir → Entries → Portals and networks"
+msgstr ""
+"Geben Sie Ihre ORCID-Nummer auf idm.fau.de unter „FAUdir → Einträge → "
+"Portale und Netzwerke“ ein."
+
+#: build/block/index.js:229 build/block/index.js:243 build/block/index.js:328
+msgid "arXiv Author-ID"
+msgstr "arXiv-Autoren-ID"
+
+#: build/block/index.js:254 build/block/index.js:328
+msgid "DBLP PID"
+msgstr ""
+
+#: build/block/index.js:254
+msgid "SemanticScholar Author-ID"
+msgstr "SemanticScholar-Autor-ID"
+
+#: build/block/index.js:263
+#, fuzzy
+#| msgid "ID from your profile URL:"
+msgid "ID from your Semantic Scholar profile URL:"
+msgstr "ID aus Ihrer Profil-URL:"
+
+#: build/block/index.js:270
+#, fuzzy
+#| msgid "ID from your profile URL:"
+msgid "ID from your DBLP profile URL:"
+msgstr "ID aus Ihrer Profil-URL:"
+
+#: build/block/index.js:286
+msgid "Save"
+msgstr "Speichern"
+
+#: build/block/index.js:328
+msgid "Semantic Scholar Author-ID"
+msgstr "Semantic Scholar-Autor-ID"
+
+#: build/block/index.js:336
+msgid "Display Options"
+msgstr "Anzeigeoptionen"
+
+#: build/block/index.js:339 build/block/index.js:396
+msgid "Publication Type"
+msgstr "Publikationstyp"
+
+#: build/block/index.js:387
+msgid "Group by"
+msgstr "Gruppierung nach"
+
+#: build/block/index.js:390
+msgid "No grouping"
+msgstr "Keine Gruppierung"
+
+#: build/block/index.js:393
+msgid "Year"
+msgstr "Jahr"
+
+#: build/block/index.js:403
+msgid "Citation Style"
+msgstr "Zitierstil"
+
+#: build/block/index.js:406
+msgid "Standard"
+msgstr ""
+
+#: build/block/index.js:409
+msgid "APA"
+msgstr ""
+
+#: build/block/index.js:412
+msgid "MLA"
+msgstr ""
+
+#: build/block/index.js:419
+msgid "Year from"
+msgstr "Von Jahr"
+
+#: build/block/index.js:427
+msgid "Year to"
+msgstr "bis Jahr"
+
+#: build/block/index.js:436
+msgid "Limit"
+msgstr "Anzahl"
+
+#: build/block/block.json
+msgctxt "block title"
+msgid "Research Data"
+msgstr "Research Data"
+
+#: build/block/block.json
+msgctxt "block description"
+msgid "Displays publications from research platforms."
+msgstr "Zeigt Publikationen von Forschungsplattformen an."
+
+#~ msgid "A Plugin for research data integration"
+#~ msgstr "Ein Plugin zur Integration von Publikationen"
+
+#~ msgid "No files found."
+#~ msgstr "Keine Dateien gefunden."
+
+#~ msgid "All"
+#~ msgstr "Alle"
+
+#~ msgid "Publications from year"
+#~ msgstr "Publikationsjahr"
