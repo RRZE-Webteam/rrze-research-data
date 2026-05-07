@@ -4,27 +4,27 @@ WordPress-Plugin zum Abruf und zur Anzeige wissenschaftlicher Publikationen aus 
 
 ## Beschreibung
 
-Das Plugin ruft Publikationsdaten einer Person aus mehreren externen APIs ab und zeigt sie über einen Gutenberg-Block auf der Website an. Alle genutzten APIs sind öffentlich zugänglich — es sind keine API-Schlüssel erforderlich.
+Das Plugin ruft Publikationsdaten einer Person aus mehreren externen APIs ab und zeigt sie über einen Gutenberg-Block auf der Website an. 
+Alle genutzten APIs sind öffentlich zugänglich — es sind keine API-Schlüssel erforderlich.
 
-Publikationen werden serverseitig dedupliziert (anhand der DOI), sodass ein Paper, das auf mehreren Plattformen gelistet ist, nur einmal erscheint.
+
 
 ## Unterstützte Quellen
 
-| Quelle | ID-Format |
-|---|---|
-| ORCID | `0000-0003-4713-5941` |
-| OpenAlex | ORCID |
-| PubMed | ORCID |
-| arXiv | z. B. `warner_s_1` |
-| Crossref | Crossref als eigene Quelle im Block anzubieten ergibt wenig Sinn, weil OpenAlex dieselben Daten bereits enthält — nur vollständiger angereichert.
-| DBLP | z. B. `l/LieblerA` oder `06/3501` |
-| Semantic Scholar | z. B. `6213406` |
+| Quelle | ID-Format                                        |
+|---|--------------------------------------------------|
+| ORCID | `0000-0003-4713-5941`                            |
+| OpenAlex | ORCID                                            |
+| PubMed | ORCID                                            |
+| arXiv | `Format: nachname_v_1`                           |
+| DBLP | `Format: /pid/xx/000`                            |
+| Semantic Scholar | ID am Ende der URL:`.../author/Nachname/0000000` |
 
 ## Block
 
 Der Block wird im Gutenberg-Editor unter „Research Data" gefunden. Einstellungen:
 
-- **Quelle** — Auswahl der API
+- **Quelle** — Auswahl der Plattform
 - **Autoren-ID** — manuell eingeben oder via FAUdir-Dropdown (falls FAUdir-Plugin aktiv)
 - **Anzahl** — maximale Anzahl angezeigter Publikationen
 - **Jahr von/bis** — Zeitraum filtern
@@ -44,16 +44,8 @@ API-Anfragen werden als WordPress Transients für 12 Stunden gecacht. Der Cache 
 
 ## FAUdir-Integration
 
-Wenn das FAUdir-Plugin aktiv ist, können Personen über ein Dropdown ausgewählt werden. Die ORCID-ID wird automatisch befüllt, sofern in FAUdir hinterlegt.
+Wenn das FAUdir-Plugin aktiv ist, können Personen über ein Dropdown ausgewählt werden. Die ORCID-ID oder arXiv-ID wird automatisch befüllt, sofern in FAUdir hinterlegt.
 
-## REST API
-
-```
-GET /wp-json/rrze-research-data/v1/faudir/persons
-GET /wp-json/rrze-research-data/v1/faudir/person/{id}
-```
-
-Berechtigung: `edit_posts`
 
 ## Technische Hinweise
 
