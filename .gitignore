@@ -13,3 +13,6 @@ node_modules/
 
 # Claude Code
 CLAUDE.md
+
+#source map
+ build/block/*.map

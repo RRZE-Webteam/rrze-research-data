@@ -45,13 +45,7 @@ class PublicationRenderer
             return '<p>' . esc_html__('No publications found.', 'rrze-research-data') . '</p>';
         }
 
-        $printButton =
-            '<button class="wp-element-button rrze-research-print" type="button">'
-            . esc_html__('Print list as PDF', 'rrze-research-data')
-            . '</button>';
-
-
-        return self::renderJsonLd($publications) . self::renderList($publications, $groupBy, $citationStyle) . $printButton;
+        return self::renderJsonLd($publications) . self::renderList($publications, $groupBy, $citationStyle);
 
     }
 
