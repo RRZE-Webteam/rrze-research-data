@@ -3,7 +3,7 @@
 /**
  * Plugin Name:        RRZE Research Data
  * Plugin URI:         https://github.com/RRZE-Webteam/rrze-research-data
- * Version:            1.0.0
+ * Version:            1.0.1
  * Description:        Displays scientific publications from external research platforms
  * Author:             RRZE Webteam
  * Author URI:         https://www.wp.rrze.fau.de/
